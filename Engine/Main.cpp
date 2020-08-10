@@ -31,24 +31,73 @@ int main()
 
 	Input input = Input(&window);
 	Camera camera = Camera(&window);
-	camera.transform.position = glm::vec3(0.0f, 0.0f, 1.0f);
+	camera.transform.position = glm::vec3(0.0f, 0.0f, 3.0f);
 
 	Shader basicShader("Shaders/VertexShader.glsl", "Shaders/FragmentShader.glsl");
 
 	Entity entity = registry.create();
+	Entity lightEntity = registry.create();
 	registry.assign<Transform>(entity);
+	registry.assign<Transform>(lightEntity);
+	registry.get<Transform>(lightEntity).scale *= 0.2f;
 
 	std::vector<Vertex> vertices =
 	{
-		{{1.0f, 1.0f, 0.0f}, {0.0f, 0.0f, -1.0f}, {1.0f, 1.0f}},
-		{{1.0f, -1.0f, 0.0f}, {0.0f, 0.0f, -1.0f}, {1.0f, 0.0f}},
-		{{-1.0f, -1.0f, 0.0f}, {0.0f, 0.0f, -1.0f}, {0.0f, 0.0f}},
-		{{-1.0f, 1.0f, 0.0f}, {0.0f, 0.0f, -1.0f}, {0.0f, 1.0f}}
+		// Front
+		{{1.0f, 1.0f, 1.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f}},
+		{{1.0f, -1.0f, 1.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 0.0f}},
+		{{-1.0f, -1.0f, 1.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f}},
+		{{-1.0f, 1.0f, 1.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 1.0f}},
+
+		// Back
+		{{1.0f, 1.0f, -1.0f}, {0.0f, 0.0f, -1.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f}},
+		{{1.0f, -1.0f, -1.0f}, {0.0f, 0.0f, -1.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 0.0f}},
+		{{-1.0f, -1.0f, -1.0f}, {0.0f, 0.0f, -1.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f}},
+		{{-1.0f, 1.0f, -1.0f}, {0.0f, 0.0f, -1.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 1.0f}},
+
+		// Top
+		{{1.0f, 1.0f, -1.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f}},
+		{{1.0f, 1.0f, 1.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 0.0f}},
+		{{-1.0f, 1.0f, 1.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f}},
+		{{-1.0f, 1.0f, -1.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 1.0f}},
+
+		// Bottom
+		{{1.0f, -1.0f, -1.0f}, {0.0f, -1.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f}},
+		{{1.0f, -1.0f, 1.0f}, {0.0f, -1.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 0.0f}},
+		{{-1.0f, -1.0f, 1.0f}, {0.0f, -1.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f}},
+		{{-1.0f, -1.0f, -1.0f}, {0.0f, -1.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 1.0f}},
+
+		// Right
+		{{1.0f, 1.0f, -1.0f}, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f}},
+		{{1.0f, -1.0f, -1.0f}, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 0.0f}},
+		{{1.0f, -1.0f, 1.0f}, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f}},
+		{{1.0f, 1.0f, 1.0f}, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 1.0f}},
+
+		// Left
+		{{-1.0f, 1.0f, -1.0f}, {-1.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f}},
+		{{-1.0f, -1.0f, -1.0f}, {-1.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 0.0f}},
+		{{-1.0f, -1.0f, 1.0f}, {-1.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f}},
+		{{-1.0f, 1.0f, 1.0f}, {-1.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 1.0f}},
 	};
 	std::vector<Texture> textures;
-	std::vector<uint32_t> indices = { 0, 1, 2, 0, 3, 2 };
+	std::vector<uint32_t> indices =
+	{ 
+		// Front
+		2, 0, 1, 2, 3, 0,
+		// Back
+		5, 4, 6, 7, 6, 4,
+		// Top
+		10, 8, 9, 10, 11, 8,
+		// Bottom
+		13, 12, 14, 15, 14, 12,
+		// Right
+		18, 16, 17, 18, 19, 16,
+		// Left
+		21, 20, 22, 23, 22, 20
+	};
 
 	registry.assign<Mesh>(entity, vertices, indices, textures);
+	registry.assign<Mesh>(lightEntity, vertices, indices, textures);
 
 	glm::dvec2 previousMousePosition = input.GetMousePosition();
 
@@ -112,13 +161,23 @@ int main()
 
 		basicShader.Use();
 
-		std::string matrixUniformName = "MVP";
-		Transform transform = registry.get<Transform>(entity);
+		std::string matrixUniformName = "ViewProjection";
+		std::string lightPositionName = "lightPos";
+		std::string lightColorName = "lightColor";
 
-		glm::mat4x4 matrix = camera.GetProjectionMatrix() * camera.GetViewMatrix() * transform.GetWorldMatrix();
+		Transform& transform = registry.get<Transform>(entity);
+		Transform& lightTransform = registry.get<Transform>(lightEntity);
+		glm::mat4x4 matrix = camera.GetProjectionMatrix() * camera.GetViewMatrix();
+
+		lightTransform.position = glm::vec3(-1.5f, -1.5f, -1.5f);
+		glm::vec3 lightcolor = glm::vec3(1.0f, 1.0f, 1.0f);
+
 		basicShader.SetMat4(matrixUniformName, matrix);
+		basicShader.SetVec3(lightPositionName, lightTransform.position);
+		basicShader.SetVec3(lightColorName, lightcolor);
 
-		registry.get<Mesh>(entity).Render(basicShader);
+		registry.get<Mesh>(entity).Render(basicShader, entity, registry);
+		registry.get<Mesh>(lightEntity).Render(basicShader, lightEntity, registry);
 
 		window.Update(0);
 	}

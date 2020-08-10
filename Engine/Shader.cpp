@@ -34,34 +34,34 @@ uint32_t Shader::GetID() const
 
 void Shader::SetBool(std::string& name, bool& value) const
 {
-	uint8_t valueLoc = GetUnitformLocation(name);
+	int32_t valueLoc = GetUniformLocation(name);
 	glUniform1i(glGetUniformLocation(m_id, name.c_str()), value);
 }
 
 
 void Shader::SetInt(std::string& name, int& value) const
 {
-	uint8_t valueLoc = GetUnitformLocation(name);
+	int32_t valueLoc = GetUniformLocation(name);
 	glUniform1i(glGetUniformLocation(m_id, name.c_str()), value);
 }
 
 
 void Shader::SetFloat(std::string& name, float& value) const
 {
-	uint8_t valueLoc = GetUnitformLocation(name);
+	int32_t valueLoc = GetUniformLocation(name);
 	glUniform1f(valueLoc, value);
 }
 
-void Shader::SetVec(std::string& name, glm::vec3& value) const
+void Shader::SetVec3(std::string& name, const glm::vec3& value) const
 {
-	uint8_t valueLoc = GetUnitformLocation(name);
-	glUniform3fv(valueLoc, 1, value_ptr(value));
+	int32_t valueLoc = GetUniformLocation(name);
+	glUniform3f(valueLoc, value.x, value.y, value.z);
 }
 
-void Shader::SetMat4(std::string& name, glm::mat4x4& value) const
+void Shader::SetMat4(std::string& name, const glm::mat4x4& value) const
 {
-	uint8_t valueLoc = GetUnitformLocation(name);
-	glUniformMatrix4fv(valueLoc, 1, GL_FALSE, value_ptr(value));
+	int32_t valueLoc = GetUniformLocation(name);
+	glUniformMatrix4fv(valueLoc, 1, GL_FALSE, &value[0][0]);
 }
 
 void Shader::Create(const std::string& vertexPath, const std::string& fragmentPath)
@@ -120,7 +120,7 @@ void Shader::Create(const std::string& vertexPath, const std::string& fragmentPa
 	if (!success)
 	{
 		glGetShaderInfoLog(vertex, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+		printf("ERROR::SHADER::VERTEX::COMPILATION_FAILED %s\n", infoLog);
 	};
 
 	// shader Program
@@ -133,7 +133,7 @@ void Shader::Create(const std::string& vertexPath, const std::string& fragmentPa
 	if (!success)
 	{
 		glGetProgramInfoLog(m_id, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
+		printf("ERROR::SHADER::PROGRAM::LINKING_FAILED %s\n", infoLog);
 	}
 
 	// delete the shaders as they're linked into our program now and no longer necessary
@@ -141,7 +141,7 @@ void Shader::Create(const std::string& vertexPath, const std::string& fragmentPa
 	glDeleteShader(fragment);
 }
 
-uint32_t Shader::GetUnitformLocation(std::string& name) const
+int32_t Shader::GetUniformLocation(std::string& name) const
 {
 	return glGetUniformLocation(m_id, name.c_str());
 }

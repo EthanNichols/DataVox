@@ -18,14 +18,14 @@ public:
 	void SetBool(std::string& name, bool& value) const;
 	void SetInt(std::string& name, int& value) const;
 	void SetFloat(std::string& name, float& value) const;
-	void SetVec(std::string& name, glm::vec3& value) const;
-	void SetMat4(std::string& name, glm::mat4x4& value) const;
+	void SetVec3(std::string& name, const glm::vec3& value) const;
+	void SetMat4(std::string& name, const glm::mat4x4& value) const;
 
 private:
 
 	void Create(const std::string& vertexPath, const std::string& fragmentPath);
 
-	uint32_t GetUnitformLocation(std::string& name) const;
+	int32_t GetUniformLocation(std::string& name) const;
 
 private:
 

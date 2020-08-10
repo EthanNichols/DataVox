@@ -1,5 +1,7 @@
 #include "Input.h"
 
+const Window* Input::m_window;
+
 Input::Input(const Window* window)
 {
     m_window = window;
@@ -63,6 +65,14 @@ bool Input::IsMouseButtonUp(int32_t button)
     }
 
     return buttonUp;
+}
+
+void Input::SetMousePosition(glm::dvec2 position)
+{
+    if (m_window)
+    {
+        glfwSetCursorPos(*m_window, position.x, position.y);
+    }
 }
 
 glm::dvec2 Input::GetMousePosition()

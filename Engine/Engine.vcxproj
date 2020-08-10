@@ -167,10 +167,13 @@
     <ClCompile Include="ResourceLoader.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="VertexData.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Shaders\FragmentShader.glsl" />
+    <None Include="Shaders\VertexShader.glsl" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />

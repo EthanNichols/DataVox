@@ -1,5 +1,7 @@
 #pragma once
 
+#include <glm/glm.hpp>
+
 #include "Entt.h"
 #include "Transform.h"
 #include "Window.h"
@@ -14,7 +16,7 @@ public:
 
 public:
 
-	void Update();
+	void Update(float deltaTime);
 
 	glm::mat4x4 GetViewMatrix();
 	glm::mat4x4 GetProjectionMatrix();
@@ -26,6 +28,9 @@ public:
 private:
 
 	const Window* m_window;
+
+	const float ROTATION_SPEED = 240.0f;
+	const float MOVEMENT_SPEED = 5.0f;
 
 	float m_fieldOfView = 60.0f;
 	float m_nearClippingPlane = 0.1f;

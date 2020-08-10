@@ -1,5 +1,10 @@
 #include "Mesh.h"
 
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/quaternion.hpp>
+
+#include "Transform.h"
+
 
 Mesh::Mesh(std::vector<Vertex> vertices, std::vector<uint32_t> indices, std::vector<Texture> textures)
 {
@@ -11,7 +16,7 @@ Mesh::Mesh(std::vector<Vertex> vertices, std::vector<uint32_t> indices, std::vec
 }
 
 
-void Mesh::Render(Shader& shader) const
+void Mesh::Render(Shader& shader, Entity entity, Registry& registry) const
 {
     // bind appropriate textures
     unsigned int diffuseNr = 1;
@@ -39,6 +44,12 @@ void Mesh::Render(Shader& shader) const
         glBindTexture(GL_TEXTURE_2D, m_textures[i].id);
     }
 
+    Transform transform = registry.get<Transform>(entity);
+
+    std::string modelMatrixName = "ModelMatrix";
+
+    shader.SetMat4(modelMatrixName, transform.GetWorldMatrix());
+
     // draw mesh
     glBindVertexArray(m_VAO);
     glDrawElements(GL_TRIANGLES, m_indices.size(), GL_UNSIGNED_INT, 0);
@@ -61,18 +72,9 @@ void Mesh::SetupMesh()
 	glBufferData(GL_ARRAY_BUFFER, m_vertices.size() * sizeof(Vertex), &m_vertices[0], GL_STATIC_DRAW);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_indices.size() * sizeof(unsigned int),
-				 &m_indices[0], GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_indices.size() * sizeof(unsigned int), &m_indices[0], GL_STATIC_DRAW);
 
-	// vertex positions
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
-	// vertex normals
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Normal));
-	// vertex texture coords
-	glEnableVertexAttribArray(2);
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, TexCoords));
+    Vertex::SetVertexAttributes();
 
 	glBindVertexArray(0);
 }
