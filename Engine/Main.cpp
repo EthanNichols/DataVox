@@ -1,6 +1,9 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
+#include <Imgui/imgui.h>
+#include <Imgui/imgui_impl_glfw.h>
+#include <Imgui/imgui_impl_opengl3.h>
 #include <iostream>
 
 #include "Camera.h"
@@ -25,6 +28,11 @@ int main()
 		std::cout << "Failed to initialize GLAD" << std::endl;
 		return -1;
 	}
+
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGui_ImplGlfw_InitForOpenGL(window, true);
+	ImGui_ImplOpenGL3_Init("#version 330");
 
 	ResourceLoader resourceLoader;
 	resourceLoader.LoadTexture("Content/TestTexture.png", "TestTexture");
@@ -101,59 +109,26 @@ int main()
 
 	glm::dvec2 previousMousePosition = input.GetMousePosition();
 
+	double previousTime = glfwGetTime();
+
 	while (!window.IsClosed())
 	{
+		double currentTime = glfwGetTime();
+		double deltaTime = currentTime - previousTime;
+		previousTime = currentTime;
+
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
+		ImGui::NewFrame();
+
+		ImGui::ShowDemoWindow();
+
 		if (input.IsKeyDown(GLFW_KEY_ESCAPE))
 		{
 			window.Close();
 		}
 
-		// Camera Movement
-		{
-			glm::vec3 movement = glm::vec3(0.0f, 0.0f, 0.0f);
-			if (input.IsKeyDown(GLFW_KEY_W))
-			{
-				movement += camera.transform.GetForward();
-			}
-			if (input.IsKeyDown(GLFW_KEY_S))
-			{
-				movement -= camera.transform.GetForward();
-			}
-
-			if (input.IsKeyDown(GLFW_KEY_A))
-			{
-				movement -= camera.transform.GetRight();
-			}
-			if (input.IsKeyDown(GLFW_KEY_D))
-			{
-				movement += camera.transform.GetRight();
-			}
-
-			if (glm::length(movement) >= .01f)
-			{
-				glm::vec3 norm = glm::normalize(movement);
-
-				camera.transform.position += norm * 0.001f;
-			}
-		}
-
-		// Camera Rotation
-		{
-			if (input.IsMouseButtonDown(GLFW_MOUSE_BUTTON_RIGHT))
-			{
-				glm::dvec2 mousePosition = input.GetMousePosition();
-
-				glm::dvec2 mouseDelta = previousMousePosition - mousePosition;
-
-				glm::quat yaw = glm::angleAxis((float)glm::radians(mouseDelta.x * 0.1f), glm::vec3(0.0f, 1.0f, 0.0f));
-				glm::quat pitch = glm::angleAxis((float)glm::radians(mouseDelta.y * 0.1f), camera.transform.GetRight());
-				glm::quat orientation = glm::normalize(pitch * yaw);
-
-				camera.transform.rotation = glm::normalize(orientation * camera.transform.rotation);
-			}
-
-			previousMousePosition = input.GetMousePosition();
-		}
+		camera.Update(deltaTime);
 
 		window.ClearColor(glm::vec4(0.2f, 0.3f, 0.3f, 1.0f));
 
@@ -179,8 +154,18 @@ int main()
 		registry.get<Mesh>(entity).Render(basicShader, entity, registry);
 		registry.get<Mesh>(lightEntity).Render(basicShader, lightEntity, registry);
 
+		ImGui::Render();
+		int32_t width = window.GetSize().x;
+		int32_t height = window.GetSize().y;
+		glfwGetFramebufferSize(window, &width, &height);
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
 		window.Update(0);
 	}
+
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplGlfw_Shutdown();
+	ImGui::DestroyContext();
 
 	glfwTerminate();
 	return 0;
