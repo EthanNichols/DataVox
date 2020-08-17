@@ -15,7 +15,7 @@ public:
 
 	int32_t GetTexture(const std::string& textureName) const;
 
-	void LoadTexture(const std::string& filePath, const std::string& textureName);
+	int32_t LoadTexture(const std::string& filePath, const std::string& textureName);
 
 private:
 

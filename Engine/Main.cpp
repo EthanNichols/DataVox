@@ -35,7 +35,8 @@ int main()
 	ImGui_ImplOpenGL3_Init("#version 330");
 
 	ResourceLoader resourceLoader;
-	resourceLoader.LoadTexture("Content/TestTexture.png", "TestTexture");
+	resourceLoader.LoadTexture("Content/container.png", "container");
+	resourceLoader.LoadTexture("Content/specular.png", "specular");
 
 	Input input = Input(&window);
 	Camera camera = Camera(&window);
@@ -110,6 +111,11 @@ int main()
 	glm::dvec2 previousMousePosition = input.GetMousePosition();
 
 	double previousTime = glfwGetTime();
+	float rotation = 0.0f;
+
+	basicShader.Use();
+	basicShader.SetInt("material.diffuse", 0);
+	basicShader.SetInt("material.specular", 1);
 
 	while (!window.IsClosed())
 	{
@@ -117,39 +123,83 @@ int main()
 		double deltaTime = currentTime - previousTime;
 		previousTime = currentTime;
 
+		rotation += (float)deltaTime;
+
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
-
-		ImGui::ShowDemoWindow();
 
 		if (input.IsKeyDown(GLFW_KEY_ESCAPE))
 		{
 			window.Close();
 		}
 
-		camera.Update(deltaTime);
+		camera.Update((float)deltaTime);
 
 		window.ClearColor(glm::vec4(0.2f, 0.3f, 0.3f, 1.0f));
 
-		glBindTexture(GL_TEXTURE_2D, resourceLoader.GetTexture("TestTexture"));
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, resourceLoader.GetTexture("container"));
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, resourceLoader.GetTexture("specular"));
 
 		basicShader.Use();
-
-		std::string matrixUniformName = "ViewProjection";
-		std::string lightPositionName = "lightPos";
-		std::string lightColorName = "lightColor";
 
 		Transform& transform = registry.get<Transform>(entity);
 		Transform& lightTransform = registry.get<Transform>(lightEntity);
 		glm::mat4x4 matrix = camera.GetProjectionMatrix() * camera.GetViewMatrix();
 
-		lightTransform.position = glm::vec3(-1.5f, -1.5f, -1.5f);
-		glm::vec3 lightcolor = glm::vec3(1.0f, 1.0f, 1.0f);
+		lightTransform.position = glm::vec3(glm::cos(rotation), glm::cos(rotation), glm::sin(rotation)) * 2.0f;
 
-		basicShader.SetMat4(matrixUniformName, matrix);
-		basicShader.SetVec3(lightPositionName, lightTransform.position);
-		basicShader.SetVec3(lightColorName, lightcolor);
+		basicShader.SetMat4("ViewProjection", matrix);
+
+		basicShader.SetVec3("ambientLight.color", glm::vec3(0.2f, 0.2f, 0.2f));
+		basicShader.SetFloat("ambientLight.intensity", 1.0f);
+
+		basicShader.SetVec3("pointLights[0].position", glm::vec3(1.5f, 0.0f, 0.0f));
+		basicShader.SetVec3("pointLights[0].color", glm::vec3(1.0f, 0.5f, 0.5f));
+		basicShader.SetFloat("pointLights[0].attenuation", 5.0f);
+		basicShader.SetFloat("pointLights[0].intensity", 1.0f);
+
+		basicShader.SetVec3("pointLights[1].position", glm::vec3(-1.5f, 0.0f, 0.0f));
+		basicShader.SetVec3("pointLights[1].color", glm::vec3(1.0f, 0.5f, 0.5f));
+		basicShader.SetFloat("pointLights[1].attenuation", 5.0f);
+		basicShader.SetFloat("pointLights[1].intensity", 1.0f);
+
+		basicShader.SetVec3("pointLights[2].position", glm::vec3(0.0f, 1.5f, 0.0f));
+		basicShader.SetVec3("pointLights[2].color", glm::vec3(0.5f, 1.0f, 0.5f));
+		basicShader.SetFloat("pointLights[2].attenuation", 5.0f);
+		basicShader.SetFloat("pointLights[2].intensity", 1.0f);
+
+		basicShader.SetVec3("pointLights[3].position", glm::vec3(0.0f, -1.5f, 0.0f));
+		basicShader.SetVec3("pointLights[3].color", glm::vec3(0.5f, 1.0f, 0.5f));
+		basicShader.SetFloat("pointLights[3].attenuation", 5.0f);
+		basicShader.SetFloat("pointLights[3].intensity", 1.0f);
+
+		basicShader.SetVec3("pointLights[4].position", glm::vec3(0.0f, 0.0f, 1.5f));
+		basicShader.SetVec3("pointLights[4].color", glm::vec3(0.5f, 0.0f, 1.5f));
+		basicShader.SetFloat("pointLights[4].attenuation", 5.0f);
+		basicShader.SetFloat("pointLights[4].intensity", 1.0f);
+
+		basicShader.SetVec3("pointLights[5].position", glm::vec3(0.0f, 0.0f, -1.5f));
+		basicShader.SetVec3("pointLights[5].color", glm::vec3(0.5f, 0.0f, 1.5f));
+		basicShader.SetFloat("pointLights[5].attenuation", 5.0f);
+		basicShader.SetFloat("pointLights[5].intensity", 1.0f);
+
+		basicShader.SetVec3("pointLights[6].position", glm::vec3(0.0f, 0.0f, 0.0f));
+		basicShader.SetVec3("pointLights[6].color", glm::vec3(0.5f, 0.0f, 0.5f));
+		basicShader.SetFloat("pointLights[6].attenuation", 5.0f);
+		basicShader.SetFloat("pointLights[6].intensity", 1.0f);
+
+		basicShader.SetVec3("pointLights[7].position", glm::vec3(0.0f, 0.0f, 0.0f));
+		basicShader.SetVec3("pointLights[7].color", glm::vec3(0.5f, 0.0f, 0.5f));
+		basicShader.SetFloat("pointLights[7].attenuation", 5.0f);
+		basicShader.SetFloat("pointLights[7].intensity", 1.0f);
+
+		basicShader.SetVec3("camPos", camera.transform.position);
+		
+		basicShader.SetVec3("material.ambient", glm::vec3(1.0f, 0.5f, 0.31f));
+		basicShader.SetFloat("material.shininess", 32.0f);
 
 		registry.get<Mesh>(entity).Render(basicShader, entity, registry);
 		registry.get<Mesh>(lightEntity).Render(basicShader, lightEntity, registry);

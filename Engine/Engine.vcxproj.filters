@@ -143,5 +143,11 @@
     <ClInclude Include="External\Imgui\imgui_impl_glfw.h">
       <Filter>External\ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="Lights.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ShadeInclude.h">
+      <Filter>External</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

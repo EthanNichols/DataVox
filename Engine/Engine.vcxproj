@@ -195,8 +195,10 @@
     <ClInclude Include="External\Imgui\imstb_truetype.h" />
     <ClInclude Include="External\stb_image.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="Lights.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="ResourceLoader.h" />
+    <ClInclude Include="ShadeInclude.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="VertexData.h" />

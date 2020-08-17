@@ -4,11 +4,14 @@
 #include <glad/glad.h>
 #include <glm/gtc/type_ptr.hpp>
 #include <sstream>
+#include "ShadeInclude.h"
+
 
 Shader::Shader(std::string& vertexPath, std::string& fragmentPath)
 {
 	Create(vertexPath, fragmentPath);
 }
+
 
 Shader::Shader(const std::string& vertexPath, const  std::string& fragmentPath)
 {
@@ -32,37 +35,55 @@ uint32_t Shader::GetID() const
 }
 
 
-void Shader::SetBool(std::string& name, bool& value) const
+void Shader::SetBool(const std::string& name, bool value) const
 {
 	int32_t valueLoc = GetUniformLocation(name);
 	glUniform1i(glGetUniformLocation(m_id, name.c_str()), value);
 }
 
 
-void Shader::SetInt(std::string& name, int& value) const
+void Shader::SetInt(const std::string& name, int value) const
 {
 	int32_t valueLoc = GetUniformLocation(name);
 	glUniform1i(glGetUniformLocation(m_id, name.c_str()), value);
 }
 
 
-void Shader::SetFloat(std::string& name, float& value) const
+void Shader::SetFloat(const std::string& name, float value) const
 {
 	int32_t valueLoc = GetUniformLocation(name);
 	glUniform1f(valueLoc, value);
 }
 
-void Shader::SetVec3(std::string& name, const glm::vec3& value) const
+
+void Shader::SetVec2(const std::string& name, const glm::vec2& value) const
 {
 	int32_t valueLoc = GetUniformLocation(name);
-	glUniform3f(valueLoc, value.x, value.y, value.z);
+	glUniform2fv(valueLoc, 1, glm::value_ptr(value));
 }
 
-void Shader::SetMat4(std::string& name, const glm::mat4x4& value) const
+
+void Shader::SetVec3(const std::string& name, const glm::vec3& value) const
 {
 	int32_t valueLoc = GetUniformLocation(name);
-	glUniformMatrix4fv(valueLoc, 1, GL_FALSE, &value[0][0]);
+	glUniform3fv(valueLoc, 1, glm::value_ptr(value));
 }
+
+
+void Shader::SetVec4(const std::string& name, const glm::vec4& value) const
+{
+	int32_t valueLoc = GetUniformLocation(name);
+	glUniform4fv(valueLoc, 1, glm::value_ptr(value));
+
+}
+
+
+void Shader::SetMat4(const std::string& name, const glm::mat4x4& value) const
+{
+	int32_t valueLoc = GetUniformLocation(name);
+	glUniformMatrix4fv(valueLoc, 1, GL_FALSE, glm::value_ptr(value));
+}
+
 
 void Shader::Create(const std::string& vertexPath, const std::string& fragmentPath)
 {
@@ -75,24 +96,9 @@ void Shader::Create(const std::string& vertexPath, const std::string& fragmentPa
 	fragmentFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
 	try
 	{
-		// open files
-		vertexFile.open(vertexPath);
-		fragmentFile.open(fragmentPath);
-
-		std::stringstream vertexStream;
-		std::stringstream fragmentStream;
-
-		// read file's buffer contents into streams
-		vertexStream << vertexFile.rdbuf();
-		fragmentStream << fragmentFile.rdbuf();
-
-		// close file handlers
-		vertexFile.close();
-		fragmentFile.close();
-
 		// convert stream into string
-		vertexCode = vertexStream.str();
-		fragmentCode = fragmentStream.str();
+		vertexCode = Shadeinclude::Load(vertexPath);
+		fragmentCode = Shadeinclude::Load(fragmentPath);
 	}
 	catch (std::ifstream::failure e)
 	{
@@ -141,7 +147,8 @@ void Shader::Create(const std::string& vertexPath, const std::string& fragmentPa
 	glDeleteShader(fragment);
 }
 
-int32_t Shader::GetUniformLocation(std::string& name) const
+
+int32_t Shader::GetUniformLocation(const std::string& name) const
 {
 	return glGetUniformLocation(m_id, name.c_str());
 }
