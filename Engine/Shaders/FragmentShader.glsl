@@ -15,8 +15,11 @@ in vec2 texCoord;
 in vec3 Normal;
 in vec3 ModelPos;
 
-uniform AmbientLight ambientLight;
+uniform AmbientLight ambientLights[MAX_LIGHTS_PER_TYPE];
 uniform PointLight pointLights[MAX_LIGHTS_PER_TYPE];
+
+uniform int ambientLightCount;
+uniform int pointLightCount;
 
 uniform Material material;
 uniform vec3 lightPos; 
@@ -25,10 +28,7 @@ uniform vec3 camPos;
 
 void main()
 {
-    // ambient
-    vec3 ambient = (ambientLight.color * ambientLight.intensity) * texture(material.diffuseTex, texCoord).rgb;
-
-    /*
+/*
     // diffuse 
     vec3 norm = normalize(Normal);
     vec3 lightDir = normalize(light.position - ModelPos);
@@ -43,11 +43,22 @@ void main()
             
     vec3 result = (ambient + diffuse + specular);
     FragColor = vec4(result, 1.0);
-    */
+*/
 
-    vec3 pointLightColor = CalcPointLightsColor(pointLights, ModelPos, texture(material.diffuseTex, texCoord).rgb, Normal, camPos);
+    // ambient
+    vec3 ambientLightColor = vec3(0.0, 0.0, 0.0);
+    for (int i=0; i<ambientLightCount; ++i)
+    {
+        ambientLightColor += CalcAmbientLightColor(ambientLights[i], texture(material.diffuseTex, texCoord).rgb);
+    }
+
+    vec3 pointLightColor = vec3(0.0, 0.0, 0.0);
+    for (int i=0; i<pointLightCount; ++i)
+    {
+        pointLightColor += CalcPointLightColor(pointLights[i], ModelPos, texture(material.diffuseTex, texCoord).rgb, Normal, camPos);
+    }
 
     //vec3 result = vec3(1.0, 1.0, 1.0);
-    vec3 result = ambient + pointLightColor;
+    vec3 result = ambientLightColor + pointLightColor;
     FragColor = vec4(result, 1.0);
 }

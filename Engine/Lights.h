@@ -6,23 +6,41 @@
 
 #include <glm/glm.hpp>
 
-namespace glm
-{
+#define vec3 glm::vec3
+#define vec4 glm::vec4
+
 #endif // __cplusplus
 
 	struct AmbientLight
 	{
 		vec3 color;
-		float intensity;
+		float intensity = 1.0f;
+
+	public:
+
+		AmbientLight(vec3 color, float intensity = 1.0f) :
+			color(color),
+			intensity(intensity)
+		{
+		}
 	};
 
 
 	struct DirectionalLight
 	{
-		vec4 color;
+		vec3 color;
 
 		vec3 direction;
-		float intensity;
+		float intensity = 1.0f;
+
+	public:
+
+		DirectionalLight(vec3 color, vec3 direction, float intensity = 1.0f) :
+			color(color),
+			direction(direction),
+			intensity(intensity)
+		{
+		}
 	};
 
 
@@ -32,7 +50,17 @@ namespace glm
 		float attenuation;
 
 		vec3 position;
-		float intensity;
+		float intensity = 1.0f;
+
+	public:
+
+		PointLight(vec3 color, vec3 position, float attenuation, float intensity = 1.0f) :
+			color(color),
+			position(position),
+			attenuation(attenuation),
+			intensity(intensity)
+		{
+		}
 	};
 
 
@@ -45,11 +73,26 @@ namespace glm
 		float angle;
 
 		vec3 direction;
-		float intensity;
+		float intensity = 1.0f;
+
+	public:
+
+		SpotLight(vec3 color, vec3 position, vec3 direction, float angle, float attenuation, float intensity = 1.0f) :
+			color(color),
+			position(position),
+			direction(direction),
+			angle(angle),
+			attenuation(attenuation),
+			intensity(intensity)
+		{
+		}
 	};
 
 #ifdef __cplusplus
-}
+
+#undef vec3
+#undef vec4
+
 #endif // __cplusplus
 
 #ifndef __cplusplus
@@ -64,51 +107,31 @@ float CalcLightAttentuation(vec3 lightPosition, float attenuation, vec3 pixelPos
 }
 
 
-vec3 CalcAmbientLightsColor(AmbientLight lights[MAX_LIGHTS_PER_TYPE])
+vec3 CalcAmbientLightColor(AmbientLight light, vec3 pixelColor)
 {
-	vec3 ambientColor = vec3(0.0, 0.0, 0.0);
-
-	for (int i = 0; i < MAX_LIGHTS_PER_TYPE; ++i)
-	{
-		ambientColor += vec3(lights[i].color.rgb * lights[i].intensity);
-	}
-
-	return ambientColor;
+	return vec3(light.color.rgb * light.intensity) * pixelColor;
 }
 
 
-vec3 CalcDirectionLightsColor(DirectionalLight lights[MAX_LIGHTS_PER_TYPE], vec3 pixelNormal)
+vec3 CalcDirectionLightColor(DirectionalLight light, vec3 pixelNormal)
 {
-	vec3 directionalColor = vec3(0.0, 0.0, 0.0);
+	vec3 lightNormDir = normalize(-light.direction.xyz);
 
-	for (int i = 0; i < MAX_LIGHTS_PER_TYPE; ++i)
-	{
-		vec3 lightNormDir = normalize(-lights[i].direction.xyz);
+	float NdotL = clamp(dot(pixelNormal, lightNormDir), 0.0, 1.0);
 
-		float NdotL = clamp(dot(pixelNormal, lightNormDir), 0.0, 1.0);
-
-		directionalColor += lights[i].color.rgb * lights[i].intensity * NdotL;
-	}
-
-	return directionalColor;
+	return light.color.rgb * light.intensity * NdotL;
 }
 
 
-vec3 CalcPointLightsColor(PointLight lights[MAX_LIGHTS_PER_TYPE], vec3 pixelPosition, vec3 pixelColor, vec3 pixelNormal, vec3 cameraPosition)
+vec3 CalcPointLightColor(PointLight light, vec3 pixelPosition, vec3 pixelColor, vec3 pixelNormal, vec3 cameraPosition)
 {
-	vec3 pointColor = vec3(0.0, 0.0, 0.0);
+	vec3 dirToLight = normalize(light.position - pixelPosition);
+	vec3 dirToCam = normalize(cameraPosition - pixelPosition);
 
-	for (int i = 0; i < MAX_LIGHTS_PER_TYPE; ++i)
-	{
-		vec3 dirToLight = normalize(lights[i].position - pixelPosition);
-		vec3 dirToCam = normalize(cameraPosition - pixelPosition);
+	float attenVal = CalcLightAttentuation(light.position, light.attenuation, pixelPosition);
+	float NdotL = clamp(dot(pixelNormal, dirToLight), 0.0, 1.0);
 
-		float attenVal = CalcLightAttentuation(lights[i].position, lights[i].attenuation, pixelPosition);
-		float NdotL = clamp(dot(pixelNormal, dirToLight), 0.0, 1.0);
-
-		pointColor += (NdotL * pixelColor) * attenVal * lights[i].intensity * lights[i].color;
-	}
-
-	return pointColor;
+	return (NdotL * pixelColor) * attenVal * light.intensity * light.color;;
 }
+
 #endif // ! __cplusplus

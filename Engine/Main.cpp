@@ -9,6 +9,7 @@
 #include "Camera.h"
 #include "Entt.h"
 #include "Input.h"
+#include "Lights.h"
 #include "Mesh.h"
 #include "ResourceLoader.h"
 #include "Shader.h"
@@ -113,6 +114,14 @@ int main()
 	double previousTime = glfwGetTime();
 	float rotation = 0.0f;
 
+	AmbientLight ambientLight = AmbientLight(glm::vec3(0.2f, 0.2f, 0.2f));
+	PointLight pointLight1 = PointLight(glm::vec3(1.0f, 0.5f, 0.5f), glm::vec3(1.5f, 0.0f, 0.0f), 5.0f);
+	PointLight pointLight2 = PointLight(glm::vec3(1.0f, 0.5f, 0.5f), glm::vec3(-1.5f, 0.0f, 0.0f), 5.0f);
+	PointLight pointLight3 = PointLight(glm::vec3(0.5f, 1.0f, 0.5f), glm::vec3(0.0f, 1.5f, 0.0f), 5.0f);
+	PointLight pointLight4 = PointLight(glm::vec3(0.5f, 1.0f, 0.5f), glm::vec3(0.0f, -1.5f, 0.0f), 5.0f);
+	PointLight pointLight5 = PointLight(glm::vec3(0.5f, 0.5f, 1.0f), glm::vec3(0.0f, 0.0f, 1.5f), 5.0f);
+	PointLight pointLight6 = PointLight(glm::vec3(0.5f, 0.5f, 1.0f), glm::vec3(0.0f, 0.0f, -1.5f), 5.0f);
+
 	basicShader.Use();
 	basicShader.SetInt("material.diffuse", 0);
 	basicShader.SetInt("material.specular", 1);
@@ -151,50 +160,19 @@ int main()
 
 		lightTransform.position = glm::vec3(glm::cos(rotation), glm::cos(rotation), glm::sin(rotation)) * 2.0f;
 
+		basicShader.SetAmbientLightToIndex(ambientLight, 0);
+
+		basicShader.SetPointLightToIndex(pointLight1, 0);
+		basicShader.SetPointLightToIndex(pointLight2, 1);
+		basicShader.SetPointLightToIndex(pointLight3, 2);
+		basicShader.SetPointLightToIndex(pointLight4, 3);
+		basicShader.SetPointLightToIndex(pointLight5, 4);
+		basicShader.SetPointLightToIndex(pointLight6, 5);
+
+		basicShader.SetInt("ambientLightCount", 1);
+		basicShader.SetInt("pointLightCount", 6);
+
 		basicShader.SetMat4("ViewProjection", matrix);
-
-		basicShader.SetVec3("ambientLight.color", glm::vec3(0.2f, 0.2f, 0.2f));
-		basicShader.SetFloat("ambientLight.intensity", 1.0f);
-
-		basicShader.SetVec3("pointLights[0].position", glm::vec3(1.5f, 0.0f, 0.0f));
-		basicShader.SetVec3("pointLights[0].color", glm::vec3(1.0f, 0.5f, 0.5f));
-		basicShader.SetFloat("pointLights[0].attenuation", 5.0f);
-		basicShader.SetFloat("pointLights[0].intensity", 1.0f);
-
-		basicShader.SetVec3("pointLights[1].position", glm::vec3(-1.5f, 0.0f, 0.0f));
-		basicShader.SetVec3("pointLights[1].color", glm::vec3(1.0f, 0.5f, 0.5f));
-		basicShader.SetFloat("pointLights[1].attenuation", 5.0f);
-		basicShader.SetFloat("pointLights[1].intensity", 1.0f);
-
-		basicShader.SetVec3("pointLights[2].position", glm::vec3(0.0f, 1.5f, 0.0f));
-		basicShader.SetVec3("pointLights[2].color", glm::vec3(0.5f, 1.0f, 0.5f));
-		basicShader.SetFloat("pointLights[2].attenuation", 5.0f);
-		basicShader.SetFloat("pointLights[2].intensity", 1.0f);
-
-		basicShader.SetVec3("pointLights[3].position", glm::vec3(0.0f, -1.5f, 0.0f));
-		basicShader.SetVec3("pointLights[3].color", glm::vec3(0.5f, 1.0f, 0.5f));
-		basicShader.SetFloat("pointLights[3].attenuation", 5.0f);
-		basicShader.SetFloat("pointLights[3].intensity", 1.0f);
-
-		basicShader.SetVec3("pointLights[4].position", glm::vec3(0.0f, 0.0f, 1.5f));
-		basicShader.SetVec3("pointLights[4].color", glm::vec3(0.5f, 0.0f, 1.5f));
-		basicShader.SetFloat("pointLights[4].attenuation", 5.0f);
-		basicShader.SetFloat("pointLights[4].intensity", 1.0f);
-
-		basicShader.SetVec3("pointLights[5].position", glm::vec3(0.0f, 0.0f, -1.5f));
-		basicShader.SetVec3("pointLights[5].color", glm::vec3(0.5f, 0.0f, 1.5f));
-		basicShader.SetFloat("pointLights[5].attenuation", 5.0f);
-		basicShader.SetFloat("pointLights[5].intensity", 1.0f);
-
-		basicShader.SetVec3("pointLights[6].position", glm::vec3(0.0f, 0.0f, 0.0f));
-		basicShader.SetVec3("pointLights[6].color", glm::vec3(0.5f, 0.0f, 0.5f));
-		basicShader.SetFloat("pointLights[6].attenuation", 5.0f);
-		basicShader.SetFloat("pointLights[6].intensity", 1.0f);
-
-		basicShader.SetVec3("pointLights[7].position", glm::vec3(0.0f, 0.0f, 0.0f));
-		basicShader.SetVec3("pointLights[7].color", glm::vec3(0.5f, 0.0f, 0.5f));
-		basicShader.SetFloat("pointLights[7].attenuation", 5.0f);
-		basicShader.SetFloat("pointLights[7].intensity", 1.0f);
 
 		basicShader.SetVec3("camPos", camera.transform.position);
 		
