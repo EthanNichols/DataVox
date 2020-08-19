@@ -1,13 +1,17 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
+#include <glm/gtx/euler_angles.hpp>
+#include <glm/gtx/quaternion.hpp>
 #include <Imgui/imgui.h>
 #include <Imgui/imgui_impl_glfw.h>
 #include <Imgui/imgui_impl_opengl3.h>
 #include <iostream>
 
 #include "Camera.h"
+#include "Component.h"
 #include "Entt.h"
+#include "EnttEntityEditor.h"
 #include "Input.h"
 #include "Lights.h"
 #include "Mesh.h"
@@ -34,6 +38,13 @@ int main()
 	ImGui::CreateContext();
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init("#version 330");
+	ImGuiEntityEditor editor;
+	editor.RegisterTrivial<Transform>(registry, "Transform");
+	editor.RegisterTrivial<Mesh>(registry, "Mesh");
+	editor.RegisterTrivial<AmbientLight>(registry, "Ambient Light");
+	editor.RegisterTrivial<DirectionalLight>(registry, "Directional Light");
+	editor.RegisterTrivial<PointLight>(registry, "Point Light");
+	editor.RegisterTrivial<SpotLight>(registry, "Spot Light");
 
 	ResourceLoader resourceLoader;
 	resourceLoader.LoadTexture("Content/container.png", "container");
@@ -138,6 +149,8 @@ int main()
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
+		editor.RegisterComponentWidgetFn(registry.type<Transform>(), Transform::ConstructWidget);
+
 		if (input.IsKeyDown(GLFW_KEY_ESCAPE))
 		{
 			window.Close();
@@ -182,6 +195,8 @@ int main()
 		registry.get<Mesh>(entity).Render(basicShader, entity, registry);
 		registry.get<Mesh>(lightEntity).Render(basicShader, lightEntity, registry);
 
+		editor.RenderImGui(registry, entity);
+		//editor.RenderImGui(registry, lightEntity);
 		ImGui::Render();
 		int32_t width = window.GetSize().x;
 		int32_t height = window.GetSize().y;

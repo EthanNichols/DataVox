@@ -149,5 +149,11 @@
     <ClInclude Include="ShadeInclude.h">
       <Filter>External</Filter>
     </ClInclude>
+    <ClInclude Include="EnttEntityEditor.h">
+      <Filter>External</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

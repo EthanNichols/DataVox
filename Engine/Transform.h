@@ -4,6 +4,9 @@
 #include <glm/gtc/quaternion.hpp>
 #include <vector>
 
+#include "Component.h"
+
+
 struct Transform
 {
 public:
@@ -22,6 +25,11 @@ public:
 	void SetRight(glm::vec3 right);
 
 	glm::mat4x4 GetWorldMatrix() const;
+
+public:
+
+	// Inherited via IComponent
+	static void ConstructWidget(Registry& registry, Entity entity);
 
 public:
 

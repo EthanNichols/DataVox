@@ -22,6 +22,8 @@ struct Mesh
 {
 public:
 
+	Mesh();
+
 	Mesh(std::vector<Vertex> vertices, std::vector<uint32_t> indices, std::vector<Texture> textures);
 
 	void Render(Shader& shader, Entity entity, Registry& registry) const;

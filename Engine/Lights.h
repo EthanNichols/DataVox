@@ -11,82 +11,113 @@
 
 #endif // __cplusplus
 
-	struct AmbientLight
+struct AmbientLight
+{
+	vec3 color;
+	float intensity = 1.0f;
+
+public:
+
+	AmbientLight()
 	{
-		vec3 color;
-		float intensity = 1.0f;
+		color = vec3(1.0f, 1.0f, 1.0f);
+		intensity = 1.0f;
+	}
 
-	public:
-
-		AmbientLight(vec3 color, float intensity = 1.0f) :
-			color(color),
-			intensity(intensity)
-		{
-		}
-	};
-
-
-	struct DirectionalLight
+	AmbientLight(vec3 color, float intensity = 1.0f) :
+		color(color),
+		intensity(intensity)
 	{
-		vec3 color;
-
-		vec3 direction;
-		float intensity = 1.0f;
-
-	public:
-
-		DirectionalLight(vec3 color, vec3 direction, float intensity = 1.0f) :
-			color(color),
-			direction(direction),
-			intensity(intensity)
-		{
-		}
-	};
+	}
+};
 
 
-	struct PointLight
+struct DirectionalLight
+{
+	vec3 color;
+
+	vec3 direction;
+	float intensity = 1.0f;
+
+public:
+
+	DirectionalLight()
 	{
-		vec3 color;
-		float attenuation;
+		color = vec3(1.0f, 1.0f, 1.0f);
+		direction = vec3(1.0f, 1.0f, 1.0f);
+		intensity = 1.0f;
+	}
 
-		vec3 position;
-		float intensity = 1.0f;
-
-	public:
-
-		PointLight(vec3 color, vec3 position, float attenuation, float intensity = 1.0f) :
-			color(color),
-			position(position),
-			attenuation(attenuation),
-			intensity(intensity)
-		{
-		}
-	};
-
-
-	struct SpotLight
+	DirectionalLight(vec3 color, vec3 direction, float intensity = 1.0f) :
+		color(color),
+		direction(direction),
+		intensity(intensity)
 	{
-		vec3 color;
-		float attenuation;
+	}
+};
 
-		vec3 position;
-		float angle;
 
-		vec3 direction;
-		float intensity = 1.0f;
+struct PointLight
+{
+	vec3 color;
+	float attenuation;
 
-	public:
+	vec3 position;
+	float intensity = 1.0f;
 
-		SpotLight(vec3 color, vec3 position, vec3 direction, float angle, float attenuation, float intensity = 1.0f) :
-			color(color),
-			position(position),
-			direction(direction),
-			angle(angle),
-			attenuation(attenuation),
-			intensity(intensity)
-		{
-		}
-	};
+public:
+
+	PointLight()
+	{
+		color = vec3(1.0f, 1.0f, 1.0f);
+		position = vec3(1.0f, 1.0f, 1.0f);
+		attenuation = 1.0f;
+		intensity = 1.0f;
+	}
+
+	PointLight(vec3 color, vec3 position, float attenuation, float intensity = 1.0f) :
+		color(color),
+		position(position),
+		attenuation(attenuation),
+		intensity(intensity)
+	{
+	}
+};
+
+
+struct SpotLight
+{
+	vec3 color;
+	float attenuation;
+
+	vec3 position;
+	float angle;
+
+	vec3 direction;
+	float intensity = 1.0f;
+
+public:
+
+	SpotLight()
+	{
+		color = vec3(1.0f, 1.0f, 1.0f);
+		position = vec3(1.0f, 1.0f, 1.0f);
+		direction = vec3(1.0f, 1.0f, 1.0f);
+		angle = 1.0f;
+		attenuation = 1.0f;
+		intensity = 1.0f;
+	}
+
+	SpotLight(vec3 color, vec3 position, vec3 direction, float angle, float attenuation, float intensity = 1.0f) :
+		color(color),
+		position(position),
+		direction(direction),
+		angle(angle),
+		attenuation(attenuation),
+		intensity(intensity)
+	{
+	}
+};
 
 #ifdef __cplusplus
 

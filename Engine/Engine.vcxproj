@@ -183,7 +183,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Component.h" />
     <ClInclude Include="Entt.h" />
+    <ClInclude Include="EnttEntityEditor.h" />
     <ClInclude Include="External\entt.h" />
     <ClInclude Include="External\Imgui\imconfig.h" />
     <ClInclude Include="External\Imgui\imgui.h" />

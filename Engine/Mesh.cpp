@@ -6,6 +6,13 @@
 #include "Transform.h"
 
 
+Mesh::Mesh()
+{
+    m_EBO = 0;
+    m_VAO = 0;
+    m_VBO = 0;
+}
+
 Mesh::Mesh(std::vector<Vertex> vertices, std::vector<uint32_t> indices, std::vector<Texture> textures)
 {
 	m_vertices = vertices;
@@ -45,10 +52,9 @@ void Mesh::Render(Shader& shader, Entity entity, Registry& registry) const
     }
 
     Transform transform = registry.get<Transform>(entity);
-
     std::string modelMatrixName = "ModelMatrix";
-
-    shader.SetMat4(modelMatrixName, transform.GetWorldMatrix());
+    glm::mat4x4 worldMatrix = transform.GetWorldMatrix();
+    shader.SetMat4(modelMatrixName, worldMatrix);
 
     // draw mesh
     glBindVertexArray(m_VAO);
