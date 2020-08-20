@@ -36,6 +36,6 @@ private:
 
 	GLFWwindow* m_window;
 
-	const glm::ivec2 DEFAULT_WINDOW_SIZE = glm::ivec2(800, 600);
+	const glm::ivec2 DEFAULT_WINDOW_SIZE = glm::ivec2(1366, 768);
 };
 

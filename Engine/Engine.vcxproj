@@ -160,6 +160,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="EditorGUI.cpp" />
     <ClCompile Include="External\glad.c" />
     <ClCompile Include="External\Imgui\imgui.cpp" />
     <ClCompile Include="External\Imgui\imgui_demo.cpp" />
@@ -167,7 +168,9 @@
     <ClCompile Include="External\Imgui\imgui_impl_glfw.cpp" />
     <ClCompile Include="External\Imgui\imgui_impl_opengl3.cpp" />
     <ClCompile Include="External\Imgui\imgui_widgets.cpp" />
+    <ClCompile Include="HierarchyGUI.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="InspectorGUI.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="ResourceLoader.cpp" />
@@ -184,8 +187,9 @@
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="EditorGUI.h" />
+    <ClInclude Include="EntityName.h" />
     <ClInclude Include="Entt.h" />
-    <ClInclude Include="EnttEntityEditor.h" />
     <ClInclude Include="External\entt.h" />
     <ClInclude Include="External\Imgui\imconfig.h" />
     <ClInclude Include="External\Imgui\imgui.h" />
@@ -196,7 +200,10 @@
     <ClInclude Include="External\Imgui\imstb_textedit.h" />
     <ClInclude Include="External\Imgui\imstb_truetype.h" />
     <ClInclude Include="External\stb_image.h" />
+    <ClInclude Include="External\TinyObjectLoader.h" />
+    <ClInclude Include="HierarchyGUI.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="InspectorGUI.h" />
     <ClInclude Include="Lights.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="ResourceLoader.h" />

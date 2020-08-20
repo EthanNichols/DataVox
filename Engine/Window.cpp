@@ -17,6 +17,15 @@ Window::Window()
     glfwMakeContextCurrent(m_window);
     glViewport(0, 0, DEFAULT_WINDOW_SIZE.x, DEFAULT_WINDOW_SIZE.y);
 
+    GLFWmonitor* monitor = glfwGetPrimaryMonitor();
+    const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+    glm::ivec2 monitorPos;
+    glfwGetMonitorPos(monitor, &monitorPos.x, &monitorPos.y);
+
+    glfwSetWindowPos(m_window,
+                     monitorPos.x + (mode->width - DEFAULT_WINDOW_SIZE.x) / 2,
+                     monitorPos.y + (mode->height - DEFAULT_WINDOW_SIZE.y) / 2);
+
     glfwSetFramebufferSizeCallback(m_window, OnResize);
 }
 
@@ -39,8 +48,6 @@ void Window::ClearColor(glm::vec4 color)
 
     glEnable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
-    glCullFace(GL_BACK);
-    glFrontFace(GL_CW);
 }
 
 

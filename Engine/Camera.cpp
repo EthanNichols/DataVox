@@ -83,5 +83,10 @@ glm::mat4x4 Camera::GetProjectionMatrix()
     }
 
     glm::vec2 windowSize = m_window->GetSize();
+	if (windowSize.x == 0 || windowSize.y == 0)
+	{
+		return glm::mat4x4(1.0f);
+	}
+
     return glm::perspective(glm::radians(m_fieldOfView), (float)windowSize.x / (float)windowSize.y, 0.1f, 1000.0f);
 }
