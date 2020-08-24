@@ -3,7 +3,6 @@
 #include "Entt.h"
 #include "HierarchyGUI.h"
 #include "InspectorGUI.h"
-#include "EnttEntityEditor.h"
 
 
 class EditorGUI
@@ -26,6 +25,5 @@ private:
 
 	HierarchyGUI m_hierarchyGUI;
 	InspectorGUI m_inspectorGUI;
-	ImGuiEntityEditor m_entityEditor;
 };
 

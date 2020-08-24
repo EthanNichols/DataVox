@@ -2,8 +2,10 @@
 
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
+#include <glm/gtx/euler_angles.hpp>
 #include <vector>
 
+#include "cereal/archives/json.hpp"
 #include "Component.h"
 
 
@@ -30,6 +32,31 @@ public:
 
 	// Inherited via IComponent
 	static void ConstructWidget(Registry& registry, Entity entity);
+
+public:
+
+	template<class Archive>
+	inline void serialize(Archive& archive)
+	{
+		glm::vec3 eulerAngle = glm::eulerAngles(rotation);
+		eulerAngle = glm::vec3(glm::degrees(eulerAngle.x), glm::degrees(eulerAngle.y), glm::degrees(eulerAngle.z));
+
+		archive(
+			cereal::make_nvp("Pos_X", position.x),
+			cereal::make_nvp("Pos_Y", position.y),
+			cereal::make_nvp("Pos_Z", position.z),
+
+			cereal::make_nvp("Rot_X", eulerAngle.x),
+			cereal::make_nvp("Rot_Y", eulerAngle.y),
+			cereal::make_nvp("Rot_Z", eulerAngle.z),
+
+			cereal::make_nvp("Scale_X", scale.x),
+			cereal::make_nvp("Scale_Y", scale.y),
+			cereal::make_nvp("Scale_Z", scale.z)
+		);
+
+		rotation = glm::yawPitchRoll(glm::radians(eulerAngle.y), glm::radians(eulerAngle.x), glm::radians(eulerAngle.z));
+	}
 
 public:
 

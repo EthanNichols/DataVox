@@ -1,0 +1,22 @@
+{
+    "value0": 1,
+    "value1": 0,
+    "value2": 1,
+    "value3": 0,
+    "value4": {
+        "Name": "Cube Test"
+    },
+    "value5": 1,
+    "value6": 0,
+    "value7": {
+        "Pos_X": 0,
+        "Pos_Y": 0,
+        "Pos_Z": 0,
+        "Rot_X": 0,
+        "Rot_Y": 0,
+        "Rot_Z": 0,
+        "Scale_X": 1,
+        "Scale_Y": 1,
+        "Scale_Z": 1
+    }
+}

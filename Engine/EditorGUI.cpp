@@ -17,10 +17,6 @@ EditorGUI::EditorGUI(Window* window, Registry* registry)
 
 	m_hierarchyGUI = HierarchyGUI(registry);
 	m_inspectorGUI = InspectorGUI(registry);
-	m_entityEditor = ImGuiEntityEditor();
-
-	m_entityEditor.RegisterTrivial<Transform>(*registry);
-	m_entityEditor.RegisterComponentWidgetFn(registry->type<Transform>(), Transform::ConstructWidget);
 
 
 	IMGUI_CHECKVERSION();

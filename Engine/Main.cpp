@@ -1,16 +1,17 @@
+#include <cereal/archives/json.hpp>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtx/euler_angles.hpp>
 #include <glm/gtx/quaternion.hpp>
 #include <iostream>
+#include <fstream>
 
 #include "Camera.h"
 #include "Component.h"
 #include "EditorGUI.h"
 #include "EntityName.h"
 #include "Entt.h"
-#include "EnttEntityEditor.h"
 #include "Input.h"
 #include "Lights.h"
 #include "Mesh.h"
@@ -21,8 +22,6 @@
 
 
 ResourceLoader resourceLoader;
-ImGuiEntityEditor editor;
-
 
 
 void LoadResources()
@@ -51,16 +50,38 @@ int main()
 
 	LoadResources();
 
+	EditorGUI editorGUI = EditorGUI(&window, &registry);
+
 	Input input = Input(&window);
 	Camera camera = Camera(&window);
 	camera.transform.position = glm::vec3(0.0f, 0.0f, 3.0f);
 
 	Shader basicShader("Shaders/VertexShader.glsl", "Shaders/FragmentShader.glsl");
 
-	Entity entity = registry.create();
-	registry.assign<Transform>(entity);
+	std::string levelPath = "D:/Coding/C++/DataVox/Engine/Content/Levels/level2.txt";
+	std::ifstream inputStream(levelPath);
+
+	if (inputStream.is_open())
+	{
+		cereal::JSONInputArchive inArchive(inputStream);
+
+		registry.reset();
+
+		registry.loader()
+			.entities(inArchive)
+			.component<EntityName, Transform>(inArchive);
+	}
+
+	Entity entity;
+	registry.each([&](Entity viewEntity)
+	{
+		entity = viewEntity;
+	});
+
+	//Entity entity = registry.create();
+	//registry.assign<Transform>(entity);
 	registry.assign<Mesh>(entity, resourceLoader.GetModel("Cube"));
-	registry.assign<EntityName>(entity, "Cube Test");
+	//registry.assign<EntityName>(entity, "Cube Test");
 
 	glm::dvec2 previousMousePosition = input.GetMousePosition();
 
@@ -127,7 +148,26 @@ int main()
 
 		registry.get<Mesh>(entity).Render(basicShader, entity, registry);
 
+		editorGUI.Render();
+
 		window.Update(0);
+	}
+
+	std::ofstream outputStream(levelPath);
+
+	if (outputStream.is_open())
+	{
+		printf("Opening: %s", levelPath.c_str());
+
+		cereal::JSONOutputArchive archive(outputStream);
+
+		registry.snapshot()
+			.entities(archive)
+			.component<EntityName, Transform>(archive);
+	}
+	else
+	{
+		printf("Failed to open %s", levelPath.c_str());
 	}
 
 	glfwTerminate();

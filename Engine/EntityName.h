@@ -2,6 +2,8 @@
 
 #include <string>
 
+#include "cereal/archives/json.hpp"
+
 
 struct EntityName
 {
@@ -24,8 +26,6 @@ public:
 		return m_name.c_str();
 	}
 
-public:
-
 	operator std::string* ()
 	{
 		return &m_name;
@@ -36,6 +36,15 @@ public:
 		return m_name;
 	}
 
-private:
+	template<class Archive>
+	inline void serialize(Archive& archive)
+	{
+		archive(
+			cereal::make_nvp("Name", m_name)
+		);
+	}
+
+public:
+
 	std::string m_name;
 };
