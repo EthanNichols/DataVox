@@ -15,23 +15,23 @@
 #include "Input.h"
 #include "Lights.h"
 #include "Mesh.h"
-#include "ResourceLoader.h"
+#include "ResourceManager.h"
 #include "Shader.h"
 #include "Transform.h"
 #include "Window.h"
 
 
-ResourceLoader resourceLoader;
+ResourceManager resourceLoader;
 
 
 void LoadResources()
 {
-	resourceLoader = ResourceLoader();
+	resourceLoader = ResourceManager();
 
 	resourceLoader.LoadTexture("Content/container.png", "container");
 	resourceLoader.LoadTexture("Content/specular.png", "specular");
 
-	resourceLoader.LoadModel("Content/Models/Cube.obj", "Cube");
+	//resourceLoader.LoadModel("Content/Models/Cube.obj", "Cube");
 }
 
 int main()
@@ -58,20 +58,8 @@ int main()
 
 	Shader basicShader("Shaders/VertexShader.glsl", "Shaders/FragmentShader.glsl");
 
-	std::string levelPath = "D:/Coding/C++/DataVox/Engine/Content/Levels/level2.txt";
-	std::ifstream inputStream(levelPath);
-
-	if (inputStream.is_open())
-	{
-		cereal::JSONInputArchive inArchive(inputStream);
-
-		registry.reset();
-
-		registry.loader()
-			.entities(inArchive)
-			.component<EntityName, Transform>(inArchive);
-	}
-
+	resourceLoader.LoadLevel(registry, "Content/levels/level.lev");
+	
 	Entity entity;
 	registry.each([&](Entity viewEntity)
 	{
@@ -80,7 +68,7 @@ int main()
 
 	//Entity entity = registry.create();
 	//registry.assign<Transform>(entity);
-	registry.assign<Mesh>(entity, resourceLoader.GetModel("Cube"));
+	//registry.assign<Mesh>(entity, resourceLoader.GetModel("Cube"));
 	//registry.assign<EntityName>(entity, "Cube Test");
 
 	glm::dvec2 previousMousePosition = input.GetMousePosition();
@@ -153,22 +141,7 @@ int main()
 		window.Update(0);
 	}
 
-	std::ofstream outputStream(levelPath);
-
-	if (outputStream.is_open())
-	{
-		printf("Opening: %s", levelPath.c_str());
-
-		cereal::JSONOutputArchive archive(outputStream);
-
-		registry.snapshot()
-			.entities(archive)
-			.component<EntityName, Transform>(archive);
-	}
-	else
-	{
-		printf("Failed to open %s", levelPath.c_str());
-	}
+	resourceLoader.SaveLevel(registry, "Content/Levels/level.lev");
 
 	glfwTerminate();
 	return 0;

@@ -13,10 +13,12 @@ Mesh::Mesh()
     m_VBO = 0;
 }
 
-Mesh::Mesh(std::vector<Vertex> vertices, std::vector<uint32_t> indices)
+Mesh::Mesh(std::vector<Vertex> vertices, std::vector<uint32_t> indices, std::string filePath)
+
 {
 	Vertices = vertices;
 	Indices = indices;
+    FilePath = filePath;
 
 	SetupMesh();
 }

@@ -48,9 +48,6 @@
     <ClCompile Include="Mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ResourceLoader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Transform.cpp">
       <Filter>Components</Filter>
     </ClCompile>
@@ -87,6 +84,12 @@
     <ClCompile Include="InspectorGUI.cpp">
       <Filter>Editor</Filter>
     </ClCompile>
+    <ClCompile Include="ContentBrowserGUI.cpp">
+      <Filter>Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -121,9 +124,6 @@
     </ClInclude>
     <ClInclude Include="External\stb_image.h">
       <Filter>External</Filter>
-    </ClInclude>
-    <ClInclude Include="ResourceLoader.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>Components</Filter>
@@ -178,6 +178,12 @@
     </ClInclude>
     <ClInclude Include="InspectorGUI.h">
       <Filter>Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="ContentBrowserGUI.h">
+      <Filter>Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

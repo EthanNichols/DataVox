@@ -160,6 +160,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="ContentBrowserGUI.cpp" />
     <ClCompile Include="EditorGUI.cpp" />
     <ClCompile Include="External\glad.c" />
     <ClCompile Include="External\Imgui\imgui.cpp" />
@@ -173,7 +174,7 @@
     <ClCompile Include="InspectorGUI.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Mesh.cpp" />
-    <ClCompile Include="ResourceLoader.cpp" />
+    <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="VertexData.cpp" />
@@ -187,6 +188,7 @@
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="ContentBrowserGUI.h" />
     <ClInclude Include="EditorGUI.h" />
     <ClInclude Include="EntityName.h" />
     <ClInclude Include="Entt.h" />
@@ -206,7 +208,7 @@
     <ClInclude Include="InspectorGUI.h" />
     <ClInclude Include="Lights.h" />
     <ClInclude Include="Mesh.h" />
-    <ClInclude Include="ResourceLoader.h" />
+    <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="ShadeInclude.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Transform.h" />

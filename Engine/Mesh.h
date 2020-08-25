@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cereal/archives/json.hpp>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -17,11 +18,21 @@ public:
 
 	Mesh();
 
-	Mesh(std::vector<Vertex> vertices, std::vector<uint32_t> indices);
+	Mesh(std::vector<Vertex> vertices, std::vector<uint32_t> indices, std::string filePath);
 
 	void SetupMesh();
 
 	void Render(Shader& shader, Entity entity, Registry& registry) const;
+
+public:
+
+	template<class Archive>
+	inline void serialize(Archive& archive)
+	{
+		archive(
+			cereal::make_nvp("Mesh_FilePath", FilePath)
+		);
+	}
 
 public:
 
@@ -31,5 +42,7 @@ public:
 
 	std::vector<Vertex> Vertices;
 	std::vector<uint32_t> Indices;
+
+	std::string FilePath;
 };
 
