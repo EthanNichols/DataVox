@@ -36,6 +36,22 @@ void HierarchyGUI::Construct()
 
 	ImGui::Begin("Hierarchy");
 	{
+		if (ImGui::BeginPopupContextWindow("This is a test popup", ImGuiPopupFlags_MouseButtonRight))
+		{
+			if (ImGui::BeginMenu("Create"))
+			{
+				if (ImGui::MenuItem("Empty Entity"))
+				{
+					Entity newEntity = m_registry->create();
+					m_registry->assign<EntityName>(newEntity, "This is a new entity");
+				}
+
+				ImGui::EndMenu();
+			}
+
+			ImGui::EndPopup();
+		}
+
 		auto view = m_registry->view<EntityName>();
 
 		for (Entity entity : view)

@@ -62,7 +62,7 @@ void Camera::Update(float deltaTime)
 			transform.rotation = glm::normalize(orientation * transform.rotation);
 
 			glm::dvec2 centerPosition = glm::dvec2(m_window->GetSize().x / 2, m_window->GetSize().y / 2);
-			Input::SetMousePosition(centerPosition);
+			//Input::SetMousePosition(centerPosition);
 		}
 
 		previousMousePosition = Input::GetMousePosition();
