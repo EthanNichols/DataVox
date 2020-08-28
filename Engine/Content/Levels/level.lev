@@ -5,16 +5,16 @@
     "value3": 2,
     "value4": 0,
     "value5": {
-        "Name": "Cube Test"
+        "Name": "Cube"
     },
     "value6": 1,
     "value7": {
-        "Name": "This is a new entity"
+        "Name": "Change Name"
     },
     "value8": 1,
     "value9": 0,
     "value10": {
-        "Pos_X": 2,
+        "Pos_X": 0,
         "Pos_Y": 0,
         "Pos_Z": 0,
         "Rot_X": 0,

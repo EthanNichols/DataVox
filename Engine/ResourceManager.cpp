@@ -184,7 +184,7 @@ bool ResourceManager::LoadLevel(Registry& registry, const std::string filePath)
 
 		registry.loader()
 			.entities(inArchive)
-			.component<EntityName, Transform, Mesh>(inArchive);
+			.component<Component::EntityName, Component::Transform, Mesh>(inArchive);
 
 		registry.view<Mesh>().each([&](Mesh& mesh)
 		{
@@ -213,7 +213,7 @@ bool ResourceManager::SaveLevel(Registry& registry, const std::string filePath)
 
 		registry.snapshot()
 			.entities(archive)
-			.component<EntityName, Transform, Mesh>(archive);
+			.component<Component::EntityName, Component::Transform, Mesh>(archive);
 
 		printf("Level %s saved\n", filePath.c_str());
 	}

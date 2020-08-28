@@ -168,6 +168,7 @@
     <ClCompile Include="External\Imgui\imgui_draw.cpp" />
     <ClCompile Include="External\Imgui\imgui_impl_glfw.cpp" />
     <ClCompile Include="External\Imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="External\Imgui\imgui_stdlib.cpp" />
     <ClCompile Include="External\Imgui\imgui_widgets.cpp" />
     <ClCompile Include="HierarchyGUI.cpp" />
     <ClCompile Include="Input.cpp" />
@@ -187,10 +188,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
-    <ClInclude Include="Component.h" />
+    <ClInclude Include="Components.h" />
     <ClInclude Include="ContentBrowserGUI.h" />
     <ClInclude Include="EditorGUI.h" />
     <ClInclude Include="EntityName.h" />
+    <ClInclude Include="External\Imgui\imgui_stdlib.h" />
+    <ClInclude Include="Widgets.h" />
     <ClInclude Include="Entt.h" />
     <ClInclude Include="External\entt.h" />
     <ClInclude Include="External\Imgui\imconfig.h" />

@@ -5,46 +5,56 @@
 #include "cereal/archives/json.hpp"
 
 
-struct EntityName
+namespace Component
 {
-public:
-
-	EntityName()
+	struct EntityName
 	{
-	}
-	EntityName(std::string name) : m_name(name)
-	{
-	}
-	~EntityName()
-	{
-	}
+	public:
 
-public:
+		EntityName()
+		{
+		}
+		EntityName(std::string name) : Name(name)
+		{
+		}
+		~EntityName()
+		{
+		}
 
-	const char* c_str()
-	{
-		return m_name.c_str();
-	}
+	public:
 
-	operator std::string* ()
-	{
-		return &m_name;
-	}
+		static void ConstructWidget(Registry& registry, Entity entity)
+		{
 
-	operator std::string& ()
-	{
-		return m_name;
-	}
+		}
 
-	template<class Archive>
-	inline void serialize(Archive& archive)
-	{
-		archive(
-			cereal::make_nvp("Name", m_name)
-		);
-	}
+	public:
 
-public:
+		const char* c_str()
+		{
+			return Name.c_str();
+		}
 
-	std::string m_name;
-};
+		operator std::string* ()
+		{
+			return &Name;
+		}
+
+		operator std::string& ()
+		{
+			return Name;
+		}
+
+		template<class Archive>
+		inline void serialize(Archive& archive)
+		{
+			archive(
+				cereal::make_nvp("Name", Name)
+			);
+		}
+
+	public:
+
+		std::string Name;
+	};
+}

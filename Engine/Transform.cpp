@@ -4,6 +4,7 @@
 #include <glm/gtx/vector_angle.hpp>
 #include <Imgui/imgui.h>
 
+using namespace Component;
 
 Transform::Transform()
 {
@@ -69,19 +70,4 @@ glm::mat4x4 Transform::GetWorldMatrix() const
 	matrix = matrix * glm::yawPitchRoll(eulerAngle.y, eulerAngle.x, eulerAngle.z);
 	matrix = glm::scale(matrix, scale);
 	return matrix;
-}
-
-
-void Transform::ConstructWidget(Registry& registry, Entity entity)
-{
-	Transform& component = registry.get<Transform>(entity);
-
-	glm::vec3 eulerAngle = glm::eulerAngles(component.rotation);
-	eulerAngle = glm::vec3(glm::degrees(eulerAngle.x), glm::degrees(eulerAngle.y), glm::degrees(eulerAngle.z));
-
-	ImGui::InputFloat3("Position", &component.position[0]);
-	ImGui::InputFloat3("Rotation", &eulerAngle[0]);
-	ImGui::InputFloat3("Scale", &component.scale[0]);
-
-	component.rotation = glm::yawPitchRoll(glm::radians(eulerAngle.y), glm::radians(eulerAngle.x), glm::radians(eulerAngle.z));
 }

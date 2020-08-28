@@ -26,7 +26,7 @@ Mesh::Mesh(std::vector<Vertex> vertices, std::vector<uint32_t> indices, std::str
 
 void Mesh::Render(Shader& shader, Entity entity, Registry& registry) const
 {
-    Transform transform = registry.get<Transform>(entity);
+    Component::Transform transform = registry.get<Component::Transform>(entity);
     std::string modelMatrixName = "ModelMatrix";
     glm::mat4x4 worldMatrix = transform.GetWorldMatrix();
     shader.SetMat4(modelMatrixName, worldMatrix);

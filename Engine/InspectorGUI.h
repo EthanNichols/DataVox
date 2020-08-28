@@ -87,6 +87,8 @@ private:
 
 	bool EntityHasComponent(Registry& registry, typename Entity& entityType, ComponentType componentType);
 
+	void RegisterWidgets();
+
 private:
 
 	Registry* m_registry = nullptr;

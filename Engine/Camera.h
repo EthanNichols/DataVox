@@ -23,7 +23,7 @@ public:
 
 public:
 
-	Transform transform;
+	Component::Transform transform;
 
 private:
 

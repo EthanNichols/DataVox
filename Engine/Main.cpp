@@ -8,16 +8,14 @@
 #include <fstream>
 
 #include "Camera.h"
-#include "Component.h"
+#include "Components.h"
 #include "EditorGUI.h"
-#include "EntityName.h"
 #include "Entt.h"
 #include "Input.h"
 #include "Lights.h"
 #include "Mesh.h"
 #include "ResourceManager.h"
 #include "Shader.h"
-#include "Transform.h"
 #include "Window.h"
 
 
@@ -112,7 +110,7 @@ int main()
 
 		basicShader.Use();
 
-		Transform& transform = registry.get<Transform>(entity);
+		Component::Transform& transform = registry.get<Component::Transform>(entity);
 		glm::mat4x4 matrix = camera.GetProjectionMatrix() * camera.GetViewMatrix();
 
 		basicShader.SetAmbientLightToIndex(ambientLight, 0);

@@ -48,7 +48,7 @@ void EditorGUI::Render()
 	// Windows create before this will not be dockable
 	CreateDockingWindow();
 
-	ImGui::ShowDemoWindow();
+	//ImGui::ShowDemoWindow();
 
 	m_contentBrowserGUI.Construct();
 

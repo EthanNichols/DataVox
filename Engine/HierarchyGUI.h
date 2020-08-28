@@ -19,6 +19,12 @@ public:
 
 private:
 
+	void ConstructCreateActionsPopup();
+
+	void ConstructEntityActionsPopup(Entity entity);
+
+private:
+
 	Registry* m_registry = nullptr;
 
 	Entity selectedEntity = entt::null;

@@ -28,6 +28,12 @@
     <Filter Include="Editor">
       <UniqueIdentifier>{1adbe7d3-91dd-48e4-9c33-c1d60c2a99e0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Editor\Widgets">
+      <UniqueIdentifier>{f5757c3a-afa0-46d5-aba8-4c63f7d0a063}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Editor\ImGuiWrappers">
+      <UniqueIdentifier>{ddec3331-a97a-4951-9419-d852fff22b6e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -89,6 +95,9 @@
     </ClCompile>
     <ClCompile Include="ResourceManager.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="External\Imgui\imgui_stdlib.cpp">
+      <Filter>External\ImGui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -161,9 +170,6 @@
     <ClInclude Include="ShadeInclude.h">
       <Filter>External</Filter>
     </ClInclude>
-    <ClInclude Include="Component.h">
-      <Filter>Components</Filter>
-    </ClInclude>
     <ClInclude Include="External\TinyObjectLoader.h">
       <Filter>External</Filter>
     </ClInclude>
@@ -184,6 +190,15 @@
     </ClInclude>
     <ClInclude Include="ResourceManager.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Widgets.h">
+      <Filter>Editor\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="Components.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="External\Imgui\imgui_stdlib.h">
+      <Filter>External\ImGui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -4,6 +4,8 @@
 
 #include "Input.h"
 
+using namespace Component;
+
 
 Camera::Camera(const Window* window)
 {
