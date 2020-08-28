@@ -21,15 +21,15 @@
 #include "Window.h"
 
 
-ResourceManager resourceLoader;
+ResourceManager resourceManager;
 
 
 void LoadResources()
 {
-	resourceLoader = ResourceManager();
+	resourceManager = ResourceManager();
 
-	resourceLoader.LoadTexture("Content/container.png", "container");
-	resourceLoader.LoadTexture("Content/specular.png", "specular");
+	resourceManager.LoadTexture("Content/container.png", "container");
+	resourceManager.LoadTexture("Content/specular.png", "specular");
 
 	//resourceLoader.LoadModel("Content/Models/Cube.obj", "Cube");
 }
@@ -50,7 +50,7 @@ int main()
 
 	LoadResources();
 
-	EditorGUI editorGUI = EditorGUI(&window, &registry);
+	EditorGUI editorGUI = EditorGUI(window, registry, resourceManager);
 
 	Input input = Input(&window);
 	Camera camera = Camera(&window);
@@ -58,7 +58,7 @@ int main()
 
 	Shader basicShader("Shaders/VertexShader.glsl", "Shaders/FragmentShader.glsl");
 
-	resourceLoader.LoadLevel(registry, "Content/levels/level.lev");
+	resourceManager.LoadLevel(registry, "Content/levels/level.lev");
 	
 	Entity entity;
 	registry.each([&](Entity viewEntity)
@@ -106,9 +106,9 @@ int main()
 		window.ClearColor(glm::vec4(0.2f, 0.3f, 0.3f, 1.0f));
 
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, resourceLoader.GetTexture("container"));
+		glBindTexture(GL_TEXTURE_2D, resourceManager.GetTexture("container"));
 		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, resourceLoader.GetTexture("specular"));
+		glBindTexture(GL_TEXTURE_2D, resourceManager.GetTexture("specular"));
 
 		basicShader.Use();
 
@@ -141,7 +141,7 @@ int main()
 		window.Update(0);
 	}
 
-	resourceLoader.SaveLevel(registry, "Content/Levels/level.lev");
+	resourceManager.SaveLevel(registry, "Content/Levels/level.lev");
 
 	glfwTerminate();
 	return 0;

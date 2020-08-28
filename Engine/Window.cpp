@@ -64,14 +64,15 @@ void Window::Close()
 }
 
 
-GLFWwindow* Window::Get() const
+bool Window::IsClosed() const
 {
-    return m_window;
+    return glfwWindowShouldClose(m_window);
 }
 
 
 void Window::SetSize(glm::ivec2 size)
 {
+    glfwSetWindowSize(m_window, size.x, size.y);
     glViewport(0, 0, size.x, size.y);
 }
 
@@ -83,15 +84,18 @@ glm::ivec2 Window::GetSize() const
     return size;
 }
 
-bool Window::IsClosed() const
+
+GLFWwindow* Window::Get() const
 {
-    return glfwWindowShouldClose(m_window);
+    return m_window;
 }
+
 
 Window::operator GLFWwindow* () const
 {
     return m_window;
 }
+
 
 Window::operator GLFWwindow& () const
 {

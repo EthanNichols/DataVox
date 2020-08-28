@@ -19,7 +19,7 @@ private:
 public:
 
 	InspectorGUI();
-	InspectorGUI(Registry* registry);
+	InspectorGUI(Registry& registry);
 	~InspectorGUI();
 
 public:

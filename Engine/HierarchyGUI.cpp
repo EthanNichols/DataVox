@@ -10,9 +10,9 @@ HierarchyGUI::HierarchyGUI()
 }
 
 
-HierarchyGUI::HierarchyGUI(Registry* registry)
+HierarchyGUI::HierarchyGUI(Registry& registry)
 {
-	m_registry = registry;
+	m_registry = &registry;
 }
 
 

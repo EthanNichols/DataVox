@@ -12,12 +12,12 @@ InspectorGUI::InspectorGUI()
 }
 
 
-InspectorGUI::InspectorGUI(Registry* registry)
+InspectorGUI::InspectorGUI(Registry& registry)
 {
-	m_registry = registry;
+	m_registry = &registry;
 
-	RegisterTrivial<Transform>(*registry);
-	RegisterComponentWidgetFn(registry->type<Transform>(), Transform::ConstructWidget);
+	RegisterTrivial<Transform>(registry);
+	RegisterComponentWidgetFn(registry.type<Transform>(), Transform::ConstructWidget);
 }
 
 

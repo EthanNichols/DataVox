@@ -15,16 +15,14 @@ public:
 	void Update(float deltatime);
 
 	void Close();
-
-	GLFWwindow* Get() const;
+	bool IsClosed() const;
 
 	void SetSize(glm::ivec2 size);
 	glm::ivec2 GetSize() const;
 
-	bool IsClosed() const;
-
 public:
 
+	GLFWwindow* Get() const;
 	operator GLFWwindow* () const;
 	operator GLFWwindow& () const;
 

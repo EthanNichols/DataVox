@@ -10,18 +10,19 @@
 #include "Transform.h"
 
 
-EditorGUI::EditorGUI(Window* window, Registry* registry)
+EditorGUI::EditorGUI(Window& window, Registry& registry, ResourceManager& resourceManager)
 {
-	m_window = window;
-	m_registry = registry;
+	m_window = &window;
+	m_registry = &registry;
 
+	m_contentBrowserGUI = ContentBrowserGUI(registry, resourceManager);
 	m_hierarchyGUI = HierarchyGUI(registry);
 	m_inspectorGUI = InspectorGUI(registry);
 
 
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
-	ImGui_ImplGlfw_InitForOpenGL(*window, true);
+	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init("#version 330");
 
 	ImGuiIO& io = ImGui::GetIO();
@@ -43,10 +44,16 @@ void EditorGUI::Render()
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
 
+	// Docking window needs to be created before other windows.
+	// Windows create before this will not be dockable
 	CreateDockingWindow();
 
 	//ImGui::ShowDemoWindow();
+
+	m_contentBrowserGUI.Construct();
+
 	m_hierarchyGUI.Construct();
+
 	Entity selectedEntity = m_hierarchyGUI.GetSelectedEntity();
 	m_inspectorGUI.Construct(selectedEntity);
 
@@ -55,6 +62,7 @@ void EditorGUI::Render()
 	glfwGetFramebufferSize(*m_window, &windowSize.x, &windowSize.y);
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
+
 
 void EditorGUI::CreateDockingWindow()
 {

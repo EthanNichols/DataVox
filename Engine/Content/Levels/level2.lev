@@ -13,10 +13,15 @@
         "Pos_Y": 0,
         "Pos_Z": 0,
         "Rot_X": 0,
-        "Rot_Y": 0,
+        "Rot_Y": -0,
         "Rot_Z": 0,
         "Scale_X": 1,
         "Scale_Y": 1,
         "Scale_Z": 1
+    },
+    "value8": 1,
+    "value9": 0,
+    "value10": {
+        "Mesh_FilePath": "Content/Models/Cube.obj"
     }
 }

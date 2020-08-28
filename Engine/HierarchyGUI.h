@@ -8,7 +8,7 @@ class HierarchyGUI
 public:
 
 	HierarchyGUI();
-	HierarchyGUI(Registry* registry);
+	HierarchyGUI(Registry& registry);
 	~HierarchyGUI();
 
 public:
