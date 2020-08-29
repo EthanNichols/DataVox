@@ -10,6 +10,7 @@ namespace Widgets
 	void EntityName(Component::EntityName& entityName)
 	{
 		std::string tempName = entityName;
+
 		ImGui::InputText("Name##", &tempName);
 
 		if (!tempName.empty())
