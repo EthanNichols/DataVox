@@ -57,11 +57,15 @@ void InspectorGUI::Construct(Entity& entity)
 						{
 							ImGui::TextDisabled("missing widget to display component!");
 						}
-
-						ImGui::Unindent(30.f);
 					}
 				}
 			}
+
+			ImGui::BeginHorizontal("##", ImVec2(ImGui::GetContentRegionAvailWidth(), 0.0f), 0.5f);
+			ImGui::Spring();
+			ImGui::Button("Add Component", ImVec2(ImGui::GetContentRegionAvailWidth() * 0.75f, 0.0f));
+			ImGui::Spring();
+			ImGui::EndHorizontal();
 		}
     }
 	ImGui::End();
