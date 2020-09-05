@@ -29,7 +29,7 @@ void InspectorGUI::Construct(Entity& entity)
 {
 	ImGui::Begin("Inspector");
     {
-		if (entity != entt::null)
+		if (m_registry->valid(entity))
 		{
 			for (auto componentType : ComponentTypes)
 			{
@@ -42,11 +42,10 @@ void InspectorGUI::Construct(Entity& entity)
 					}
 					else
 					{
-						label = "unnamed component (";
-						label += entt::to_integer(componentType);
-						label += ")";
+						label = "Unknown Component";
 					}
 
+					ImGui::PushID("Inspector Widget");
 					if (ImGui::CollapsingHeader(label.c_str()))
 					{
 						if (componentWidget.count(componentType))
@@ -58,14 +57,45 @@ void InspectorGUI::Construct(Entity& entity)
 							ImGui::TextDisabled("missing widget to display component!");
 						}
 					}
+					ImGui::PopID();
 				}
 			}
 
-			ImGui::BeginHorizontal("##", ImVec2(ImGui::GetContentRegionAvailWidth(), 0.0f), 0.5f);
+			ImGui::PushID("Inspector Add Component");
+
+			ImGui::BeginHorizontal("Center Add Component Button", ImVec2(ImGui::GetContentRegionAvailWidth(), 0.0f), 0.5f);
 			ImGui::Spring();
-			ImGui::Button("Add Component", ImVec2(ImGui::GetContentRegionAvailWidth() * 0.75f, 0.0f));
+			if (ImGui::Button("Add Component", ImVec2(ImGui::GetContentRegionAvailWidth() * 0.75f, 0.0f)))
+			{
+				ImGui::OpenPopup("addComponentPopup");
+			}
 			ImGui::Spring();
 			ImGui::EndHorizontal();
+
+			if (ImGui::BeginPopup("addComponentPopup"))
+			{
+				for (auto componentType : ComponentTypes)
+				{
+					std::string label;
+					if (componentNames.count(componentType))
+					{
+						label = componentNames[componentType];
+					}
+					else
+					{
+						label = "Unknown Component";
+					}
+
+					if (ImGui::Selectable(label.c_str()))
+					{
+						componentWidget[componentType](*m_registry, entity);
+					}
+				}
+
+				ImGui::EndPopup();
+			}
+
+			ImGui::PopID();
 		}
     }
 	ImGui::End();

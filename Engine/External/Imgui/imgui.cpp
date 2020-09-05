@@ -8296,7 +8296,7 @@ static void ImGui::BeginLayout(ImGuiID id, ImGuiLayoutType type, ImVec2 size, fl
 {
     ImGuiWindow* window = GetCurrentWindow();
 
-    PushID(id);
+    //PushID(id);
 
     // Find or create
     ImGuiLayout* layout = FindLayout(id, type);
@@ -8401,7 +8401,7 @@ static void ImGui::EndLayout(ImGuiLayoutType type)
 
     layout->CurrentSize = new_size;
 
-    PopID();
+    //PopID();
 
     ImVec2 current_layout_item_max = ImVec2(0.0f, 0.0f);
     if (window->DC.CurrentLayoutItem)

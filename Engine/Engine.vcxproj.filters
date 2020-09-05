@@ -200,5 +200,8 @@
     <ClInclude Include="External\Imgui\imgui_stdlib.h">
       <Filter>External\ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="BoxCollider.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

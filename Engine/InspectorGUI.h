@@ -8,13 +8,16 @@
 class InspectorGUI
 {
 private:
+
 	using ComponentType = entt::component;
+	using ComponentTypeID = ENTT_ID_TYPE;
+	using Callback = std::function<void(Registry&, typename Entity)>;
 
 	std::set<ComponentType> ComponentTypes;
 	std::map<ComponentType, std::string> componentNames;
-	std::map<ComponentType, void(*)(Registry&, typename Entity)> componentWidget;
-	std::map<ComponentType, void(*)(Registry&, typename Entity)> componentCreate;
-	std::map<ComponentType, void(*)(Registry&, typename Entity)> componentDestroy;
+	std::map<ComponentType, Callback> componentWidget;
+	std::map<ComponentType, Callback> componentCreate;
+	std::map<ComponentType, Callback> componentDestroy;
 
 public:
 
