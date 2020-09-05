@@ -18,14 +18,13 @@ public:
 
 public:
 
-	void Construct();
+	void Construct(Registry& registry);
 
 private:
 
-	void RecursiveFileBrowse(const std::string& directoryPath);
+	void RecursiveFileBrowse(Registry& registry, const std::string& directoryPath);
 
 private:
 
-	Registry* m_registry;
 	ResourceManager* m_resourceManager;
 };

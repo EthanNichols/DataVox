@@ -13,7 +13,6 @@ ContentBrowserGUI::ContentBrowserGUI()
 
 ContentBrowserGUI::ContentBrowserGUI(Registry& registry, ResourceManager& resourceManager)
 {
-	m_registry = &registry;
 	m_resourceManager = &resourceManager;
 }
 
@@ -23,17 +22,17 @@ ContentBrowserGUI::~ContentBrowserGUI()
 }
 
 
-void ContentBrowserGUI::Construct()
+void ContentBrowserGUI::Construct(Registry& registry)
 {
 	ImGui::Begin("Content Browser");
 	{
-		RecursiveFileBrowse("Content");
+		RecursiveFileBrowse(registry, "Content");
 	}
 	ImGui::End();
 }
 
 
-void ContentBrowserGUI::RecursiveFileBrowse(const std::string& directoryPath)
+void ContentBrowserGUI::RecursiveFileBrowse(Registry& registry, const std::string& directoryPath)
 {
 	std::vector<std::filesystem::directory_entry> files;
 
@@ -47,7 +46,7 @@ void ContentBrowserGUI::RecursiveFileBrowse(const std::string& directoryPath)
 		{
 			if (ImGui::TreeNode(fileName.c_str()))
 			{
-				RecursiveFileBrowse(filePath);
+				RecursiveFileBrowse(registry, filePath);
 
 				ImGui::TreePop();
 			}
@@ -70,7 +69,7 @@ void ContentBrowserGUI::RecursiveFileBrowse(const std::string& directoryPath)
 		{
 			if (extension == ".lev")
 			{
-				m_resourceManager->LoadLevel(*m_registry, filePath);
+				m_resourceManager->LoadLevel(registry, filePath);
 			}
 		}
 	}

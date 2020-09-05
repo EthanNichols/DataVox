@@ -10,12 +10,6 @@ HierarchyGUI::HierarchyGUI()
 }
 
 
-HierarchyGUI::HierarchyGUI(Registry& registry)
-{
-	m_registry = &registry;
-}
-
-
 HierarchyGUI::~HierarchyGUI()
 {
 }
@@ -26,7 +20,7 @@ Entity HierarchyGUI::GetSelectedEntity()
 	return selectedEntity;
 }
 
-void HierarchyGUI::ConstructCreateActionsPopup()
+void HierarchyGUI::ConstructCreateActionsPopup(Registry& registry)
 {
 	const char* popupName = "CreateActions Popup";
 
@@ -36,8 +30,8 @@ void HierarchyGUI::ConstructCreateActionsPopup()
 		{
 			if (ImGui::MenuItem("Empty Entity"))
 			{
-				Entity newEntity = m_registry->create();
-				m_registry->assign<Component::EntityName>(newEntity, "This is a new entity");
+				Entity newEntity = registry.create();
+				registry.assign<Component::EntityName>(newEntity, "This is a new entity");
 			}
 
 			ImGui::EndMenu();
@@ -47,9 +41,9 @@ void HierarchyGUI::ConstructCreateActionsPopup()
 	}
 }
 
-void HierarchyGUI::ConstructEntityActionsPopup(Entity entity)
+void HierarchyGUI::ConstructEntityActionsPopup(Registry& registry, Entity entity)
 {
-	Component::EntityName name = m_registry->get<Component::EntityName>(entity);
+	Component::EntityName name = registry.get<Component::EntityName>(entity);
 	const char* popupName = name.Name.append(" actions Popup").c_str();
 
 	if (ImGui::BeginPopupContextItem(popupName, ImGuiPopupFlags_MouseButtonRight))
@@ -61,23 +55,18 @@ void HierarchyGUI::ConstructEntityActionsPopup(Entity entity)
 }
 
 
-void HierarchyGUI::Construct()
+void HierarchyGUI::Construct(Registry& registry)
 {
-	if (m_registry == nullptr)
-	{
-		return;
-	}
-
 	ImGui::Begin("Hierarchy");
 	{
-		ConstructCreateActionsPopup();
+		ConstructCreateActionsPopup(registry);
 
-		auto view = m_registry->view<Component::EntityName>();
+		auto view = registry.view<Component::EntityName>();
 
 		for (Entity entity : view)
 		{
 			bool selected = selectedEntity == entity;
-			Component::EntityName entityName = m_registry->get<Component::EntityName>(entity);
+			Component::EntityName entityName = registry.get<Component::EntityName>(entity);
 			std::string name = entityName.Name.append("##");
 
 			if (ImGui::Selectable(name.c_str(), selected))
@@ -85,7 +74,7 @@ void HierarchyGUI::Construct()
 				selectedEntity = entity;
 			}
 
-			ConstructEntityActionsPopup(entity);
+			ConstructEntityActionsPopup(registry, entity);
 		}
 	}
 	ImGui::End();

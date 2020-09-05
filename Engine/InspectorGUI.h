@@ -21,13 +21,17 @@ private:
 
 public:
 
-	InspectorGUI();
+	InspectorGUI()
+	{
+	}
 	InspectorGUI(Registry& registry);
 	~InspectorGUI();
 
 public:
 
-	void Construct(Entity& entity);
+	void Construct(Registry& registry, Entity& entity);
+
+public:
 
 	// call this (or registerTrivial) before any of the other register functions
 	void RegisterComponentType(ComponentType componentType)
@@ -45,55 +49,31 @@ public:
 	}
 
 	// register a callback to a function displaying a component. using imgui
-	void RegisterComponentWidgetFn(ComponentType componentType, void(*fn)(Registry&, typename Registry::entity_type))
+	void RegisterComponentWidgetFn(ComponentType componentType, Callback callback)
 	{
-		componentWidget[componentType] = fn;
+		componentWidget[componentType] = callback;
 	}
 
 	// register a callback to create a component, if none, you wont be able to create it in the editor
-	void RegisterComponentCreateFn(ComponentType componentType, void(*fn)(Registry&, typename Registry::entity_type))
+	void RegisterComponentCreateFn(ComponentType componentType, Callback callback)
 	{
-		componentCreate[componentType] = fn;
+		componentCreate[componentType] = callback;
 	}
 
 	// register a callback to delete a component, if none, you wont be able to delete it in the editor
-	void RegisterComponentDestroyFn(ComponentType componentType, void(*fn)(Registry&, typename Registry::entity_type))
+	void RegisterComponentDestroyFn(ComponentType componentType, Callback callback)
 	{
-		componentDestroy[componentType] = fn;
-	}
-
-	template<typename T>
-	void RegisterTrivial(Registry& registry)
-	{
-		RegisterTrivial<T>(registry, typeid(T).name());
+		componentDestroy[componentType] = callback;
 	}
 
 	// registers the ComponentType, name, create and destroy for rather trivial types
 	template<typename T>
-	void RegisterTrivial(Registry& registry, const std::string& name)
-	{
-		RegisterComponentType(registry.template type<T>());
-		RegisterComponentName(registry.template type<T>(), name);
-		RegisterComponentCreateFn(registry.template type<T>(),
-								  [](Registry& registry, typename Registry::entity_type entityType)
-		{
-			registry.template assign<T>(entityType);
-		});
-		RegisterComponentDestroyFn(registry.template type<T>(),
-								   [](Registry& registry, typename Registry::entity_type entityType)
-		{
-			registry.template remove<T>(entityType);
-		});
-	}
+	void RegisterTrivial(Registry& registry, const std::string& name);
 
 private:
 
 	bool EntityHasComponent(Registry& registry, typename Entity& entityType, ComponentType componentType);
 
-	void RegisterWidgets();
-
-private:
-
-	Registry* m_registry = nullptr;
+	void RegisterWidgets(Registry& registry);
 };
 

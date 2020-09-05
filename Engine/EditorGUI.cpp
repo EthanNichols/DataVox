@@ -13,10 +13,9 @@
 EditorGUI::EditorGUI(Window& window, Registry& registry, ResourceManager& resourceManager)
 {
 	m_window = &window;
-	m_registry = &registry;
 
 	m_contentBrowserGUI = ContentBrowserGUI(registry, resourceManager);
-	m_hierarchyGUI = HierarchyGUI(registry);
+	m_hierarchyGUI = HierarchyGUI();
 	m_inspectorGUI = InspectorGUI(registry);
 
 
@@ -38,7 +37,7 @@ EditorGUI::~EditorGUI()
 }
 
 
-void EditorGUI::Render()
+void EditorGUI::Render(Registry& registry)
 {
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
@@ -50,12 +49,12 @@ void EditorGUI::Render()
 
 	//ImGui::ShowDemoWindow();
 
-	m_contentBrowserGUI.Construct();
+	m_contentBrowserGUI.Construct(registry);
 
-	m_hierarchyGUI.Construct();
+	m_hierarchyGUI.Construct(registry);
 
 	Entity selectedEntity = m_hierarchyGUI.GetSelectedEntity();
-	m_inspectorGUI.Construct(selectedEntity);
+	m_inspectorGUI.Construct(registry, selectedEntity);
 
 	ImGui::Render();
 	glm::ivec2 windowSize = m_window->GetSize();

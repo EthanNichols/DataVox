@@ -7,16 +7,9 @@
 #define ESS_IMGUI_ENTT_E_E_DELETE_COMP_STR "-"
 
 
-InspectorGUI::InspectorGUI()
-{
-}
-
-
 InspectorGUI::InspectorGUI(Registry& registry)
 {
-	m_registry = &registry;
-
-	RegisterWidgets();
+	RegisterWidgets(registry);
 }
 
 
@@ -25,15 +18,15 @@ InspectorGUI::~InspectorGUI()
 }
 
 
-void InspectorGUI::Construct(Entity& entity)
+void InspectorGUI::Construct(Registry& registry, Entity& entity)
 {
 	ImGui::Begin("Inspector");
     {
-		if (m_registry->valid(entity))
+		if (registry.valid(entity))
 		{
 			for (auto componentType : ComponentTypes)
 			{
-				if (EntityHasComponent(*m_registry, entity, componentType))
+				if (EntityHasComponent(registry, entity, componentType))
 				{
 					std::string label;
 					if (componentNames.count(componentType))
@@ -50,7 +43,7 @@ void InspectorGUI::Construct(Entity& entity)
 					{
 						if (componentWidget.count(componentType))
 						{
-							componentWidget[componentType](*m_registry, entity);
+							componentWidget[componentType](registry, entity);
 						}
 						else
 						{
@@ -88,7 +81,7 @@ void InspectorGUI::Construct(Entity& entity)
 
 					if (ImGui::Selectable(label.c_str()))
 					{
-						componentWidget[componentType](*m_registry, entity);
+						componentWidget[componentType](registry, entity);
 					}
 				}
 
@@ -110,17 +103,35 @@ bool InspectorGUI::EntityHasComponent(Registry& registry, typename Entity& entit
 }
 
 
-void InspectorGUI::RegisterWidgets()
+template<typename T>
+void InspectorGUI::RegisterTrivial(Registry& registry, const std::string& name)
 {
-	RegisterTrivial<Component::Transform>(*m_registry, "Transform");
-	RegisterComponentWidgetFn(m_registry->type<Component::Transform>(), [](Registry& registry, auto entity)
+	RegisterComponentType(registry.template type<T>());
+	RegisterComponentName(registry.template type<T>(), name);
+	RegisterComponentCreateFn(registry.template type<T>(),
+							  [](Registry& registry, typename Registry::entity_type entityType)
+	{
+		registry.template assign<T>(entityType);
+	});
+	RegisterComponentDestroyFn(registry.template type<T>(),
+							   [](Registry& registry, typename Registry::entity_type entityType)
+	{
+		registry.template remove<T>(entityType);
+	});
+}
+
+
+void InspectorGUI::RegisterWidgets(Registry& registry)
+{
+	RegisterTrivial<Component::Transform>(registry, "Transform");
+	RegisterComponentWidgetFn(registry.type<Component::Transform>(), [](Registry& registry, auto entity)
 	{
 		Component::Transform& transform = registry.get<Component::Transform>(entity);
 		Widgets::Transform(transform);
 	});
 
-	RegisterTrivial<Component::EntityName>(*m_registry, "Name");
-	RegisterComponentWidgetFn(m_registry->type<Component::EntityName>(), [](Registry& registry, auto entity)
+	RegisterTrivial<Component::EntityName>(registry, "Name");
+	RegisterComponentWidgetFn(registry.type<Component::EntityName>(), [](Registry& registry, auto entity)
 	{
 		Component::EntityName& entityName = registry.get<Component::EntityName>(entity);
 		Widgets::EntityName(entityName);

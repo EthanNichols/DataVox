@@ -16,14 +16,13 @@ public:
 
 public:
 
-	void Render();
+	void Render(Registry& registry);
 
 	void CreateDockingWindow();
 
 private:
 
 	class Window* m_window;
-	Registry* m_registry;
 
 	ContentBrowserGUI m_contentBrowserGUI;
 	HierarchyGUI m_hierarchyGUI;

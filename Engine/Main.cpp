@@ -134,7 +134,7 @@ int main()
 
 		registry.get<Mesh>(entity).Render(basicShader, entity, registry);
 
-		editorGUI.Render();
+		editorGUI.Render(registry);
 
 		window.Update(0);
 	}

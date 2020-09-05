@@ -8,24 +8,21 @@ class HierarchyGUI
 public:
 
 	HierarchyGUI();
-	HierarchyGUI(Registry& registry);
 	~HierarchyGUI();
 
 public:
 	// Inherited via WindowGUI
-	void Construct();
+	void Construct(Registry& registry);
 
 	Entity GetSelectedEntity();
 
 private:
 
-	void ConstructCreateActionsPopup();
+	void ConstructCreateActionsPopup(Registry& registry);
 
-	void ConstructEntityActionsPopup(Entity entity);
+	void ConstructEntityActionsPopup(Registry& registry, Entity entity);
 
 private:
-
-	Registry* m_registry = nullptr;
 
 	Entity selectedEntity = entt::null;
 };
