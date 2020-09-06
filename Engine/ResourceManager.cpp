@@ -11,8 +11,7 @@
 #include <stb_image.h>
 #include <TinyObjectLoader.h>
 
-#include "EntityName.h"
-#include "Transform.h"
+#include "Components.h"
 #include "VertexData.h"
 
 
@@ -180,18 +179,32 @@ bool ResourceManager::LoadLevel(Registry& registry, const std::string filePath)
 	{
 		cereal::JSONInputArchive inArchive(inputStream);
 
-		registry.reset();
+		Registry loadRegistry;
+		loadRegistry.reset();
 
-		registry.loader()
-			.entities(inArchive)
-			.component<Component::EntityName, Component::Transform, Mesh>(inArchive);
-
-		registry.view<Mesh>().each([&](Mesh& mesh)
+		try
 		{
-			LoadModel(mesh);
-		});
+			loadRegistry.loader()
+				.entities(inArchive)
+				.component<ARG_SERIALIZE_COMPONENTS, Mesh>(inArchive);
 
-		printf("Level %s loaded\n", filePath.c_str());
+			loadRegistry.view<Mesh>().each([&](Mesh& mesh)
+			{
+				LoadModel(mesh);
+			});
+
+			registry = loadRegistry.clone();
+			loadRegistry.reset();
+
+			printf("Level %s loaded\n", filePath.c_str());
+		}
+		catch (const std::exception&)
+		{
+			// TODO: Eventually levels should contain an ordered list of components that the
+			// files was saved as. So the user can convert/update the level to the latest file format.
+			printf("Failed to load %s, format out of date", filePath.c_str());
+			success = false;
+		}
 	}
 	else
 	{
@@ -213,7 +226,7 @@ bool ResourceManager::SaveLevel(Registry& registry, const std::string filePath)
 
 		registry.snapshot()
 			.entities(archive)
-			.component<Component::EntityName, Component::Transform, Mesh>(archive);
+			.component<ARG_SERIALIZE_COMPONENTS, Mesh>(archive);
 
 		printf("Level %s saved\n", filePath.c_str());
 	}
