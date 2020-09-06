@@ -6,6 +6,7 @@
 
 #include "Lights.h"
 
+using namespace Component;
 
 class Shader
 {

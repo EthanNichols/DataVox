@@ -5,121 +5,200 @@
 #ifdef __cplusplus
 
 #include <glm/glm.hpp>
+#include "cereal/archives/json.hpp"
 
 #define vec3 glm::vec3
 #define vec4 glm::vec4
 
+namespace Component
+{
 #endif // __cplusplus
 
-struct AmbientLight
-{
-	vec3 color;
-	float intensity = 1.0f;
-
-public:
-
-	AmbientLight()
+	struct AmbientLight
 	{
-		color = vec3(1.0f, 1.0f, 1.0f);
-		intensity = 1.0f;
-	}
+		vec3 color;
+		float intensity;
 
-	AmbientLight(vec3 color, float intensity = 1.0f) :
-		color(color),
-		intensity(intensity)
+	public:
+
+		AmbientLight()
+		{
+			color = vec3(1.0f, 1.0f, 1.0f);
+			intensity = 1.0f;
+		}
+
+		AmbientLight(vec3 color, float intensity = 1.0f) :
+			color(color),
+			intensity(intensity)
+		{
+		}
+
+	public:
+
+		template<class Archive>
+		inline void serialize(Archive& archive)
+		{
+			archive(
+				cereal::make_nvp("Color_R", color.r),
+				cereal::make_nvp("Color_G", color.g),
+				cereal::make_nvp("Color_B", color.b),
+
+				cereal::make_nvp("Intesity", intensity)
+			);
+		}
+	};
+
+
+	struct DirectionalLight
 	{
-	}
-};
+		vec3 color;
+
+		vec3 direction;
+		float intensity;
+
+	public:
+
+		DirectionalLight()
+		{
+			color = vec3(1.0f, 1.0f, 1.0f);
+			direction = vec3(0.0f, 0.0f, 0.0f);
+			intensity = 1.0f;
+		}
+
+		DirectionalLight(vec3 color, vec3 direction, float intensity = 1.0f) :
+			color(color),
+			direction(direction),
+			intensity(intensity)
+		{
+		}
+
+	public:
+
+		template<class Archive>
+		inline void serialize(Archive& archive)
+		{
+			archive(
+				cereal::make_nvp("Color_R", color.r),
+				cereal::make_nvp("Color_G", color.g),
+				cereal::make_nvp("Color_B", color.b),
+
+				cereal::make_nvp("Direction_X", direction.x),
+				cereal::make_nvp("Direction_Y", direction.y),
+				cereal::make_nvp("Direction_Z", direction.z),
+
+				cereal::make_nvp("Intesity", intensity)
+			);
+		}
+	};
 
 
-struct DirectionalLight
-{
-	vec3 color;
-
-	vec3 direction;
-	float intensity = 1.0f;
-
-public:
-
-	DirectionalLight()
+	struct PointLight
 	{
-		color = vec3(1.0f, 1.0f, 1.0f);
-		direction = vec3(1.0f, 1.0f, 1.0f);
-		intensity = 1.0f;
-	}
+		vec3 color;
+		float attenuation;
 
-	DirectionalLight(vec3 color, vec3 direction, float intensity = 1.0f) :
-		color(color),
-		direction(direction),
-		intensity(intensity)
+		vec3 position;
+		float intensity;
+
+	public:
+
+		PointLight()
+		{
+			color = vec3(1.0f, 1.0f, 1.0f);
+			position = vec3(0.0f, 0.0f, 0.0f);
+			attenuation = 1.0f;
+			intensity = 1.0f;
+		}
+
+		PointLight(vec3 color, vec3 position, float attenuation, float intensity = 1.0f) :
+			color(color),
+			position(position),
+			attenuation(attenuation),
+			intensity(intensity)
+		{
+		}
+
+	public:
+
+		template<class Archive>
+		inline void serialize(Archive& archive)
+		{
+			archive(
+				cereal::make_nvp("Color_R", color.r),
+				cereal::make_nvp("Color_G", color.g),
+				cereal::make_nvp("Color_B", color.b),
+
+				cereal::make_nvp("Position_X", position.x),
+				cereal::make_nvp("Position_Y", position.y),
+				cereal::make_nvp("Position_Z", position.z),
+
+				cereal::make_nvp("Attenuation", attenuation),
+				cereal::make_nvp("Intesity", intensity)
+			);
+		}
+	};
+
+
+	struct SpotLight
 	{
-	}
-};
+		vec3 color;
+		float attenuation;
 
+		vec3 position;
+		float angle;
 
-struct PointLight
-{
-	vec3 color;
-	float attenuation;
+		vec3 direction;
+		float intensity;
 
-	vec3 position;
-	float intensity = 1.0f;
+	public:
 
-public:
+		SpotLight()
+		{
+			color = vec3(1.0f, 1.0f, 1.0f);
+			position = vec3(0.0f, 0.0f, 0.0f);
+			direction = vec3(0.0f, 0.0f, 0.0f);
+			angle = 1.0f;
+			attenuation = 1.0f;
+			intensity = 1.0f;
+		}
 
-	PointLight()
-	{
-		color = vec3(1.0f, 1.0f, 1.0f);
-		position = vec3(1.0f, 1.0f, 1.0f);
-		attenuation = 1.0f;
-		intensity = 1.0f;
-	}
+		SpotLight(vec3 color, vec3 position, vec3 direction, float angle, float attenuation, float intensity = 1.0f) :
+			color(color),
+			position(position),
+			direction(direction),
+			angle(angle),
+			attenuation(attenuation),
+			intensity(intensity)
+		{
+		}
 
-	PointLight(vec3 color, vec3 position, float attenuation, float intensity = 1.0f) :
-		color(color),
-		position(position),
-		attenuation(attenuation),
-		intensity(intensity)
-	{
-	}
-};
+	public:
 
+		template<class Archive>
+		inline void serialize(Archive& archive)
+		{
+			archive(
+				cereal::make_nvp("Color_R", color.r),
+				cereal::make_nvp("Color_G", color.g),
+				cereal::make_nvp("Color_B", color.b),
 
-struct SpotLight
-{
-	vec3 color;
-	float attenuation;
+				cereal::make_nvp("Direction_X", direction.x),
+				cereal::make_nvp("Direction_Y", direction.y),
+				cereal::make_nvp("Direction_Z", direction.z),
 
-	vec3 position;
-	float angle;
+				cereal::make_nvp("Position_X", position.x),
+				cereal::make_nvp("Position_Y", position.y),
+				cereal::make_nvp("Position_Z", position.z),
 
-	vec3 direction;
-	float intensity = 1.0f;
-
-public:
-
-	SpotLight()
-	{
-		color = vec3(1.0f, 1.0f, 1.0f);
-		position = vec3(1.0f, 1.0f, 1.0f);
-		direction = vec3(1.0f, 1.0f, 1.0f);
-		angle = 1.0f;
-		attenuation = 1.0f;
-		intensity = 1.0f;
-	}
-
-	SpotLight(vec3 color, vec3 position, vec3 direction, float angle, float attenuation, float intensity = 1.0f) :
-		color(color),
-		position(position),
-		direction(direction),
-		angle(angle),
-		attenuation(attenuation),
-		intensity(intensity)
-	{
-	}
-};
+				cereal::make_nvp("Attenuation", attenuation),
+				cereal::make_nvp("Angle", angle),
+				cereal::make_nvp("Intesity", intensity)
+			);
+		}
+	};
 
 #ifdef __cplusplus
+}
 
 #undef vec3
 #undef vec4

@@ -150,6 +150,34 @@ void InspectorGUI::RegisterWidgets(Registry& registry)
 		Component::EntityName& entityName = registry.get<Component::EntityName>(entity);
 		Widgets::EntityName(entityName);
 	});
+
+	RegisterTrivial<Component::AmbientLight>(registry, "Ambient Light");
+	RegisterComponentWidgetFn(registry.type<Component::AmbientLight>(), [](Registry& registry, auto entity)
+	{
+		Component::AmbientLight& entityName = registry.get<Component::AmbientLight>(entity);
+		Widgets::AmbientLight(entityName);
+	});
+
+	RegisterTrivial<Component::DirectionalLight>(registry, "Directional Light");
+	RegisterComponentWidgetFn(registry.type<Component::DirectionalLight>(), [](Registry& registry, auto entity)
+	{
+		Component::DirectionalLight& entityName = registry.get<Component::DirectionalLight>(entity);
+		Widgets::DirectionalLight(entityName);
+	});
+
+	RegisterTrivial<Component::PointLight>(registry, "Point Light");
+	RegisterComponentWidgetFn(registry.type<Component::PointLight>(), [](Registry& registry, auto entity)
+	{
+		Component::PointLight& entityName = registry.get<Component::PointLight>(entity);
+		Widgets::PointLight(entityName);
+	});
+
+	RegisterTrivial<Component::SpotLight>(registry, "Spot Light");
+	RegisterComponentWidgetFn(registry.type<Component::SpotLight>(), [](Registry& registry, auto entity)
+	{
+		Component::SpotLight& entityName = registry.get<Component::SpotLight>(entity);
+		Widgets::SpotLight(entityName);
+	});
 }
 
 #undef ESS_IMGUI_ENTT_E_E_DELETE_COMP_STR

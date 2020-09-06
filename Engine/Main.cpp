@@ -12,12 +12,12 @@
 #include "EditorGUI.h"
 #include "Entt.h"
 #include "Input.h"
-#include "Lights.h"
 #include "Mesh.h"
 #include "ResourceManager.h"
 #include "Shader.h"
 #include "Window.h"
 
+using namespace Component;
 
 int main()
 {
@@ -51,23 +51,9 @@ int main()
 		entity = viewEntity;
 	});
 
-	//Entity entity = registry.create();
-	//registry.assign<Transform>(entity);
-	//registry.assign<Mesh>(entity, resourceLoader.GetModel("Cube"));
-	//registry.assign<EntityName>(entity, "Cube Test");
-
 	glm::dvec2 previousMousePosition = input.GetMousePosition();
 
 	double previousTime = glfwGetTime();
-	float rotation = 0.0f;
-
-	AmbientLight ambientLight = AmbientLight(glm::vec3(0.2f, 0.2f, 0.2f));
-	PointLight pointLight1 = PointLight(glm::vec3(1.0f, 0.5f, 0.5f), glm::vec3(1.5f, 0.0f, 0.0f), 5.0f);
-	PointLight pointLight2 = PointLight(glm::vec3(1.0f, 0.5f, 0.5f), glm::vec3(-1.5f, 0.0f, 0.0f), 5.0f);
-	PointLight pointLight3 = PointLight(glm::vec3(0.5f, 1.0f, 0.5f), glm::vec3(0.0f, 1.5f, 0.0f), 5.0f);
-	PointLight pointLight4 = PointLight(glm::vec3(0.5f, 1.0f, 0.5f), glm::vec3(0.0f, -1.5f, 0.0f), 5.0f);
-	PointLight pointLight5 = PointLight(glm::vec3(0.5f, 0.5f, 1.0f), glm::vec3(0.0f, 0.0f, 1.5f), 5.0f);
-	PointLight pointLight6 = PointLight(glm::vec3(0.5f, 0.5f, 1.0f), glm::vec3(0.0f, 0.0f, -1.5f), 5.0f);
 
 	basicShader.Use();
 	basicShader.SetInt("material.diffuse", 0);
@@ -78,8 +64,6 @@ int main()
 		double currentTime = glfwGetTime();
 		double deltaTime = currentTime - previousTime;
 		previousTime = currentTime;
-
-		rotation += (float)deltaTime;
 
 		if (input.IsKeyDown(GLFW_KEY_ESCAPE))
 		{
@@ -100,17 +84,31 @@ int main()
 		Component::Transform& transform = registry.get<Component::Transform>(entity);
 		glm::mat4x4 matrix = camera.GetProjectionMatrix() * camera.GetViewMatrix();
 
-		basicShader.SetAmbientLightToIndex(ambientLight, 0);
+		int ambientLights = 0;
+		registry.view<AmbientLight>().each([&](AmbientLight& ambientLight)
+		{
+			if (ambientLights >= MAX_LIGHTS_PER_TYPE)
+			{
+				return;
+			}
 
-		basicShader.SetPointLightToIndex(pointLight1, 0);
-		basicShader.SetPointLightToIndex(pointLight2, 1);
-		basicShader.SetPointLightToIndex(pointLight3, 2);
-		basicShader.SetPointLightToIndex(pointLight4, 3);
-		basicShader.SetPointLightToIndex(pointLight5, 4);
-		basicShader.SetPointLightToIndex(pointLight6, 5);
+			basicShader.SetAmbientLightToIndex(ambientLight, ambientLights);
+			ambientLights++;
+		});
+		basicShader.SetInt("ambientLightCount", ambientLights);
 
-		basicShader.SetInt("ambientLightCount", 1);
-		basicShader.SetInt("pointLightCount", 6);
+		int pointLights = 0;
+		registry.view<PointLight>().each([&](PointLight& pointLight)
+		{
+			if (pointLights >= MAX_LIGHTS_PER_TYPE)
+			{
+				return;
+			}
+
+			basicShader.SetPointLightToIndex(pointLight, pointLights);
+			pointLights++;
+		});
+		basicShader.SetInt("pointLightCount", pointLights);
 
 		basicShader.SetMat4("ViewProjection", matrix);
 

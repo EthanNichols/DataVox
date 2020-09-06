@@ -172,43 +172,63 @@ Mesh ResourceManager::GetModel(const std::string& modelName)
 
 bool ResourceManager::LoadLevel(Registry& registry, const std::string filePath)
 {
-	std::ifstream inputStream(filePath);
-	bool success = inputStream.is_open();
+	bool success = false;
+	Registry loadRegistry;
 
-	if (success)
+	try
 	{
+		std::ifstream inputStream(filePath);
 		cereal::JSONInputArchive inArchive(inputStream);
-
-		Registry loadRegistry;
 		loadRegistry.reset();
 
+		loadRegistry.loader()
+			.entities(inArchive)
+			.component<ARG_SERIALIZE_COMPONENTS>(inArchive);
+
+		success = true;
+	}
+	catch (const std::exception&)
+	{
 		try
 		{
-			loadRegistry.loader()
-				.entities(inArchive)
-				.component<ARG_SERIALIZE_COMPONENTS, Mesh>(inArchive);
+			printf("Trying older level file format\n");
 
-			loadRegistry.view<Mesh>().each([&](Mesh& mesh)
-			{
-				LoadModel(mesh);
-			});
-
-			registry = loadRegistry.clone();
+			std::ifstream inputStream(filePath);
+			cereal::JSONInputArchive inArchive(inputStream);
+			inputStream = std::ifstream(filePath);
 			loadRegistry.reset();
 
-			printf("Level %s loaded\n", filePath.c_str());
+			loadRegistry.loader()
+				.entities(inArchive)
+				.component<ARG_SERIALIZE_COMPONENTS_PREV_VERS>(inArchive);
+
+			success = true;
 		}
 		catch (const std::exception&)
 		{
+			success = false;
+		}
+
+		if (!success)
+		{
 			// TODO: Eventually levels should contain an ordered list of components that the
 			// files was saved as. So the user can convert/update the level to the latest file format.
-			printf("Failed to load %s, format out of date", filePath.c_str());
+			printf("Failed to load %s, format out of date\n", filePath.c_str());
 			success = false;
 		}
 	}
-	else
+
+	if (success)
 	{
-		printf("Failed to load level %s\n", filePath.c_str());
+		loadRegistry.view<Mesh>().each([&](Mesh& mesh)
+		{
+			LoadModel(mesh);
+		});
+
+		registry = loadRegistry.clone();
+		loadRegistry.reset();
+
+		printf("Level %s loaded\n", filePath.c_str());
 	}
 
 	return success;
@@ -226,7 +246,7 @@ bool ResourceManager::SaveLevel(Registry& registry, const std::string filePath)
 
 		registry.snapshot()
 			.entities(archive)
-			.component<ARG_SERIALIZE_COMPONENTS, Mesh>(archive);
+			.component<ARG_SERIALIZE_COMPONENTS>(archive);
 
 		printf("Level %s saved\n", filePath.c_str());
 	}
