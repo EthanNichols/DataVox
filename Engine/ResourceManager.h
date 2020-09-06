@@ -15,10 +15,10 @@ public:
 
 public:
 
-	int32_t LoadTexture(const std::string& filePath, const std::string& textureName);
+	int32_t LoadTexture(const std::string& filePath);
 	int32_t GetTexture(const std::string& textureName) const;
 
-	Mesh LoadModel(const std::string& filePath, const std::string& modelName);
+	Mesh LoadModel(const std::string& filePath);
 	Mesh LoadModel(Mesh& mesh);
 	Mesh GetModel(const std::string& modelName);
 

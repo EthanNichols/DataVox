@@ -19,19 +19,6 @@
 #include "Window.h"
 
 
-ResourceManager resourceManager;
-
-
-void LoadResources()
-{
-	resourceManager = ResourceManager();
-
-	resourceManager.LoadTexture("Content/container.png", "container");
-	resourceManager.LoadTexture("Content/specular.png", "specular");
-
-	//resourceLoader.LoadModel("Content/Models/Cube.obj", "Cube");
-}
-
 int main()
 {
 	Registry registry;
@@ -46,7 +33,7 @@ int main()
 		return -1;
 	}
 
-	LoadResources();
+	ResourceManager resourceManager = ResourceManager();
 
 	EditorGUI editorGUI = EditorGUI(window, registry, resourceManager);
 
@@ -104,9 +91,9 @@ int main()
 		window.ClearColor(glm::vec4(0.2f, 0.3f, 0.3f, 1.0f));
 
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, resourceManager.GetTexture("container"));
+		glBindTexture(GL_TEXTURE_2D, resourceManager.GetTexture("Content/Container.png"));
 		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, resourceManager.GetTexture("specular"));
+		glBindTexture(GL_TEXTURE_2D, resourceManager.GetTexture("Content/specular.png"));
 
 		basicShader.Use();
 

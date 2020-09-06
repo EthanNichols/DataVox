@@ -26,7 +26,7 @@ ResourceManager::~ResourceManager()
 }
 
 
-int32_t ResourceManager::LoadTexture(const std::string& filePath, const std::string& textureName)
+int32_t ResourceManager::LoadTexture(const std::string& filePath)
 {
 	uint32_t texture;
 	glGenTextures(1, &texture);
@@ -63,7 +63,7 @@ int32_t ResourceManager::LoadTexture(const std::string& filePath, const std::str
 
 		stbi_image_free(data);
 
-		m_textures[textureName] = texture;
+		m_textures[filePath] = texture;
 	}
 	else
 	{
@@ -84,7 +84,7 @@ int32_t ResourceManager::GetTexture(const std::string& textureName) const
 }
 
 
-Mesh ResourceManager::LoadModel(const std::string& filePath, const std::string& modelName)
+Mesh ResourceManager::LoadModel(const std::string& filePath)
 {
 	tinyobj::attrib_t attribute;
 	std::vector<tinyobj::shape_t> shapes;
@@ -143,7 +143,7 @@ Mesh ResourceManager::LoadModel(const std::string& filePath, const std::string& 
 		mesh.FilePath = filePath;
 
 		mesh.SetupMesh();
-		m_meshes[modelName] = mesh;
+		m_meshes[filePath] = mesh;
 	}
 	else
 	{
@@ -159,7 +159,7 @@ Mesh ResourceManager::LoadModel(Mesh& mesh)
 	std::string filePath = mesh.FilePath;
 	std::string fileName = std::filesystem::path(filePath).stem().string();
 
-	mesh = LoadModel(filePath, fileName);
+	mesh = LoadModel(filePath);
 
 	return mesh;
 }

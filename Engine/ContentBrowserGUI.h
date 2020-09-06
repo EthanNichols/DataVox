@@ -27,4 +27,6 @@ private:
 private:
 
 	ResourceManager* m_resourceManager;
+
+	bool m_loadResources = true;
 };

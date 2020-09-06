@@ -40,6 +40,7 @@ void ContentBrowserGUI::RecursiveFileBrowse(Registry& registry, const std::strin
 	{
 		const std::string filePath = entry.path().string();
 		const std::string fileName = entry.path().filename().string();
+		const std::string extension = entry.path().extension().string();
 		const bool isDirectory = entry.is_directory();
 
 		if (isDirectory)
@@ -54,6 +55,20 @@ void ContentBrowserGUI::RecursiveFileBrowse(Registry& registry, const std::strin
 		else
 		{
 			files.push_back(entry);
+
+			if (m_loadResources)
+			{
+				if (extension == ".png")
+				{
+					m_resourceManager->LoadTexture(filePath);
+				}
+				else if (extension == ".obj")
+				{
+					m_resourceManager->LoadModel(filePath);
+				}
+
+				m_loadResources = false;
+			}
 		}
 	}
 
