@@ -117,67 +117,73 @@ bool InspectorGUI::EntityHasComponent(Registry& registry, typename Entity& entit
 }
 
 
+void InspectorGUI::RegisterComponentName(ComponentType componentType, const std::string& name)
+{
+	componentNames[componentType] = name;
+}
+
+
+void InspectorGUI::RegisterComponentType(ComponentType componentType)
+{
+	if (!ComponentTypes.count(componentType))
+	{
+		ComponentTypes.emplace(componentType);
+	}
+}
+
+
+void InspectorGUI::RegisterComponentWidgetCallback(ComponentType componentType, Callback callback)
+{
+	componentWidget[componentType] = callback;
+}
+
+
+void InspectorGUI::RegisterComponentCreateCallback(ComponentType componentType, Callback callback)
+{
+	componentCreate[componentType] = callback;
+}
+
+
+void InspectorGUI::RegisterComponentDestroyCallback(ComponentType componentType, Callback callback)
+{
+	componentDestroy[componentType] = callback;
+}
+
+
 template<typename T>
-void InspectorGUI::RegisterTrivial(Registry& registry, const std::string& name)
+void InspectorGUI::RegisterComponent(Registry& registry, const std::string& name, std::function<void(T&)> widgetFunction)
 {
 	RegisterComponentType(registry.template type<T>());
 	RegisterComponentName(registry.template type<T>(), name);
-	RegisterComponentCreateFn(registry.template type<T>(),
+	RegisterComponentCreateCallback(registry.template type<T>(),
 							  [](Registry& registry, typename Registry::entity_type entityType)
 	{
 		registry.template assign<T>(entityType);
 	});
-	RegisterComponentDestroyFn(registry.template type<T>(),
+	RegisterComponentDestroyCallback(registry.template type<T>(),
 							   [](Registry& registry, typename Registry::entity_type entityType)
 	{
 		registry.template remove<T>(entityType);
+	});
+	RegisterComponentWidgetCallback(registry.template type<T>(),
+								[=](Registry& registry, typename Registry::entity_type entityType)
+	{
+		T& transform = registry.template get<T>(entityType);
+		widgetFunction(transform);
 	});
 }
 
 
 void InspectorGUI::RegisterWidgets(Registry& registry)
 {
-	RegisterTrivial<Component::Transform>(registry, "Transform");
-	RegisterComponentWidgetFn(registry.type<Component::Transform>(), [](Registry& registry, auto entity)
-	{
-		Component::Transform& transform = registry.get<Component::Transform>(entity);
-		Widgets::Transform(transform);
-	});
+	RegisterComponent<Component::Transform>(registry, "Transform", &Widgets::Transform);
 
-	RegisterTrivial<Component::EntityName>(registry, "Name");
-	RegisterComponentWidgetFn(registry.type<Component::EntityName>(), [](Registry& registry, auto entity)
-	{
-		Component::EntityName& entityName = registry.get<Component::EntityName>(entity);
-		Widgets::EntityName(entityName);
-	});
+	RegisterComponent<Component::EntityName>(registry, "Name", &Widgets::EntityName);
 
-	RegisterTrivial<Component::AmbientLight>(registry, "Ambient Light");
-	RegisterComponentWidgetFn(registry.type<Component::AmbientLight>(), [](Registry& registry, auto entity)
-	{
-		Component::AmbientLight& entityName = registry.get<Component::AmbientLight>(entity);
-		Widgets::AmbientLight(entityName);
-	});
-
-	RegisterTrivial<Component::DirectionalLight>(registry, "Directional Light");
-	RegisterComponentWidgetFn(registry.type<Component::DirectionalLight>(), [](Registry& registry, auto entity)
-	{
-		Component::DirectionalLight& entityName = registry.get<Component::DirectionalLight>(entity);
-		Widgets::DirectionalLight(entityName);
-	});
-
-	RegisterTrivial<Component::PointLight>(registry, "Point Light");
-	RegisterComponentWidgetFn(registry.type<Component::PointLight>(), [](Registry& registry, auto entity)
-	{
-		Component::PointLight& entityName = registry.get<Component::PointLight>(entity);
-		Widgets::PointLight(entityName);
-	});
-
-	RegisterTrivial<Component::SpotLight>(registry, "Spot Light");
-	RegisterComponentWidgetFn(registry.type<Component::SpotLight>(), [](Registry& registry, auto entity)
-	{
-		Component::SpotLight& entityName = registry.get<Component::SpotLight>(entity);
-		Widgets::SpotLight(entityName);
-	});
+	RegisterComponent<Component::AmbientLight>(registry, "Ambient Light", Widgets::AmbientLight);
+	RegisterComponent<Component::DirectionalLight>(registry, "Directional Light", Widgets::DirectionalLight);
+	RegisterComponent<Component::PointLight>(registry, "Point Light", Widgets::PointLight);
+	RegisterComponent<Component::SpotLight>(registry, "Spot Light", Widgets::SpotLight);
 }
 
 #undef ESS_IMGUI_ENTT_E_E_DELETE_COMP_STR
