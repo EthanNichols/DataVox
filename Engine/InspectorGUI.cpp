@@ -21,9 +21,11 @@ InspectorGUI::~InspectorGUI()
 void InspectorGUI::Construct(Registry& registry, Entity& entity)
 {
 	ImGui::Begin("Inspector");
-    {
+	{
 		if (registry.valid(entity))
 		{
+			std::set<ComponentType> MissingComponents;
+
 			for (auto componentType : ComponentTypes)
 			{
 				if (EntityHasComponent(registry, entity, componentType))
@@ -52,6 +54,10 @@ void InspectorGUI::Construct(Registry& registry, Entity& entity)
 					}
 					ImGui::PopID();
 				}
+				else
+				{
+					MissingComponents.insert(componentType);
+				}
 			}
 
 			ImGui::PushID("Inspector Add Component");
@@ -67,30 +73,38 @@ void InspectorGUI::Construct(Registry& registry, Entity& entity)
 
 			if (ImGui::BeginPopup("addComponentPopup"))
 			{
-				for (auto componentType : ComponentTypes)
+				if (MissingComponents.size() > 0)
 				{
-					std::string label;
-					if (componentNames.count(componentType))
+					for (auto componentType : MissingComponents)
 					{
-						label = componentNames[componentType];
-					}
-					else
-					{
-						label = "Unknown Component";
-					}
+						std::string label;
+						if (componentNames.count(componentType))
+						{
+							label = componentNames[componentType];
+						}
+						else
+						{
+							label = "Unknown Component";
+						}
 
-					if (ImGui::Selectable(label.c_str()))
-					{
-						componentWidget[componentType](registry, entity);
+						if (ImGui::Selectable(label.c_str()))
+						{
+							componentCreate[componentType](registry, entity);
+						}
 					}
+				}
+				else
+				{
+					ImGui::Text("No Available Component To Add");
 				}
 
 				ImGui::EndPopup();
 			}
 
+
 			ImGui::PopID();
 		}
-    }
+	}
 	ImGui::End();
 }
 
