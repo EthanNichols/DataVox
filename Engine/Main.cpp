@@ -110,6 +110,19 @@ int main()
 		});
 		basicShader.SetInt("pointLightCount", pointLights);
 
+		int directionalLights = 0;
+		registry.view<DirectionalLight>().each([&](DirectionalLight& directionalLight)
+		{
+			if (pointLights >= MAX_LIGHTS_PER_TYPE)
+			{
+				return;
+			}
+
+			basicShader.SetDirectionalLightToIndex(directionalLight, directionalLights);
+			directionalLights++;
+		});
+		basicShader.SetInt("directionalLightCount", directionalLights);
+
 		basicShader.SetMat4("ViewProjection", matrix);
 
 		basicShader.SetVec3("camPos", camera.transform.position);

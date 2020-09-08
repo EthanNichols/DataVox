@@ -17,9 +17,11 @@ in vec3 ModelPos;
 
 uniform AmbientLight ambientLights[MAX_LIGHTS_PER_TYPE];
 uniform PointLight pointLights[MAX_LIGHTS_PER_TYPE];
+uniform DirectionalLight directionalLights[MAX_LIGHTS_PER_TYPE];
 
 uniform int ambientLightCount;
 uniform int pointLightCount;
+uniform int directionalLightCount;
 
 uniform Material material;
 uniform vec3 lightPos; 
@@ -45,20 +47,27 @@ void main()
     FragColor = vec4(result, 1.0);
 */
 
+    vec3 pixelColor = texture(material.diffuseTex, texCoord).rgb;
+
     // ambient
     vec3 ambientLightColor = vec3(0.0, 0.0, 0.0);
     for (int i=0; i<ambientLightCount; ++i)
     {
-        ambientLightColor += CalcAmbientLightColor(ambientLights[i], texture(material.diffuseTex, texCoord).rgb);
+        ambientLightColor += CalcAmbientLightColor(ambientLights[i], pixelColor);
     }
 
     vec3 pointLightColor = vec3(0.0, 0.0, 0.0);
     for (int i=0; i<pointLightCount; ++i)
     {
-        pointLightColor += CalcPointLightColor(pointLights[i], ModelPos, texture(material.diffuseTex, texCoord).rgb, Normal, camPos);
+        pointLightColor += CalcPointLightColor(pointLights[i], ModelPos, pixelColor, Normal, camPos);
     }
 
-    //vec3 result = vec3(1.0, 1.0, 1.0);
-    vec3 result = ambientLightColor + pointLightColor;
+    vec3 directionalLightColor = vec3(0.0, 0.0, 0.0);
+    for (int i=0; i<directionalLightCount; ++i)
+    {
+        directionalLightColor += CalcDirectionalLightColor(directionalLights[i], pixelColor, Normal);
+    }
+
+    vec3 result = ambientLightColor + pointLightColor + directionalLightColor;
     FragColor = vec4(result, 1.0);
 }

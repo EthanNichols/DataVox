@@ -41,6 +41,17 @@ void InspectorGUI::Construct(Registry& registry, Entity& entity)
 					}
 
 					ImGui::PushID("Inspector Widget");
+
+					if (componentType != registry.type<Component::EntityName>())
+					{
+						if (ImGui::Button("X"))
+						{
+							componentDestroy[componentType](registry, entity);
+						}
+
+						ImGui::SameLine();
+					}
+
 					if (ImGui::CollapsingHeader(label.c_str()))
 					{
 						if (componentWidget.count(componentType))
@@ -52,6 +63,7 @@ void InspectorGUI::Construct(Registry& registry, Entity& entity)
 							ImGui::TextDisabled("missing widget to display component!");
 						}
 					}
+
 					ImGui::PopID();
 				}
 				else

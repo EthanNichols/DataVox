@@ -1,13 +1,14 @@
 {
-    "value0": 5,
-    "value1": 4,
-    "value2": 3,
-    "value3": 2,
-    "value4": 1,
-    "value5": 0,
-    "value6": 1,
-    "value7": 0,
-    "value8": {
+    "value0": 6,
+    "value1": 1048581,
+    "value2": 4,
+    "value3": 3,
+    "value4": 2,
+    "value5": 1,
+    "value6": 0,
+    "value7": 1,
+    "value8": 0,
+    "value9": {
         "Pos_X": 0,
         "Pos_Y": 0,
         "Pos_Z": 0,
@@ -18,55 +19,69 @@
         "Scale_Y": 1,
         "Scale_Z": 1
     },
-    "value9": 5,
-    "value10": 0,
-    "value11": {
+    "value10": 6,
+    "value11": 0,
+    "value12": {
         "Name": "Cube Test"
     },
-    "value12": 1,
-    "value13": {
+    "value13": 1,
+    "value14": {
         "Name": "Change Name"
     },
-    "value14": 2,
-    "value15": {
+    "value15": 2,
+    "value16": {
         "Name": "Ambient Light"
     },
-    "value16": 3,
-    "value17": {
+    "value17": 3,
+    "value18": {
         "Name": "Point Light Right"
     },
-    "value18": 4,
-    "value19": {
+    "value19": 4,
+    "value20": {
         "Name": "Point Light Left"
     },
-    "value20": 1,
-    "value21": 0,
+    "value21": 1048581,
     "value22": {
-        "Mesh_FilePath": "Content/Models/Cube.obj"
+        "Name": "Directional Light"
     },
     "value23": 1,
-    "value24": 2,
+    "value24": 0,
     "value25": {
+        "Mesh_FilePath": "Content/Models/Cube.obj"
+    },
+    "value26": 1,
+    "value27": 2,
+    "value28": {
         "Color_R": 1,
         "Color_G": 1,
         "Color_B": 1,
         "Intesity": 0.40000000596046448
     },
-    "value26": 0,
-    "value27": 2,
-    "value28": 3,
-    "value29": {
+    "value29": 1,
+    "value30": 1048581,
+    "value31": {
+        "Color_R": 1,
+        "Color_G": 0.99998998641967773,
+        "Color_B": 0.99998998641967773,
+        "Direction_X": 0,
+        "Direction_Y": -1,
+        "Direction_Z": 1,
+        "Intesity": 1
+    },
+    "value32": 2,
+    "value33": 3,
+    "value34": {
         "Color_R": 1,
         "Color_G": 1,
         "Color_B": 1,
         "Position_X": 2,
         "Position_Y": 0,
         "Position_Z": 0,
-        "Attenuation": 10,
+        "Attenuation": 30.700000762939453,
         "Intesity": 1
     },
-    "value30": 4,
-    "value31": {
+    "value35": 4,
+    "value36": {
         "Color_R": 0.99998998641967773,
         "Color_G": 1,
         "Color_B": 0.99999123811721802,
@@ -76,5 +91,5 @@
         "Attenuation": 10,
         "Intesity": 1
     },
-    "value32": 0
+    "value37": 0
 }

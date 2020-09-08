@@ -223,13 +223,13 @@ vec3 CalcAmbientLightColor(AmbientLight light, vec3 pixelColor)
 }
 
 
-vec3 CalcDirectionLightColor(DirectionalLight light, vec3 pixelNormal)
+vec3 CalcDirectionalLightColor(DirectionalLight light, vec3 pixelColor, vec3 pixelNormal)
 {
 	vec3 lightNormDir = normalize(-light.direction.xyz);
 
 	float NdotL = clamp(dot(pixelNormal, lightNormDir), 0.0, 1.0);
 
-	return light.color.rgb * light.intensity * NdotL;
+	return (NdotL * pixelColor) * light.color.rgb * light.intensity;
 }
 
 

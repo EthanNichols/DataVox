@@ -31,7 +31,7 @@ void HierarchyGUI::ConstructCreateActionsPopup(Registry& registry)
 			if (ImGui::Selectable("Empty Entity"))
 			{
 				Entity newEntity = registry.create();
-				registry.assign<Component::EntityName>(newEntity, "This is a new entity");
+				registry.assign<Component::EntityName>(newEntity, "New entity");
 			}
 
 			ImGui::EndMenu();
@@ -48,7 +48,15 @@ void HierarchyGUI::ConstructEntityActionsPopup(Registry& registry, Entity entity
 
 	if (ImGui::BeginPopupContextItem(popupName, ImGuiPopupFlags_MouseButtonRight))
 	{
-		ImGui::Selectable("Entity Actions");
+		if (ImGui::Selectable("Duplicate"))
+		{
+			Entity clone = registry.create(entity, registry);
+			registry.get<Component::EntityName>(clone).Name += " (clone)";
+		}
+		if (ImGui::Selectable("Delete"))
+		{
+			registry.destroy(entity);
+		}
 
 		ImGui::EndPopup();
 	}
