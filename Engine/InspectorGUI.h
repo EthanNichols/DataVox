@@ -14,7 +14,7 @@ private:
 	using Callback = std::function<void(Registry&, typename Entity)>;
 
 	std::set<ComponentType> ComponentTypes;
-	std::map<ComponentType, std::string> componentNames;
+	std::map<ComponentType, std::string> componentName;
 	std::map<ComponentType, Callback> componentWidget;
 	std::map<ComponentType, Callback> componentCreate;
 	std::map<ComponentType, Callback> componentDestroy;

@@ -24,16 +24,16 @@ void InspectorGUI::Construct(Registry& registry, Entity& entity)
 	{
 		if (registry.valid(entity))
 		{
-			std::set<ComponentType> MissingComponents;
+			std::set<ComponentType> hasComponents;
 
 			for (auto componentType : ComponentTypes)
 			{
 				if (EntityHasComponent(registry, entity, componentType))
 				{
 					std::string label;
-					if (componentNames.count(componentType))
+					if (componentName.count(componentType))
 					{
-						label = componentNames[componentType];
+						label = componentName[componentType];
 					}
 					else
 					{
@@ -56,7 +56,7 @@ void InspectorGUI::Construct(Registry& registry, Entity& entity)
 				}
 				else
 				{
-					MissingComponents.insert(componentType);
+					hasComponents.insert(componentType);
 				}
 			}
 
@@ -73,29 +73,32 @@ void InspectorGUI::Construct(Registry& registry, Entity& entity)
 
 			if (ImGui::BeginPopup("addComponentPopup"))
 			{
-				if (MissingComponents.size() > 0)
+				int missingComponentCheck = 0;
+				for (auto componentType : ComponentTypes)
 				{
-					for (auto componentType : MissingComponents)
+					std::string label;
+					if (componentName.count(componentType))
 					{
-						std::string label;
-						if (componentNames.count(componentType))
-						{
-							label = componentNames[componentType];
-						}
-						else
-						{
-							label = "Unknown Component";
-						}
+						label = componentName[componentType];
+					}
+					else
+					{
+						label = "Unknown Component";
+					}
 
+					if (hasComponents.count(componentType) == 0)
+					{
+						++missingComponentCheck;
+
+						ImGui::TextColored(ImVec4(0.5f, 0.5f, 0.5f, 1.0f), label.c_str());
+					}
+					else
+					{
 						if (ImGui::Selectable(label.c_str()))
 						{
 							componentCreate[componentType](registry, entity);
 						}
 					}
-				}
-				else
-				{
-					ImGui::Text("No Available Component To Add");
 				}
 
 				ImGui::EndPopup();
@@ -119,7 +122,7 @@ bool InspectorGUI::EntityHasComponent(Registry& registry, typename Entity& entit
 
 void InspectorGUI::RegisterComponentName(ComponentType componentType, const std::string& name)
 {
-	componentNames[componentType] = name;
+	componentName[componentType] = name;
 }
 
 
@@ -156,17 +159,17 @@ void InspectorGUI::RegisterComponent(Registry& registry, const std::string& name
 	RegisterComponentType(registry.template type<T>());
 	RegisterComponentName(registry.template type<T>(), name);
 	RegisterComponentCreateCallback(registry.template type<T>(),
-							  [](Registry& registry, typename Registry::entity_type entityType)
+									[](Registry& registry, typename Registry::entity_type entityType)
 	{
 		registry.template assign<T>(entityType);
 	});
 	RegisterComponentDestroyCallback(registry.template type<T>(),
-							   [](Registry& registry, typename Registry::entity_type entityType)
+									 [](Registry& registry, typename Registry::entity_type entityType)
 	{
 		registry.template remove<T>(entityType);
 	});
 	RegisterComponentWidgetCallback(registry.template type<T>(),
-								[=](Registry& registry, typename Registry::entity_type entityType)
+									[=](Registry& registry, typename Registry::entity_type entityType)
 	{
 		T& transform = registry.template get<T>(entityType);
 		widgetFunction(transform);

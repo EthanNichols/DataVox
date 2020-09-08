@@ -28,7 +28,7 @@ void HierarchyGUI::ConstructCreateActionsPopup(Registry& registry)
 	{
 		if (ImGui::BeginMenu("Create"))
 		{
-			if (ImGui::MenuItem("Empty Entity"))
+			if (ImGui::Selectable("Empty Entity"))
 			{
 				Entity newEntity = registry.create();
 				registry.assign<Component::EntityName>(newEntity, "This is a new entity");
