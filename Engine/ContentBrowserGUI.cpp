@@ -3,7 +3,9 @@
 #include <Imgui/imgui.h>
 #include <filesystem>
 
+#include "Mesh.h"
 #include "ResourceManager.h"
+#include "Texture.h"
 
 
 ContentBrowserGUI::ContentBrowserGUI()

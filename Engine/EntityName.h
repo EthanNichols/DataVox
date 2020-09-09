@@ -14,7 +14,8 @@ namespace Component
 		EntityName()
 		{
 		}
-		EntityName(std::string name) : Name(name)
+		EntityName(std::string name) :
+			Name(name)
 		{
 		}
 		~EntityName()

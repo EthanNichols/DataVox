@@ -47,7 +47,7 @@
     "value23": 1,
     "value24": 0,
     "value25": {
-        "Mesh_FilePath": "Content/Models/Cube.obj"
+        "MeshFilePath": "Content/Models/Cube.obj"
     },
     "value26": 1,
     "value27": 2,

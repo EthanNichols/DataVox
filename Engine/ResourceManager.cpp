@@ -12,6 +12,8 @@
 #include <TinyObjectLoader.h>
 
 #include "Components.h"
+#include "Mesh.h"
+#include "Texture.h"
 #include "VertexData.h"
 
 
@@ -62,7 +64,7 @@ int32_t ResourceManager::LoadTexture(const std::string& filePath)
 
 		stbi_image_free(data);
 
-		m_textures[filePath] = texture;
+		m_textures[filePath] = Texture(texture, filePath);
 	}
 	else
 	{
@@ -70,6 +72,14 @@ int32_t ResourceManager::LoadTexture(const std::string& filePath)
 	}
 
 	return texture;
+}
+
+
+void ResourceManager::LoadTexture(Texture& texture)
+{
+	std::string filePath = texture.GetFilePath();
+
+	*texture = LoadTexture(filePath);
 }
 
 
@@ -83,7 +93,7 @@ int32_t ResourceManager::GetTexture(const std::string& textureName) const
 }
 
 
-Mesh ResourceManager::LoadModel(const std::string& filePath)
+Mesh* ResourceManager::LoadModel(const std::string& filePath)
 {
 	tinyobj::attrib_t attribute;
 	std::vector<tinyobj::shape_t> shapes;
@@ -91,18 +101,17 @@ Mesh ResourceManager::LoadModel(const std::string& filePath)
 	std::string warn;
 	std::string error;
 
-	Mesh mesh = Mesh();
-
 	if (m_meshes.find(filePath) != m_meshes.end())
 	{
-		mesh = m_meshes[filePath];
-		return mesh;
+		return &m_meshes[filePath];
 	}
 
 	bool success = tinyobj::LoadObj(&attribute, &shapes, &materials, &warn, &error, filePath.c_str());
 
 	if (success)
 	{
+		Mesh mesh = Mesh();
+
 		for (const tinyobj::shape_t& shape : shapes)
 		{
 			for (const tinyobj::index_t& index : shape.mesh.indices)
@@ -149,24 +158,21 @@ Mesh ResourceManager::LoadModel(const std::string& filePath)
 		printf("Failed to load model: %s %s\n", warn.c_str(), error.c_str());
 	}
 
-	return mesh;
+	return &m_meshes[filePath];
 }
 
 
-Mesh ResourceManager::LoadModel(Mesh& mesh)
+void ResourceManager::LoadModel(Mesh* mesh)
 {
-	std::string filePath = mesh.FilePath;
-	std::string fileName = std::filesystem::path(filePath).stem().string();
+	std::string filePath = mesh->FilePath;
 
 	mesh = LoadModel(filePath);
-
-	return mesh;
 }
 
 
-Mesh ResourceManager::GetModel(const std::string& modelName)
+Mesh* ResourceManager::GetModel(const std::string& modelName)
 {
-	return m_meshes[modelName];
+	return &m_meshes[modelName];
 }
 
 
@@ -175,63 +181,75 @@ bool ResourceManager::LoadLevel(Registry& registry, const std::string filePath)
 	bool success = false;
 	Registry loadRegistry;
 
+	LoadLevel_Internal<ARG_SERIALIZE_COMPONENTS>(loadRegistry, filePath, success);
+
+	// Deprecated
+	// TODO: Remove once level files are updated
+	LoadLevel_Internal<Component::Transform, Component::EntityName, Mesh, Component::AmbientLight, Component::DirectionalLight, Component::PointLight, Component::SpotLight>(loadRegistry, filePath, success);
+	LoadLevel_Internal<Component::EntityName, Component::Transform, Mesh>(loadRegistry, filePath, success);
+
+	if (success)
+	{
+		registry.reset();
+		registry = loadRegistry.clone();
+		loadRegistry.reset();
+
+		registry.view<MeshRenderer>().each([&](const Entity& entity, MeshRenderer& meshRenderer)
+		{
+			// Get the path to the mesh.
+			// Delete the mesh, since the mesh will be loaded.
+			std::string filePath = meshRenderer.mesh->FilePath;
+			delete meshRenderer.mesh;
+
+			meshRenderer.mesh = LoadModel(filePath);
+		});
+
+		// Deprecated
+		// TODO: Remove once level files are updated
+		registry.view<Mesh>().each([&](const Entity& entity, Mesh& mesh)
+		{
+			LoadModel(&mesh);
+			registry.assign<MeshRenderer>(entity, GetModel(mesh.FilePath));
+			registry.remove<Mesh>(entity);
+		});
+
+		printf("Level %s loaded\n", filePath.c_str());
+	}
+	else
+	{
+		printf("Failed to load %s, format out of date\n", filePath.c_str());
+	}
+
+
+	return success;
+}
+
+
+template<typename ... Component>
+void ResourceManager::LoadLevel_Internal(Registry& registry, const std::string filePath, bool& success)
+{
+	// The level has already been loaded successfully. Return.
+	if (success)
+	{
+		return;
+	}
+
 	try
 	{
 		std::ifstream inputStream(filePath);
 		cereal::JSONInputArchive inArchive(inputStream);
-		loadRegistry.reset();
+		registry.reset();
 
-		loadRegistry.loader()
+		registry.loader()
 			.entities(inArchive)
-			.component<ARG_SERIALIZE_COMPONENTS>(inArchive);
+			.component<Component ...>(inArchive);
 
 		success = true;
 	}
 	catch (const std::exception&)
 	{
-		try
-		{
-			printf("Trying older level file format\n");
-
-			std::ifstream inputStream(filePath);
-			cereal::JSONInputArchive inArchive(inputStream);
-			inputStream = std::ifstream(filePath);
-			loadRegistry.reset();
-
-			loadRegistry.loader()
-				.entities(inArchive)
-				.component<ARG_SERIALIZE_COMPONENTS_PREV_VERS>(inArchive);
-
-			success = true;
-		}
-		catch (const std::exception&)
-		{
-			success = false;
-		}
-
-		if (!success)
-		{
-			// TODO: Eventually levels should contain an ordered list of components that the
-			// files was saved as. So the user can convert/update the level to the latest file format.
-			printf("Failed to load %s, format out of date\n", filePath.c_str());
-			success = false;
-		}
+		success = false;
 	}
-
-	if (success)
-	{
-		loadRegistry.view<Mesh>().each([&](Mesh& mesh)
-		{
-			LoadModel(mesh);
-		});
-
-		registry = loadRegistry.clone();
-		loadRegistry.reset();
-
-		printf("Level %s loaded\n", filePath.c_str());
-	}
-
-	return success;
 }
 
 

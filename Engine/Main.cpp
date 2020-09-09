@@ -13,6 +13,7 @@
 #include "Entt.h"
 #include "Input.h"
 #include "Mesh.h"
+#include "RenderManager.h"
 #include "ResourceManager.h"
 #include "Shader.h"
 #include "Window.h"
@@ -33,6 +34,7 @@ int main()
 		return -1;
 	}
 
+	RenderManager renderManager = RenderManager();
 	ResourceManager resourceManager = ResourceManager();
 
 	EditorGUI editorGUI = EditorGUI(window, registry, resourceManager);
@@ -46,7 +48,7 @@ int main()
 	resourceManager.LoadLevel(registry, "Content/levels/level.lev");
 	
 	Entity entity;
-	registry.each([&](Entity viewEntity)
+	registry.view<MeshRenderer>().each([&](const Entity& viewEntity, MeshRenderer& meshRenderer)
 	{
 		entity = viewEntity;
 	});
@@ -80,9 +82,6 @@ int main()
 		glBindTexture(GL_TEXTURE_2D, resourceManager.GetTexture("Content/specular.png"));
 
 		basicShader.Use();
-
-		Component::Transform& transform = registry.get<Component::Transform>(entity);
-		glm::mat4x4 matrix = camera.GetProjectionMatrix() * camera.GetViewMatrix();
 
 		int ambientLights = 0;
 		registry.view<AmbientLight>().each([&](AmbientLight& ambientLight)
@@ -123,14 +122,14 @@ int main()
 		});
 		basicShader.SetInt("directionalLightCount", directionalLights);
 
-		basicShader.SetMat4("ViewProjection", matrix);
-
 		basicShader.SetVec3("camPos", camera.transform.position);
 		
 		basicShader.SetVec3("material.ambient", glm::vec3(1.0f, 0.5f, 0.31f));
 		basicShader.SetFloat("material.shininess", 32.0f);
 
-		registry.get<Mesh>(entity).Render(basicShader, entity, registry);
+		MeshRenderer& mesh = registry.get<MeshRenderer>(entity);
+
+		renderManager.Render(registry, basicShader);
 
 		editorGUI.Render(registry);
 

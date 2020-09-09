@@ -174,9 +174,13 @@
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="InspectorGUI.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="MeshRenderer.h" />
+    <ClCompile Include="RenderManager.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="VertexData.cpp" />
     <ClCompile Include="Window.cpp" />
@@ -187,13 +191,15 @@
     <None Include="Shaders\VertexShader.glsl" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BoxCollider.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Components.h" />
     <ClInclude Include="ContentBrowserGUI.h" />
     <ClInclude Include="EditorGUI.h" />
     <ClInclude Include="EntityName.h" />
     <ClInclude Include="External\Imgui\imgui_stdlib.h" />
+    <ClInclude Include="Material.h" />
+    <ClInclude Include="RenderManager.h" />
+    <ClInclude Include="Texture.h" />
     <ClInclude Include="Widgets.h" />
     <ClInclude Include="Entt.h" />
     <ClInclude Include="External\entt.h" />

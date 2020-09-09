@@ -99,6 +99,18 @@
     <ClCompile Include="External\Imgui\imgui_stdlib.cpp">
       <Filter>External\ImGui</Filter>
     </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshRenderer.h">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -197,11 +209,17 @@
     <ClInclude Include="External\Imgui\imgui_stdlib.h">
       <Filter>External\ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="BoxCollider.h">
-      <Filter>Components</Filter>
-    </ClInclude>
     <ClInclude Include="Lights.h">
       <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderManager.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
