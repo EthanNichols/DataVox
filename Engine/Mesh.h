@@ -1,14 +1,9 @@
 #pragma once
 
 #include <cereal/archives/json.hpp>
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
 #include <string>
 #include <vector>
 
-#include "Entt.h"
-#include "Shader.h"
 #include "VertexData.h"
 
 
@@ -16,13 +11,23 @@ struct Mesh
 {
 public:
 
-	Mesh();
+	Mesh()
+	{
+		m_VAO = 0;
+		m_VBO = 0;
+		m_EBO = 0;
+	}
 
-	Mesh(std::vector<Vertex> vertices, std::vector<uint32_t> indices, std::string filePath);
+	Mesh(std::vector<Vertex> vertices, std::vector<uint32_t> indices, std::string filePath)
+	{
+		m_VAO = 0;
+		m_VBO = 0;
+		m_EBO = 0;
 
-	void SetupMesh();
-
-	void Render(Shader& shader, Entity entity, Registry& registry) const;
+		Vertices = vertices;
+		Indices = indices;
+		FilePath = filePath;
+	}
 
 public:
 
