@@ -1,6 +1,16 @@
+
+#define GLFW_EXPOSE_NATIVE_WIN32
+
 #include "Window.h"
 
+#include <GLFW/glfw3native.h>
 #include <iostream>
+
+// Used for customizing the window title bar
+// Reminder to include dwmapi.lib in the linker properties
+//#include <dwmapi.h>
+//#include <Windows.h>
+
 
 Window::Window()
 {
@@ -14,6 +24,33 @@ Window::Window()
         printf("Failed to create GLFW window\n");
         glfwTerminate();
     }
+
+    // Eventually I want to remove or modify the title bar from the window
+    // So I can use that space for additional tools and space.
+    // As well as being able to blend in it more with the actuall colors.
+    /// https://docs.microsoft.com/en-us/windows/win32/dwm/customframe?redirectedfrom=MSDN
+    /*
+    HWND windowHandle = glfwGetWin32Window(m_window);
+    SetWindowLong(windowHandle, GWL_STYLE, WS_VISIBLE | WS_THICKFRAME);
+
+    RECT borderThickness;
+    SetRectEmpty(&borderThickness);
+    if (GetWindowLongPtr(windowHandle, GWL_STYLE) & WS_THICKFRAME)
+    {
+        AdjustWindowRectEx(&borderThickness, GetWindowLongPtr(windowHandle, GWL_STYLE) & ~WS_CAPTION, FALSE, NULL);
+        borderThickness.left *= -1;
+        borderThickness.top *= -10;
+    }
+    else if (GetWindowLongPtr(windowHandle, GWL_STYLE) & WS_BORDER)
+    {
+        SetRect(&borderThickness, 1, 1, 1, 1);
+    }
+
+    MARGINS margins = { 0 };
+    DwmExtendFrameIntoClientArea(windowHandle, &margins);
+    SetWindowPos(windowHandle, NULL, 0, 0, 0, 0, SWP_SHOWWINDOW | SWP_NOMOVE | SWP_NOSIZE | SWP_FRAMECHANGED);
+    */
+
     glfwMakeContextCurrent(m_window);
     glViewport(0, 0, DEFAULT_WINDOW_SIZE.x, DEFAULT_WINDOW_SIZE.y);
 

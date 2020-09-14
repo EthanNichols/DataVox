@@ -34,6 +34,10 @@ public:
 
 private:
 
+	void SetupModel(Mesh& mesh);
+
+private:
+
 	std::map<std::string, struct Texture> m_textures;
 	std::map<std::string, Mesh> m_meshes;
 };

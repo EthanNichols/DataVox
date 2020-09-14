@@ -150,7 +150,7 @@ Mesh* ResourceManager::LoadModel(const std::string& filePath)
 
 		mesh.FilePath = filePath;
 
-		mesh.SetupMesh();
+		SetupModel(mesh);
 		m_meshes[filePath] = mesh;
 	}
 	else
@@ -167,6 +167,26 @@ void ResourceManager::LoadModel(Mesh* mesh)
 	std::string filePath = mesh->FilePath;
 
 	mesh = LoadModel(filePath);
+}
+
+
+void ResourceManager::SetupModel(Mesh& mesh)
+{
+	glGenVertexArrays(1, &mesh.m_VAO);
+	glGenBuffers(1, &mesh.m_VBO);
+	glGenBuffers(1, &mesh.m_EBO);
+
+	glBindVertexArray(mesh.m_VAO);
+	glBindBuffer(GL_ARRAY_BUFFER, mesh.m_VBO);
+
+	glBufferData(GL_ARRAY_BUFFER, mesh.Vertices.size() * sizeof(Vertex), &mesh.Vertices[0], GL_STATIC_DRAW);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.m_EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, mesh.Indices.size() * sizeof(unsigned int), &mesh.Indices[0], GL_STATIC_DRAW);
+
+	Vertex::SetVertexAttributes();
+
+	glBindVertexArray(0);
 }
 
 

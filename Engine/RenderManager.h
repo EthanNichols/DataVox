@@ -2,7 +2,9 @@
 
 #include "Entt.h"
 
+class Camera;
 class Shader;
+
 
 class RenderManager
 {
@@ -13,6 +15,6 @@ public:
 
 public:
 
-	void Render(Registry& registry, Shader& shader) const;
+	void Render(Registry& registry, Shader& shader, Camera& camera) const;
 };
 

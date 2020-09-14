@@ -1,6 +1,9 @@
 #include "RenderManager.h"
-
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+#include "Camera.h"
 #include "Components.h"
+
 
 RenderManager::RenderManager()
 {
@@ -12,8 +15,56 @@ RenderManager::~RenderManager()
 }
 
 
-void RenderManager::Render(Registry& registry, Shader& shader) const
+void RenderManager::Render(Registry& registry, Shader& shader, Camera& camera) const
 {
+	shader.Use();
+
+	shader.SetInt("material.diffuse", 0);
+	shader.SetInt("material.specular", 1);
+
+	glm::mat4x4 matrix = camera.GetProjectionMatrix() * camera.GetViewMatrix();
+	shader.SetMat4("ViewProjection", matrix);
+	shader.SetVec3("camPos", camera.transform.position);
+
+	int ambientLights = 0;
+	registry.view<AmbientLight>().each([&](AmbientLight& ambientLight)
+	{
+		if (ambientLights >= MAX_LIGHTS_PER_TYPE)
+		{
+			return;
+		}
+
+		shader.SetAmbientLightToIndex(ambientLight, ambientLights);
+		ambientLights++;
+	});
+	shader.SetInt("ambientLightCount", ambientLights);
+
+	int pointLights = 0;
+	registry.view<PointLight>().each([&](PointLight& pointLight)
+	{
+		if (pointLights >= MAX_LIGHTS_PER_TYPE)
+		{
+			return;
+		}
+
+		shader.SetPointLightToIndex(pointLight, pointLights);
+		pointLights++;
+	});
+	shader.SetInt("pointLightCount", pointLights);
+
+	int directionalLights = 0;
+	registry.view<DirectionalLight>().each([&](DirectionalLight& directionalLight)
+	{
+		if (pointLights >= MAX_LIGHTS_PER_TYPE)
+		{
+			return;
+		}
+
+		shader.SetDirectionalLightToIndex(directionalLight, directionalLights);
+		directionalLights++;
+	});
+	shader.SetInt("directionalLightCount", directionalLights);
+
 	registry.view<Component::Transform, Component::MeshRenderer>().each(
 		[&](Component::Transform& transform, Component::MeshRenderer& meshRenderer)
 	{

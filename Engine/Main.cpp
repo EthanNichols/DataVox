@@ -46,20 +46,10 @@ int main()
 	Shader basicShader("Shaders/VertexShader.glsl", "Shaders/FragmentShader.glsl");
 
 	resourceManager.LoadLevel(registry, "Content/levels/level.lev");
-	
-	Entity entity;
-	registry.view<MeshRenderer>().each([&](const Entity& viewEntity, MeshRenderer& meshRenderer)
-	{
-		entity = viewEntity;
-	});
 
 	glm::dvec2 previousMousePosition = input.GetMousePosition();
 
 	double previousTime = glfwGetTime();
-
-	basicShader.Use();
-	basicShader.SetInt("material.diffuse", 0);
-	basicShader.SetInt("material.specular", 1);
 
 	while (!window.IsClosed())
 	{
@@ -76,60 +66,14 @@ int main()
 
 		window.ClearColor(glm::vec4(0.2f, 0.3f, 0.3f, 1.0f));
 
+		// Eventually this will be moved elseware
+		basicShader.Use();
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, resourceManager.GetTexture("Content/Container.png"));
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, resourceManager.GetTexture("Content/specular.png"));
 
-		basicShader.Use();
-
-		int ambientLights = 0;
-		registry.view<AmbientLight>().each([&](AmbientLight& ambientLight)
-		{
-			if (ambientLights >= MAX_LIGHTS_PER_TYPE)
-			{
-				return;
-			}
-
-			basicShader.SetAmbientLightToIndex(ambientLight, ambientLights);
-			ambientLights++;
-		});
-		basicShader.SetInt("ambientLightCount", ambientLights);
-
-		int pointLights = 0;
-		registry.view<PointLight>().each([&](PointLight& pointLight)
-		{
-			if (pointLights >= MAX_LIGHTS_PER_TYPE)
-			{
-				return;
-			}
-
-			basicShader.SetPointLightToIndex(pointLight, pointLights);
-			pointLights++;
-		});
-		basicShader.SetInt("pointLightCount", pointLights);
-
-		int directionalLights = 0;
-		registry.view<DirectionalLight>().each([&](DirectionalLight& directionalLight)
-		{
-			if (pointLights >= MAX_LIGHTS_PER_TYPE)
-			{
-				return;
-			}
-
-			basicShader.SetDirectionalLightToIndex(directionalLight, directionalLights);
-			directionalLights++;
-		});
-		basicShader.SetInt("directionalLightCount", directionalLights);
-
-		basicShader.SetVec3("camPos", camera.transform.position);
-		
-		basicShader.SetVec3("material.ambient", glm::vec3(1.0f, 0.5f, 0.31f));
-		basicShader.SetFloat("material.shininess", 32.0f);
-
-		MeshRenderer& mesh = registry.get<MeshRenderer>(entity);
-
-		renderManager.Render(registry, basicShader);
+		renderManager.Render(registry, basicShader, camera);
 
 		editorGUI.Render(registry);
 
