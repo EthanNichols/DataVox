@@ -19,6 +19,8 @@ Camera::~Camera()
 void Camera::Update(float deltaTime)
 {
 	static glm::dvec2 previousMousePosition = Input::GetMousePosition();
+	glm::dvec2 mousePosition = Input::GetMousePosition();
+	glm::dvec2 mouseDelta = previousMousePosition - mousePosition;
 
 	// Camera Movement
 	{
@@ -41,6 +43,12 @@ void Camera::Update(float deltaTime)
 			movement += transform.GetRight();
 		}
 
+		if (Input::IsMouseButtonDown(GLFW_MOUSE_BUTTON_MIDDLE))
+		{
+			movement += transform.GetRight() * (float)mouseDelta.x;
+			movement -= transform.GetUp() * (float)mouseDelta.y;
+		}
+
 		if (glm::length(movement) >= .01f)
 		{
 			glm::vec3 movementNormal = glm::normalize(movement);
@@ -53,22 +61,15 @@ void Camera::Update(float deltaTime)
 	{
 		if (Input::IsMouseButtonDown(GLFW_MOUSE_BUTTON_RIGHT))
 		{
-			glm::dvec2 mousePosition = Input::GetMousePosition();
-
-			glm::dvec2 mouseDelta = previousMousePosition - mousePosition;
-
 			glm::quat yaw = glm::angleAxis((float)glm::radians(mouseDelta.x * ROTATION_SPEED * deltaTime), glm::vec3(0.0f, 1.0f, 0.0f));
 			glm::quat pitch = glm::angleAxis((float)glm::radians(mouseDelta.y * ROTATION_SPEED * deltaTime), transform.GetRight());
-			glm::quat orientation = glm::normalize(pitch * yaw);
+			glm::quat orientation = glm::normalize(yaw * pitch);
 
 			transform.rotation = glm::normalize(orientation * transform.rotation);
-
-			glm::dvec2 centerPosition = glm::dvec2(m_window->GetSize().x / 2, m_window->GetSize().y / 2);
-			//Input::SetMousePosition(centerPosition);
 		}
-
-		previousMousePosition = Input::GetMousePosition();
 	}
+
+	previousMousePosition = mousePosition;
 }
 
 glm::mat4x4 Camera::GetViewMatrix()

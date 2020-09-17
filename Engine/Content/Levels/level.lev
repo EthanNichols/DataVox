@@ -1,12 +1,12 @@
 {
     "value0": 6,
-    "value1": 1048581,
+    "value1": 5,
     "value2": 4,
     "value3": 3,
     "value4": 2,
     "value5": 1,
     "value6": 0,
-    "value7": 1,
+    "value7": 2,
     "value8": 0,
     "value9": {
         "Pos_X": 0,
@@ -19,76 +19,71 @@
         "Scale_Y": 1,
         "Scale_Z": 1
     },
-    "value10": 6,
-    "value11": 0,
-    "value12": {
+    "value10": 5,
+    "value11": {
+        "Pos_X": 2,
+        "Pos_Y": 0,
+        "Pos_Z": -2,
+        "Rot_X": 1.2140673788962886e-05,
+        "Rot_Y": -6.408958341808102e-08,
+        "Rot_Z": 0,
+        "Scale_X": 1,
+        "Scale_Y": 1,
+        "Scale_Z": 1
+    },
+    "value12": 6,
+    "value13": 0,
+    "value14": {
         "Name": "Cube Test"
     },
-    "value13": 1,
-    "value14": {
+    "value15": 1,
+    "value16": {
         "Name": "Change Name"
     },
-    "value15": 2,
-    "value16": {
+    "value17": 2,
+    "value18": {
         "Name": "Ambient Light"
     },
-    "value17": 3,
-    "value18": {
+    "value19": 3,
+    "value20": {
         "Name": "Point Light Right"
     },
-    "value19": 4,
-    "value20": {
+    "value21": 4,
+    "value22": {
         "Name": "Point Light Left"
     },
-    "value21": 1048581,
-    "value22": {
-        "Name": "Directional Light"
+    "value23": 5,
+    "value24": {
+        "Name": "Cube Test (clone)"
     },
-    "value23": 1,
-    "value24": 0,
-    "value25": {
+    "value25": 2,
+    "value26": 0,
+    "value27": {
         "MeshFilePath": "Content/Models/Cube.obj"
     },
-    "value26": 1,
-    "value27": 2,
-    "value28": {
+    "value28": 5,
+    "value29": {
+        "MeshFilePath": "Content/Models/Cube.obj"
+    },
+    "value30": 1,
+    "value31": 2,
+    "value32": {
         "Color_R": 1,
         "Color_G": 1,
         "Color_B": 1,
         "Intesity": 0.40000000596046448
     },
-    "value29": 1,
-    "value30": 1048581,
-    "value31": {
-        "Color_R": 1,
-        "Color_G": 0.99998998641967773,
-        "Color_B": 0.99998998641967773,
-        "Direction_X": 0,
-        "Direction_Y": -1,
-        "Direction_Z": 1,
-        "Intesity": 1
-    },
-    "value32": 2,
-    "value33": 3,
-    "value34": {
+    "value33": 0,
+    "value34": 1,
+    "value35": 3,
+    "value36": {
         "Color_R": 1,
         "Color_G": 1,
         "Color_B": 1,
         "Position_X": 2,
         "Position_Y": 0,
         "Position_Z": 0,
-        "Attenuation": 30.700000762939453,
-        "Intesity": 1
-    },
-    "value35": 4,
-    "value36": {
-        "Color_R": 0.99998998641967773,
-        "Color_G": 1,
-        "Color_B": 0.99999123811721802,
-        "Position_X": -2,
-        "Position_Y": 0,
-        "Position_Z": 0,
-        "Attenuation": 10,
+        "Attenuation": 9.3999996185302734,
         "Intesity": 1
     },
     "value37": 0

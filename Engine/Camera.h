@@ -29,7 +29,7 @@ private:
 
 	const Window* m_window;
 
-	const float ROTATION_SPEED = 180.0f;
+	const float ROTATION_SPEED = 120.0f;
 	const float MOVEMENT_SPEED = 5.0f;
 
 	float m_fieldOfView = 60.0f;

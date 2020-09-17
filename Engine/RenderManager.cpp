@@ -3,6 +3,7 @@
 #include <GLFW/glfw3.h>
 #include "Camera.h"
 #include "Components.h"
+#include "Shader.h"
 
 
 RenderManager::RenderManager()

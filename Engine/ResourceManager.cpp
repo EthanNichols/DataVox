@@ -214,7 +214,7 @@ bool ResourceManager::LoadLevel(Registry& registry, const std::string filePath)
 		registry = loadRegistry.clone();
 		loadRegistry.reset();
 
-		registry.view<MeshRenderer>().each([&](const Entity& entity, MeshRenderer& meshRenderer)
+		registry.view<Component::MeshRenderer>().each([&](const Entity& entity, Component::MeshRenderer& meshRenderer)
 		{
 			// Get the path to the mesh.
 			// Delete the mesh, since the mesh will be loaded.
@@ -229,7 +229,7 @@ bool ResourceManager::LoadLevel(Registry& registry, const std::string filePath)
 		registry.view<Mesh>().each([&](const Entity& entity, Mesh& mesh)
 		{
 			LoadModel(&mesh);
-			registry.assign<MeshRenderer>(entity, GetModel(mesh.FilePath));
+			registry.assign<Component::MeshRenderer>(entity, GetModel(mesh.FilePath));
 			registry.remove<Mesh>(entity);
 		});
 
