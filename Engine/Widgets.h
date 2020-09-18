@@ -19,11 +19,17 @@ namespace Widgets
 		}
 	}
 
-
 	void Transform(Component::Transform& transform)
 	{
-		glm::vec3 eulerAngle = glm::eulerAngles(transform.rotation);
-		eulerAngle = glm::vec3(glm::degrees(eulerAngle.x), glm::degrees(eulerAngle.y), glm::degrees(eulerAngle.z));
+		static Component::Transform* lastTransform = nullptr;
+		static glm::vec3 eulerAngle = glm::vec3(0.0f);
+
+		if (lastTransform == nullptr || lastTransform != &transform)
+		{
+			eulerAngle = glm::eulerAngles(transform.rotation);
+			eulerAngle = glm::vec3(glm::degrees(eulerAngle.x), glm::degrees(eulerAngle.y), glm::degrees(eulerAngle.z));
+			lastTransform = &transform;
+		}
 
 		ImGui::InputFloat3("Position##", (float*) &transform.position);
 		ImGui::InputFloat3("Rotation##", (float*) &eulerAngle);
