@@ -17,5 +17,5 @@ void main()
 	gl_Position = ViewProjection * ModelMatrix * vec4(aPosition, 1.0);
 	ModelPos = vec3(ModelMatrix * vec4(aPosition, 1.0));
 	texCoord = aTexCoord;
-	Normal = aNormal;
+	Normal = mat3(transpose(inverse(ModelMatrix))) * aNormal;
 }
