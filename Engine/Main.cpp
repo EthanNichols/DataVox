@@ -43,7 +43,8 @@ int main()
 	Camera camera = Camera(&window);
 	camera.transform.position = glm::vec3(0.0f, 0.0f, 3.0f);
 
-	Shader basicShader("Shaders/VertexShader.glsl", "Shaders/FragmentShader.glsl");
+	Shader basicShader("Shaders/BasicShader.vert", "Shaders/BasicShader.frag");
+	Shader wireframeShader("Shaders/MeshWireframe.vert", "Shaders/MeshWireframe.frag");
 
 	resourceManager.LoadLevel(registry, "Content/levels/level.lev");
 
@@ -75,7 +76,7 @@ int main()
 
 		renderManager.Render(registry, basicShader, camera);
 
-		editorGUI.Render(registry);
+		editorGUI.Render(registry, camera);
 
 		window.Update(0);
 	}

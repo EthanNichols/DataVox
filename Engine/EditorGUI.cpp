@@ -5,9 +5,8 @@
 #include <Imgui/imgui_impl_opengl3.h>
 
 #include "EntityName.h"
-#include "Window.h"
-
 #include "Transform.h"
+#include "Window.h"
 
 
 EditorGUI::EditorGUI(Window& window, Registry& registry, ResourceManager& resourceManager)
@@ -17,12 +16,13 @@ EditorGUI::EditorGUI(Window& window, Registry& registry, ResourceManager& resour
 	m_contentBrowserGUI = ContentBrowserGUI(registry, resourceManager);
 	m_hierarchyGUI = HierarchyGUI();
 	m_inspectorGUI = InspectorGUI(registry);
+	m_editorVisualizer = EditorVisualizer();
 
 
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
-	ImGui_ImplOpenGL3_Init("#version 330");
+	ImGui_ImplOpenGL3_Init("#version 430");
 
 	ImGuiIO& io = ImGui::GetIO();
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
@@ -37,8 +37,13 @@ EditorGUI::~EditorGUI()
 }
 
 
-void EditorGUI::Render(Registry& registry)
+void EditorGUI::Render(Registry& registry, Camera& camera)
 {
+	if (selectedEntity != entt::null)
+	{
+		m_editorVisualizer.Render(registry, selectedEntity, camera);
+	}
+
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
@@ -53,7 +58,7 @@ void EditorGUI::Render(Registry& registry)
 
 	m_hierarchyGUI.Construct(registry);
 
-	Entity selectedEntity = m_hierarchyGUI.GetSelectedEntity();
+	selectedEntity = m_hierarchyGUI.GetSelectedEntity();
 	m_inspectorGUI.Construct(registry, selectedEntity);
 
 	ImGui::Render();

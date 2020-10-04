@@ -108,13 +108,22 @@
     <ClCompile Include="RenderManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="EditorVisualizer.cpp">
+      <Filter>Editor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Shaders\FragmentShader.glsl">
+    <None Include="Shaders\MeshWireframe.frag">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="Shaders\VertexShader.glsl">
+    <None Include="Shaders\MeshWireframe.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\BasicShader.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\BasicShader.vert">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>
@@ -217,6 +226,9 @@
     </ClInclude>
     <ClInclude Include="RenderManager.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorVisualizer.h">
+      <Filter>Editor</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

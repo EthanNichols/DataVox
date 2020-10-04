@@ -24,13 +24,6 @@ namespace Component
 
 	public:
 
-		static void ConstructWidget(Registry& registry, Entity entity)
-		{
-
-		}
-
-	public:
-
 		const char* c_str()
 		{
 			return Name.c_str();

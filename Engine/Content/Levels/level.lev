@@ -22,10 +22,10 @@
     "value10": 5,
     "value11": {
         "Pos_X": 2,
-        "Pos_Y": 0,
+        "Pos_Y": 2,
         "Pos_Z": -2,
         "Rot_X": 0,
-        "Rot_Y": -0,
+        "Rot_Y": 44.999996185302734,
         "Rot_Z": 0,
         "Scale_X": 1,
         "Scale_Y": 1,
@@ -74,7 +74,7 @@
         "Intesity": 0.40000000596046448
     },
     "value33": 0,
-    "value34": 1,
+    "value34": 2,
     "value35": 3,
     "value36": {
         "Color_R": 1,
@@ -83,8 +83,19 @@
         "Position_X": 2,
         "Position_Y": 0,
         "Position_Z": 0,
-        "Attenuation": 9.3999996185302734,
+        "Attenuation": 25.700000762939453,
         "Intesity": 1
     },
-    "value37": 0
+    "value37": 4,
+    "value38": {
+        "Color_R": 1,
+        "Color_G": 1,
+        "Color_B": 1,
+        "Position_X": -2,
+        "Position_Y": 0,
+        "Position_Z": 0,
+        "Attenuation": 16.700000762939453,
+        "Intesity": 1
+    },
+    "value39": 0
 }

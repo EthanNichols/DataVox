@@ -162,6 +162,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ContentBrowserGUI.cpp" />
     <ClCompile Include="EditorGUI.cpp" />
+    <ClCompile Include="EditorVisualizer.cpp" />
     <ClCompile Include="External\glad.c" />
     <ClCompile Include="External\Imgui\imgui.cpp" />
     <ClCompile Include="External\Imgui\imgui_demo.cpp" />
@@ -186,14 +187,17 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Shaders\FragmentShader.glsl" />
-    <None Include="Shaders\VertexShader.glsl" />
+    <None Include="Shaders\BasicShader.frag" />
+    <None Include="Shaders\MeshWireframe.frag" />
+    <None Include="Shaders\MeshWireframe.vert" />
+    <None Include="Shaders\BasicShader.vert" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Components.h" />
     <ClInclude Include="ContentBrowserGUI.h" />
     <ClInclude Include="EditorGUI.h" />
+    <ClInclude Include="EditorVisualizer.h" />
     <ClInclude Include="EntityName.h" />
     <ClInclude Include="External\Imgui\imgui_stdlib.h" />
     <ClInclude Include="Material.h" />

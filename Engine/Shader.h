@@ -11,6 +11,10 @@ using namespace Component;
 class Shader
 {
 public:
+	Shader()
+	{
+		m_id = 0;
+	}
 	Shader(std::string& vertexPath, std::string& fragmentPath);
 	Shader(const std::string& vertexPath, const  std::string& fragmentPath);
 	~Shader();

@@ -24,7 +24,7 @@ void RenderManager::Render(Registry& registry, Shader& shader, Camera& camera) c
 	shader.SetInt("material.specular", 1);
 
 	glm::mat4x4 matrix = camera.GetProjectionMatrix() * camera.GetViewMatrix();
-	shader.SetMat4("ViewProjection", matrix);
+	shader.SetMat4("uViewProjection", matrix);
 	shader.SetVec3("camPos", camera.transform.position);
 
 	int ambientLights = 0;
@@ -69,7 +69,7 @@ void RenderManager::Render(Registry& registry, Shader& shader, Camera& camera) c
 	registry.view<Component::Transform, Component::MeshRenderer>().each(
 		[&](Component::Transform& transform, Component::MeshRenderer& meshRenderer)
 	{
-        std::string modelMatrixName = "ModelMatrix";
+        std::string modelMatrixName = "uModelMatrix";
         glm::mat4x4 worldMatrix = transform.GetWorldMatrix();
         shader.SetMat4(modelMatrixName, worldMatrix);
 
