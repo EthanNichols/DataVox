@@ -41,8 +41,9 @@ void EditorGUI::Render(Registry& registry, Camera& camera)
 {
 	if (selectedEntity != entt::null)
 	{
-		m_editorVisualizer.Render(registry, selectedEntity, camera);
+		m_editorVisualizer.RenderSelectedObjects(registry, selectedEntity, camera);
 	}
+	m_editorVisualizer.Render(registry, camera);
 
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
