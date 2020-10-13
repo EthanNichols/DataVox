@@ -1,7 +1,7 @@
 #pragma once
 
 #include "EntityName.h"
-#include "Lights.h"
+#include "Light.h"
 #include "MeshRenderer.h"
 #include "Transform.h"
 
@@ -10,7 +10,4 @@
 Component::Transform, \
 Component::EntityName, \
 Component::MeshRenderer, \
-Component::AmbientLight, \
-Component::DirectionalLight, \
-Component::PointLight, \
-Component::SpotLight
+Component::Light

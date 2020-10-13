@@ -19,14 +19,22 @@ EditorVisualizer::~EditorVisualizer()
 
 void EditorVisualizer::Render(Registry& registry, Camera& camera)
 {
-	RenderPointLights(registry, camera);
-	RenderDirectionalLights(registry, camera);
+	//RenderPointLights(registry, camera);
+	//RenderDirectionalLights(registry, camera);
 }
 
 
 void EditorVisualizer::RenderSelectedObjects(Registry& registry, Entity& entity, Camera& camera)
 {
 	if (!registry.has<Component::Transform>(entity) || !registry.has<Component::MeshRenderer>(entity))
+	{
+		return;
+	}
+
+	Component::Transform transform = registry.get<Component::Transform>(entity);
+	Component::MeshRenderer meshRenderer = registry.get<Component::MeshRenderer>(entity);
+
+	if (meshRenderer.mesh == nullptr)
 	{
 		return;
 	}
@@ -39,9 +47,6 @@ void EditorVisualizer::RenderSelectedObjects(Registry& registry, Entity& entity,
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	glDisable(GL_CULL_FACE);
 	glLineWidth(3);
-
-	Component::Transform transform = registry.get<Component::Transform>(entity);
-	Component::MeshRenderer meshRenderer = registry.get<Component::MeshRenderer>(entity);
 
 	std::string modelMatrixName = "uModelMatrix";
 	glm::mat4x4 worldMatrix = transform.GetWorldMatrix();
@@ -223,13 +228,13 @@ void EditorVisualizer::DrawPoint(glm::vec3 position, float size, Camera& camera)
 	glBindVertexArray(0);
 }
 
-
+/*
 void EditorVisualizer::RenderPointLights(Registry& registry, Camera& camera)
 {
 	registry.view<Component::PointLight>().each(
 		[&](Component::PointLight& light)
 	{
-		RenderSphere(light.position, light.attenuation, camera);
+		//RenderSphere(light.position, light.attenuation, camera);
 		//DrawPoint(light.position, 20.0f, camera);
 	});
 }
@@ -239,7 +244,8 @@ void EditorVisualizer::RenderDirectionalLights(Registry& registry, Camera& camer
 	registry.view<Component::DirectionalLight>().each(
 		[&](Component::DirectionalLight& light)
 	{
-		DrawCircle(glm::vec3(0.0f, 5.0f, 0.0f), light.direction, 0.5f, camera);
+		//DrawCircle(glm::vec3(0.0f, 5.0f, 0.0f), light.direction, 0.5f, camera);
 		//DrawPoint(light.position, 20.0f, camera);
 	});
 }
+*/

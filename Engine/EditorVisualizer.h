@@ -25,8 +25,10 @@ public:
 
 private:
 
+	/*
 	void RenderPointLights(Registry& registry, Camera& camera);
 	void RenderDirectionalLights(Registry& registry, Camera& camera);
+	*/
 
 	Shader m_wireFrameShader;
 };

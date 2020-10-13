@@ -6,9 +6,6 @@
 #include <sstream>
 
 
-#include "ShadeInclude.h"
-
-
 Shader::Shader(std::string& vertexPath, std::string& fragmentPath)
 {
 	Create(vertexPath, fragmentPath);
@@ -87,72 +84,6 @@ void Shader::SetMat4(const std::string& name, const glm::mat4x4& value) const
 }
 
 
-void Shader::SetAmbientLightToIndex(const AmbientLight& ambientLight, uint16_t index) const
-{
-	std::ostringstream name;
-	name << "ambientLights[" << index << "]";
-
-	std::string colorName = name.str() + ".color";
-	std::string intensityName = name.str() + ".intensity";
-
-	SetVec3(colorName, ambientLight.color);
-	SetFloat(intensityName, ambientLight.intensity);
-}
-
-
-void Shader::SetDirectionalLightToIndex(const DirectionalLight& directionalLight, uint16_t index) const
-{
-	std::ostringstream name;
-	name << "directionalLights[" << index << "]";
-
-	std::string colorName = name.str() + ".color";
-	std::string directionName = name.str() + ".direction";
-	std::string intensityName = name.str() + ".intensity";
-
-	SetVec3(colorName, directionalLight.color);
-	SetVec3(directionName, directionalLight.direction);
-	SetFloat(intensityName, directionalLight.intensity);
-}
-
-
-void Shader::SetPointLightToIndex(const PointLight& pointLight, uint16_t index) const
-{
-	std::ostringstream name;
-	name << "pointLights[" << index << "]";
-
-	std::string colorName = name.str() + ".color";
-	std::string positionName = name.str() + ".position";
-	std::string attenuationName = name.str() + ".attenuation";
-	std::string intensityName = name.str() + ".intensity";
-
-	SetVec3(colorName, pointLight.color);
-	SetVec3(positionName, pointLight.position);
-	SetFloat(attenuationName, pointLight.attenuation);
-	SetFloat(intensityName, pointLight.intensity);
-}
-
-
-void Shader::SetSpotLightToIndex(const SpotLight& spotLight, uint16_t index) const
-{
-	std::ostringstream name;
-	name << "spotLights[" << index << "]";
-
-	std::string colorName = name.str() + ".color";
-	std::string positionName = name.str() + ".position";
-	std::string directionName = name.str() + ".direction";
-	std::string angleName = name.str() + ".angle";
-	std::string attenuationName = name.str() + ".attenuation";
-	std::string intensityName = name.str() + ".intensity";
-
-	SetVec3(colorName, spotLight.color);
-	SetVec3(positionName, spotLight.position);
-	SetVec3(directionName, spotLight.direction);
-	SetFloat(angleName, spotLight.angle);
-	SetFloat(attenuationName, spotLight.attenuation);
-	SetFloat(intensityName, spotLight.intensity);
-}
-
-
 void Shader::Create(const std::string& vertexPath, const std::string& fragmentPath)
 {
 	std::string vertexCode;
@@ -164,10 +95,20 @@ void Shader::Create(const std::string& vertexPath, const std::string& fragmentPa
 	fragmentFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
 	try
 	{
-		Shadeinclude shadeInclude;
-		// convert stream into string
-		vertexCode = shadeInclude.Load(vertexPath);
-		fragmentCode = shadeInclude.Load(fragmentPath);
+		vertexFile.open(vertexPath);
+		fragmentFile.open(fragmentPath);
+
+		std::stringstream vertexStream;
+		std::stringstream fragmentStream;
+
+		vertexStream << vertexFile.rdbuf();
+		fragmentStream << fragmentFile.rdbuf();
+
+		vertexFile.close();
+		fragmentFile.close();
+
+		vertexCode = vertexStream.str();
+		fragmentCode = fragmentStream.str();
 	}
 	catch (std::ifstream::failure e)
 	{

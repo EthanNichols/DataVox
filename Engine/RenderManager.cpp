@@ -27,58 +27,48 @@ void RenderManager::Render(Registry& registry, Shader& shader, Camera& camera) c
 	shader.SetMat4("uViewProjection", matrix);
 	shader.SetVec3("camPos", camera.transform.position);
 
-	int ambientLights = 0;
-	registry.view<AmbientLight>().each([&](AmbientLight& ambientLight)
+	int lights = 0;
+	registry.view<Component::Light, Component::Transform>().each([&]
+	(Component::Light& light, Component::Transform& transform)
 	{
-		if (ambientLights >= MAX_LIGHTS_PER_TYPE)
-		{
-			return;
-		}
+		std::ostringstream name;
+		name << "uLights[" << lights << "]";
 
-		shader.SetAmbientLightToIndex(ambientLight, ambientLights);
-		ambientLights++;
+		std::string colorName = name.str() + ".color";
+		std::string positionName = name.str() + ".position";
+		std::string directionName = name.str() + ".direction";
+		std::string angleName = name.str() + ".angle";
+		std::string attenuationName = name.str() + ".attenuation";
+		std::string intensityName = name.str() + ".intensity";
+		std::string lightTypeName = name.str() + ".lightType";
+
+		shader.SetVec3(colorName, light.color);
+		shader.SetVec3(positionName, transform.position);
+		shader.SetVec3(directionName, transform.GetForward());
+		shader.SetFloat(angleName, light.angle);
+		shader.SetFloat(attenuationName, light.attenuation);
+		shader.SetFloat(intensityName, light.intensity);
+		shader.SetInt(lightTypeName, light.lightType);
+		++lights;
 	});
-	shader.SetInt("ambientLightCount", ambientLights);
-
-	int pointLights = 0;
-	registry.view<PointLight>().each([&](PointLight& pointLight)
-	{
-		if (pointLights >= MAX_LIGHTS_PER_TYPE)
-		{
-			return;
-		}
-
-		shader.SetPointLightToIndex(pointLight, pointLights);
-		pointLights++;
-	});
-	shader.SetInt("pointLightCount", pointLights);
-
-	int directionalLights = 0;
-	registry.view<DirectionalLight>().each([&](DirectionalLight& directionalLight)
-	{
-		if (pointLights >= MAX_LIGHTS_PER_TYPE)
-		{
-			return;
-		}
-
-		shader.SetDirectionalLightToIndex(directionalLight, directionalLights);
-		directionalLights++;
-	});
-	shader.SetInt("directionalLightCount", directionalLights);
+	shader.SetInt("uLightCount", lights);
 
 	registry.view<Component::Transform, Component::MeshRenderer>().each(
 		[&](Component::Transform& transform, Component::MeshRenderer& meshRenderer)
 	{
-        std::string modelMatrixName = "uModelMatrix";
-        glm::mat4x4 worldMatrix = transform.GetWorldMatrix();
-        shader.SetMat4(modelMatrixName, worldMatrix);
+		if (meshRenderer.mesh != nullptr)
+		{
+			std::string modelMatrixName = "uModelMatrix";
+			glm::mat4x4 worldMatrix = transform.GetWorldMatrix();
+			shader.SetMat4(modelMatrixName, worldMatrix);
 
-        // draw mesh
-        glBindVertexArray(meshRenderer.mesh->m_VAO);
-        glDrawElements(GL_TRIANGLES, (int32_t)meshRenderer.mesh->Indices.size(), GL_UNSIGNED_INT, 0);
-        glBindVertexArray(0);
+			// draw mesh
+			glBindVertexArray(meshRenderer.mesh->m_VAO);
+			glDrawElements(GL_TRIANGLES, (int32_t)meshRenderer.mesh->Indices.size(), GL_UNSIGNED_INT, 0);
+			glBindVertexArray(0);
 
-        // always good practice to set everything back to defaults once configured.
-        glActiveTexture(GL_TEXTURE0);
+			// always good practice to set everything back to defaults once configured.
+			glActiveTexture(GL_TEXTURE0);
+		}
 	});
 }

@@ -111,6 +111,9 @@
     <ClCompile Include="EditorVisualizer.cpp">
       <Filter>Editor</Filter>
     </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -182,9 +185,6 @@
     <ClInclude Include="External\Imgui\imgui_impl_glfw.h">
       <Filter>External\ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="ShadeInclude.h">
-      <Filter>External</Filter>
-    </ClInclude>
     <ClInclude Include="External\TinyObjectLoader.h">
       <Filter>External</Filter>
     </ClInclude>
@@ -215,9 +215,6 @@
     <ClInclude Include="External\Imgui\imgui_stdlib.h">
       <Filter>External\ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="Lights.h">
-      <Filter>Components</Filter>
-    </ClInclude>
     <ClInclude Include="Material.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -229,6 +226,9 @@
     </ClInclude>
     <ClInclude Include="EditorVisualizer.h">
       <Filter>Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

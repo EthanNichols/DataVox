@@ -1,7 +1,5 @@
 #version 430 core
 
-#include ../Lights.h
-
 out vec4 FragColor;
 
 struct Material
@@ -10,23 +8,71 @@ struct Material
     sampler2D specularTex;
 	float shininess;
 };
-  
+
+struct Light
+{
+    vec3 position;
+    float attenuation;
+
+    vec3 direction;
+    float angle;
+
+	vec3 color;
+	float intensity;
+
+    int lightType;
+};
+
 in vec2 texCoord;
 in vec3 Normal;
 in vec3 ModelPos;
 
-uniform AmbientLight ambientLights[MAX_LIGHTS_PER_TYPE];
-uniform PointLight pointLights[MAX_LIGHTS_PER_TYPE];
-uniform DirectionalLight directionalLights[MAX_LIGHTS_PER_TYPE];
-
-uniform int ambientLightCount;
-uniform int pointLightCount;
-uniform int directionalLightCount;
+uniform Light uLights[32];
+uniform int uLightCount;
 
 uniform Material material;
 uniform vec3 lightPos; 
 uniform vec3 lightColor;
 uniform vec3 camPos;
+
+
+float CalcLightAttentuation(vec3 lightPosition, float attenuation, vec3 pixelPosition)
+{
+	float dist = length(lightPosition - pixelPosition);
+
+	float attenVal = clamp(1.0f - (dist * dist / (attenuation * attenuation)), 0.0, 1.0);
+
+	return attenVal * attenVal;
+}
+
+
+vec3 CalcAmbientLightColor(Light light, vec3 pixelColor)
+{
+	return vec3(light.color.rgb * light.intensity) * pixelColor;
+}
+
+
+vec3 CalcDirectionalLightColor(Light light, vec3 pixelColor)
+{
+	vec3 lightNormDir = normalize(-light.direction.xyz);
+
+	float NdotL = clamp(dot(Normal, lightNormDir), 0.0, 1.0);
+
+	return (NdotL * pixelColor) * light.color.rgb * light.intensity;
+}
+
+
+vec3 CalcPointLightColor(Light light, vec3 pixelPosition, vec3 pixelColor, vec3 cameraPosition)
+{
+	vec3 dirToLight = normalize(light.position - pixelPosition);
+	vec3 dirToCam = normalize(cameraPosition - pixelPosition);
+
+	float attenVal = CalcLightAttentuation(light.position, light.attenuation, pixelPosition);
+	float NdotL = clamp(dot(Normal, dirToLight), 0.0, 1.0);
+
+	return (NdotL * pixelColor) * attenVal * light.intensity * light.color;;
+}
+
 
 void main()
 {
@@ -49,25 +95,26 @@ void main()
 
     vec3 pixelColor = texture(material.diffuseTex, texCoord).rgb;
 
-    // ambient
-    vec3 ambientLightColor = vec3(0.0, 0.0, 0.0);
-    for (int i=0; i<ambientLightCount; ++i)
+    vec3 lightColor = vec3(0.0, 0.0, 0.0);
+    for (int i=0; i<uLightCount; ++i)
     {
-        ambientLightColor += CalcAmbientLightColor(ambientLights[i], pixelColor);
+        Light light = uLights[i];
+
+        switch(light.lightType)
+        {
+            case 0:
+                lightColor += CalcAmbientLightColor(light, pixelColor);
+                break;
+            case 1:
+                lightColor += CalcDirectionalLightColor(light, pixelColor);
+                break;
+            case 2:
+                lightColor += CalcPointLightColor(light, ModelPos, pixelColor, camPos);
+                break;
+            case 3:
+                break;
+        }
     }
 
-    vec3 pointLightColor = vec3(0.0, 0.0, 0.0);
-    for (int i=0; i<pointLightCount; ++i)
-    {
-        pointLightColor += CalcPointLightColor(pointLights[i], ModelPos, pixelColor, Normal, camPos);
-    }
-
-    vec3 directionalLightColor = vec3(0.0, 0.0, 0.0);
-    for (int i=0; i<directionalLightCount; ++i)
-    {
-        directionalLightColor += CalcDirectionalLightColor(directionalLights[i], pixelColor, Normal);
-    }
-
-    vec3 result = ambientLightColor + pointLightColor + directionalLightColor;
-    FragColor = vec4(result, 1.0);
+    FragColor = vec4(lightColor, 1.0);
 }

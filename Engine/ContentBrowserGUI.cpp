@@ -28,6 +28,8 @@ void ContentBrowserGUI::Construct(Registry& registry)
 {
 	ImGui::Begin("Content Browser");
 	{
+		// TODO: This should only run once and stored. Since checking all the files takes a while
+		// Then file is clicked in the content browser, the file is loaded by the path.
 		RecursiveFileBrowse(registry, "Content");
 	}
 	ImGui::End();

@@ -195,10 +195,9 @@ void InspectorGUI::RegisterWidgets(Registry& registry)
 
 	RegisterComponent<Component::EntityName>(registry, "Name", &Widgets::EntityName);
 
-	RegisterComponent<Component::AmbientLight>(registry, "Ambient Light", Widgets::AmbientLight);
-	RegisterComponent<Component::DirectionalLight>(registry, "Directional Light", Widgets::DirectionalLight);
-	RegisterComponent<Component::PointLight>(registry, "Point Light", Widgets::PointLight);
-	RegisterComponent<Component::SpotLight>(registry, "Spot Light", Widgets::SpotLight);
+	RegisterComponent<Component::MeshRenderer>(registry, "Mesh Renderer", &Widgets::MeshRenderer);
+
+	RegisterComponent<Component::Light>(registry, "Light", &Widgets::Light);
 }
 
 #undef ESS_IMGUI_ENTT_E_E_DELETE_COMP_STR

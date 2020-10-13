@@ -203,11 +203,6 @@ bool ResourceManager::LoadLevel(Registry& registry, const std::string filePath)
 
 	LoadLevel_Internal<ARG_SERIALIZE_COMPONENTS>(loadRegistry, filePath, success);
 
-	// Deprecated
-	// TODO: Remove once level files are updated
-	LoadLevel_Internal<Component::Transform, Component::EntityName, Mesh, Component::AmbientLight, Component::DirectionalLight, Component::PointLight, Component::SpotLight>(loadRegistry, filePath, success);
-	LoadLevel_Internal<Component::EntityName, Component::Transform, Mesh>(loadRegistry, filePath, success);
-
 	if (success)
 	{
 		registry.reset();

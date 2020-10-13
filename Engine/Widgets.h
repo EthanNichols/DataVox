@@ -38,41 +38,38 @@ namespace Widgets
 		transform.rotation = glm::yawPitchRoll(glm::radians(eulerAngle.y), glm::radians(eulerAngle.x), glm::radians(eulerAngle.z));
 	}
 
-
-	void AmbientLight(Component::AmbientLight& ambientLight)
+	void MeshRenderer(Component::MeshRenderer& meshRenderer)
 	{
-		ImGui::ColorEdit3("Color##", (float*)&ambientLight.color);
-
-		ImGui::DragFloat("Intensity##", (float*)&ambientLight.intensity, 0.01f, 0.0f, 10.0f);
+		const char* text = (meshRenderer.mesh != nullptr) ? meshRenderer.mesh->FilePath.c_str() : "None";
+		ImGui::Text(text);
 	}
 
 
-	void DirectionalLight(Component::DirectionalLight& directionalLight)
+	void Light(Component::Light& light)
 	{
-		ImGui::ColorEdit3("Color##", (float*)&directionalLight.color);
-		ImGui::InputFloat3("Direction##", (float*)&directionalLight.direction);
+		ImGui::ColorEdit3("Color##", (float*)&light.color);
+		ImGui::DragFloat("Intensity##", (float*)&light.intensity, 0.01f, 0.0f, 10.0f);
 
-		ImGui::DragFloat("Intensity##", (float*)&directionalLight.intensity, 0.01f, 0.0f, 10.0f);
-	}
+		switch (light.lightType)
+		{
 
-	void PointLight(Component::PointLight& pointLight)
-	{
-		ImGui::ColorEdit3("Color##", (float*)&pointLight.color);
-		ImGui::InputFloat3("Position##", (float*)&pointLight.position);
+			case Component::Light::SpotLight:
+				ImGui::DragFloat("Angle##", (float*)&light.angle, 0.5f, 0.0f, 180.0f);
+			case Component::Light::PointLight:
+				ImGui::DragFloat("attenuation##", (float*)&light.attenuation, .1f);
+		}
 
-		ImGui::DragFloat("Attenuation##", (float*)&pointLight.attenuation, 0.1f);
-		ImGui::DragFloat("Intensity##", (float*)&pointLight.intensity, 0.01f, 0.0f, 10.0f);
-	}
+		if (ImGui::BeginCombo("LightType", Component::Light::LightTypeNames[light.lightType]))
+		{
+			for (int i = 0; i < 4; ++i)
+			{				
+				if (ImGui::Selectable(Component::Light::LightTypeNames[i]))
+				{
+					light.lightType = (Component::Light::LightType)i;
+				}
+			}
 
-
-	void SpotLight(Component::SpotLight& spotLight)
-	{
-		ImGui::ColorEdit3("Color##", (float*)&spotLight.color);
-		ImGui::InputFloat3("Position##", (float*)&spotLight.position);
-		ImGui::InputFloat3("Direction##", (float*)&spotLight.direction);
-
-		ImGui::DragFloat("Angle##", (float*)&spotLight.angle, 0.5f, 0.0f, 180.0f);
-		ImGui::DragFloat("Intensity##", (float*)&spotLight.attenuation, .1f);
-		ImGui::DragFloat("Intensity##", (float*)&spotLight.intensity, 0.01f, 0.0f, 10.0f);
+			ImGui::EndCombo();
+		}
 	}
 }

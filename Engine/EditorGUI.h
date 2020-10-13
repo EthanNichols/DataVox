@@ -31,6 +31,6 @@ private:
 	InspectorGUI m_inspectorGUI;
 	EditorVisualizer m_editorVisualizer;
 
-	Entity selectedEntity;
+	Entity selectedEntity = entt::null;
 };
 
