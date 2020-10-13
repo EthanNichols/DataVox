@@ -65,12 +65,26 @@ vec3 CalcDirectionalLightColor(Light light, vec3 pixelColor)
 vec3 CalcPointLightColor(Light light, vec3 pixelPosition, vec3 pixelColor, vec3 cameraPosition)
 {
 	vec3 dirToLight = normalize(light.position - pixelPosition);
-	vec3 dirToCam = normalize(cameraPosition - pixelPosition);
 
 	float attenVal = CalcLightAttentuation(light.position, light.attenuation, pixelPosition);
 	float NdotL = clamp(dot(Normal, dirToLight), 0.0, 1.0);
 
 	return (NdotL * pixelColor) * attenVal * light.intensity * light.color;;
+}
+
+
+vec3 CalcSpotLightColor(Light light, vec3 pixelPosition, vec3 pixelColor, vec3 cameraPosition)
+{
+    vec3 dirToLight = normalize(light.position - pixelPosition);
+    float radAngle = cos(radians(light.angle));
+
+    float theta = max(dot(dirToLight, light.direction), 0.0);
+    float spotAmount = clamp(1.0 - (1.0 - theta) * 1.0 / (1.0 - radAngle), 0.0, 1.0);
+
+	float attenVal = CalcLightAttentuation(light.position, light.attenuation, pixelPosition);
+	float NdotL = clamp(dot(Normal, dirToLight), 0.0, 1.0);
+
+	return (NdotL * pixelColor) * spotAmount * attenVal * light.intensity * light.color;;
 }
 
 
@@ -112,6 +126,7 @@ void main()
                 lightColor += CalcPointLightColor(light, ModelPos, pixelColor, camPos);
                 break;
             case 3:
+                lightColor += CalcSpotLightColor(light, ModelPos, pixelColor, camPos);
                 break;
         }
     }

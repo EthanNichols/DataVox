@@ -54,7 +54,7 @@ namespace Widgets
 		{
 
 			case Component::Light::SpotLight:
-				ImGui::DragFloat("Angle##", (float*)&light.angle, 0.5f, 0.0f, 180.0f);
+				ImGui::DragFloat("Angle##", (float*)&light.angle, 0.5f, 0.0f, 89.9f);
 			case Component::Light::PointLight:
 				ImGui::DragFloat("attenuation##", (float*)&light.attenuation, .1f);
 		}

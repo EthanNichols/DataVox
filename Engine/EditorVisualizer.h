@@ -2,6 +2,7 @@
 #include "Entt.h"
 #include "glm/glm.hpp"
 #include "Shader.h"
+#include "Transform.h"
 
 class Camera;
 
@@ -19,17 +20,15 @@ public:
 
 public:
 
-	void RenderSphere(glm::vec3 position, float radius, Camera& camera, uint8_t detail = 30);
-	void DrawCircle(glm::vec3 position, glm::vec3 up, float radius, Camera& camera, uint8_t detail = 30);
-	void DrawPoint(glm::vec3 position, float size, Camera& camera);
-
 private:
 
-	/*
-	void RenderPointLights(Registry& registry, Camera& camera);
-	void RenderDirectionalLights(Registry& registry, Camera& camera);
-	*/
+	void RenderLights(Registry& registry, Camera& camera);
+	void RenderPointLight(glm::vec3 position, float radius, Camera& camera, uint8_t detail = 30);
+	void RenderDirectionalLight(Component::Transform& transform, float radius, Camera& camera, uint8_t detail = 30);
+	void RenderSpotLight(Component::Transform& transform, float distance, float angle, Camera& camera, uint8_t detail = 30);
 
 	Shader m_wireFrameShader;
+
+
 };
 

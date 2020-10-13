@@ -1,10 +1,13 @@
 {
-    "value0": 2,
-    "value1": 1,
-    "value2": 0,
+    "value0": 5,
+    "value1": 4,
+    "value2": 3,
     "value3": 2,
-    "value4": 0,
-    "value5": {
+    "value4": 1,
+    "value5": 0,
+    "value6": 5,
+    "value7": 0,
+    "value8": {
         "Pos_X": 0,
         "Pos_Y": 0,
         "Pos_Z": 0,
@@ -15,8 +18,8 @@
         "Scale_Y": 1,
         "Scale_Z": 1
     },
-    "value6": 1,
-    "value7": {
+    "value9": 1,
+    "value10": {
         "Pos_X": 0,
         "Pos_Y": 2,
         "Pos_Z": 0,
@@ -27,29 +30,107 @@
         "Scale_Y": 1,
         "Scale_Z": 1
     },
-    "value8": 2,
-    "value9": 0,
-    "value10": {
+    "value11": 2,
+    "value12": {
+        "Pos_X": 2,
+        "Pos_Y": 0,
+        "Pos_Z": 0,
+        "Rot_X": 0,
+        "Rot_Y": -0,
+        "Rot_Z": 0,
+        "Scale_X": 1,
+        "Scale_Y": 1,
+        "Scale_Z": 1
+    },
+    "value13": 3,
+    "value14": {
+        "Pos_X": 0,
+        "Pos_Y": 5,
+        "Pos_Z": 0,
+        "Rot_X": 0,
+        "Rot_Y": -0,
+        "Rot_Z": 0,
+        "Scale_X": 1,
+        "Scale_Y": 1,
+        "Scale_Z": 1
+    },
+    "value15": 4,
+    "value16": {
+        "Pos_X": -5,
+        "Pos_Y": 0.5,
+        "Pos_Z": 0,
+        "Rot_X": 0,
+        "Rot_Y": 89.980216979980469,
+        "Rot_Z": 0,
+        "Scale_X": 1,
+        "Scale_Y": 1,
+        "Scale_Z": 1
+    },
+    "value17": 5,
+    "value18": 0,
+    "value19": {
         "Name": "Cube"
     },
-    "value11": 1,
-    "value12": {
-        "Name": "Light"
+    "value20": 1,
+    "value21": {
+        "Name": "Ambient Light"
     },
-    "value13": 1,
-    "value14": 0,
-    "value15": {
+    "value22": 2,
+    "value23": {
+        "Name": "Point Light"
+    },
+    "value24": 3,
+    "value25": {
+        "Name": "Directional Light"
+    },
+    "value26": 4,
+    "value27": {
+        "Name": "Spot Light"
+    },
+    "value28": 1,
+    "value29": 0,
+    "value30": {
         "MeshFilePath": "Content/Models/Cube.obj"
     },
-    "value16": 1,
-    "value17": 1,
-    "value18": {
+    "value31": 4,
+    "value32": 1,
+    "value33": {
         "Color_R": 1,
         "Color_G": 1,
-        "Color_B": 0,
+        "Color_B": 0.99998998641967773,
         "Attenuation": 9.6999998092651367,
         "Angle": 0,
-        "Intesity": 1.5199999809265137,
+        "Intesity": 0.40000000596046448,
         "LightType": 0
+    },
+    "value34": 2,
+    "value35": {
+        "Color_R": 1,
+        "Color_G": 0,
+        "Color_B": 0,
+        "Attenuation": 2,
+        "Angle": 0,
+        "Intesity": 1,
+        "LightType": 2
+    },
+    "value36": 3,
+    "value37": {
+        "Color_R": 0,
+        "Color_G": 0.029449462890625,
+        "Color_B": 1,
+        "Attenuation": 0,
+        "Angle": 0,
+        "Intesity": 1.190000057220459,
+        "LightType": 1
+    },
+    "value38": 4,
+    "value39": {
+        "Color_R": 0,
+        "Color_G": 1,
+        "Color_B": 0,
+        "Attenuation": 5.8000001907348633,
+        "Angle": 6,
+        "Intesity": 7.5999999046325684,
+        "LightType": 3
     }
 }

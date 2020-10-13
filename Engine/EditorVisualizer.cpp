@@ -19,8 +19,7 @@ EditorVisualizer::~EditorVisualizer()
 
 void EditorVisualizer::Render(Registry& registry, Camera& camera)
 {
-	//RenderPointLights(registry, camera);
-	//RenderDirectionalLights(registry, camera);
+	RenderLights(registry, camera);
 }
 
 
@@ -60,7 +59,7 @@ void EditorVisualizer::RenderSelectedObjects(Registry& registry, Entity& entity,
 	glEnable(GL_CULL_FACE);
 }
 
-void EditorVisualizer::RenderSphere(glm::vec3 position, float radius, Camera& camera, uint8_t detail)
+void EditorVisualizer::RenderPointLight(glm::vec3 position, float radius, Camera& camera, uint8_t detail)
 {
 	float rad = glm::radians(360.0f / detail);
 
@@ -126,7 +125,7 @@ void EditorVisualizer::RenderSphere(glm::vec3 position, float radius, Camera& ca
 }
 
 
-void EditorVisualizer::DrawCircle(glm::vec3 position, glm::vec3 up, float radius, Camera& camera, uint8_t detail)
+void EditorVisualizer::RenderDirectionalLight(Component::Transform& transform, float radius, Camera& camera, uint8_t detail)
 {
 	float rad = glm::radians(360.0f / detail);
 	std::vector<Vertex> vertices;
@@ -138,7 +137,7 @@ void EditorVisualizer::DrawCircle(glm::vec3 position, glm::vec3 up, float radius
 		float y = (glm::sin(rad * i) * radius);
 
 		Vertex vertex;
-		vertex.Position = glm::vec3(x, 0.0f, y);
+		vertex.Position = glm::vec3(x, y, 0.0f);
 
 		int index = i * 2;
 
@@ -151,7 +150,7 @@ void EditorVisualizer::DrawCircle(glm::vec3 position, glm::vec3 up, float radius
 	Vertex centerVertex;
 	Vertex forwardVertex;
 	centerVertex.Position = glm::vec3(0.0f);
-	forwardVertex.Position = glm::normalize(up);
+	forwardVertex.Position = glm::vec3(0.0f, 0.0f, -1.0f);
 
 	vertices.push_back(centerVertex);
 	vertices.push_back(forwardVertex);
@@ -177,9 +176,8 @@ void EditorVisualizer::DrawCircle(glm::vec3 position, glm::vec3 up, float radius
 	glLineWidth(1);
 
 	std::string modelMatrixName = "uModelMatrix";
-	glm::mat4x4 modelMatrix = glm::mat4x4(1.0f);
-	modelMatrix = glm::translate(modelMatrix, position);
-	m_wireFrameShader.SetMat4(modelMatrixName, modelMatrix);
+	glm::mat4x4 worldMatrix = transform.GetWorldMatrix();
+	m_wireFrameShader.SetMat4(modelMatrixName, worldMatrix);
 
 	glDrawArrays(GL_LINES, 0, vertices.size());
 
@@ -190,11 +188,39 @@ void EditorVisualizer::DrawCircle(glm::vec3 position, glm::vec3 up, float radius
 }
 
 
-void EditorVisualizer::DrawPoint(glm::vec3 position, float size, Camera& camera)
+void EditorVisualizer::RenderSpotLight(Component::Transform& transform, float distance, float angle, Camera& camera, uint8_t detail)
 {
+	float rad = glm::radians(360.0f / detail);
 	std::vector<Vertex> vertices;
-	vertices.resize(1);
-	vertices[0].Position = position;
+	vertices.resize(detail * 2 * 3);
+
+	float radius = distance * glm::tan(glm::radians(angle));
+
+	for (int i = 0; i < detail; ++i)
+	{
+		float x = (glm::cos(rad * i) * radius);
+		float y = (glm::sin(rad * i) * radius);
+
+		Vertex vertex;
+		vertex.Position = glm::vec3(x, y, distance);
+
+		int index = i * 2;
+
+		vertices[index] = vertex;
+
+		index = i == 0 ? (detail * 2) - 1 : (index - 1);
+		vertices[index] = vertex;
+	}
+
+	Vertex centerVertex;
+	centerVertex.Position = glm::vec3(0.0f);
+	int detailOffset = (detail / 4);
+
+	for (int i = 0; i < 4; ++i)
+	{
+		vertices.push_back(centerVertex);
+		vertices.push_back(vertices[i * detailOffset * 2]);
+	}
 
 	uint32_t vao;
 	uint32_t vbo;
@@ -212,15 +238,15 @@ void EditorVisualizer::DrawPoint(glm::vec3 position, float size, Camera& camera)
 	glm::mat4x4 matrix = camera.GetProjectionMatrix() * camera.GetViewMatrix();
 	m_wireFrameShader.SetMat4("uViewProjection", matrix);
 	m_wireFrameShader.SetVec3("uColor", glm::vec3(0.0f, 0.0f, 0.0f));
-	glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	glDisable(GL_CULL_FACE);
-	glPointSize(size);
+	glLineWidth(1);
 
 	std::string modelMatrixName = "uModelMatrix";
-	glm::mat4x4 modelMatrix = glm::mat4x4(1.0f);
-	m_wireFrameShader.SetMat4(modelMatrixName, modelMatrix);
+	glm::mat4x4 worldMatrix = transform.GetWorldMatrix();
+	m_wireFrameShader.SetMat4(modelMatrixName, worldMatrix);
 
-	glDrawArrays(GL_POINTS, 0, vertices.size());
+	glDrawArrays(GL_LINES, 0, vertices.size());
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glEnable(GL_CULL_FACE);
@@ -228,24 +254,25 @@ void EditorVisualizer::DrawPoint(glm::vec3 position, float size, Camera& camera)
 	glBindVertexArray(0);
 }
 
-/*
-void EditorVisualizer::RenderPointLights(Registry& registry, Camera& camera)
-{
-	registry.view<Component::PointLight>().each(
-		[&](Component::PointLight& light)
-	{
-		//RenderSphere(light.position, light.attenuation, camera);
-		//DrawPoint(light.position, 20.0f, camera);
-	});
-}
 
-void EditorVisualizer::RenderDirectionalLights(Registry& registry, Camera& camera)
+void EditorVisualizer::RenderLights(Registry& registry, Camera& camera)
 {
-	registry.view<Component::DirectionalLight>().each(
-		[&](Component::DirectionalLight& light)
+	registry.view<Component::Light, Component::Transform>().each(
+		[&](Component::Light& light, Component::Transform& transform)
 	{
-		//DrawCircle(glm::vec3(0.0f, 5.0f, 0.0f), light.direction, 0.5f, camera);
-		//DrawPoint(light.position, 20.0f, camera);
+		switch (light.lightType)
+		{
+			case Component::Light::AmbientLight:
+				break;
+			case Component::Light::DirectionalLight:
+				RenderDirectionalLight(transform, 0.5f, camera);
+				break;
+			case Component::Light::PointLight:
+				RenderPointLight(transform.position, light.attenuation, camera);
+				break;
+			case Component::Light::SpotLight:
+				RenderSpotLight(transform, light.attenuation, light.angle, camera);
+				break;
+		}
 	});
 }
-*/
