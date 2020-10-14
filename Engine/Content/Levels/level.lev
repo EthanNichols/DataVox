@@ -32,8 +32,8 @@
     },
     "value11": 2,
     "value12": {
-        "Pos_X": 2,
-        "Pos_Y": 0,
+        "Pos_X": 0,
+        "Pos_Y": 2,
         "Pos_Z": 0,
         "Rot_X": 0,
         "Rot_Y": -0,

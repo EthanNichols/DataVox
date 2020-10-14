@@ -25,6 +25,10 @@ void EditorVisualizer::Render(Registry& registry, Camera& camera)
 
 void EditorVisualizer::RenderSelectedObjects(Registry& registry, Entity& entity, Camera& camera)
 {
+	if (!registry.valid(entity))
+	{
+		return;
+	}
 	if (!registry.has<Component::Transform>(entity) || !registry.has<Component::MeshRenderer>(entity))
 	{
 		return;

@@ -1,14 +1,34 @@
 {
-    "value0": 1,
-    "value1": 0,
-    "value2": 1,
-    "value3": 0,
-    "value4": {
-        "Name": "Cube Test"
-    },
-    "value5": 1,
-    "value6": 0,
-    "value7": {
+    "value0": 26,
+    "value1": 25,
+    "value2": 24,
+    "value3": 23,
+    "value4": 22,
+    "value5": 21,
+    "value6": 20,
+    "value7": 19,
+    "value8": 18,
+    "value9": 17,
+    "value10": 16,
+    "value11": 15,
+    "value12": 14,
+    "value13": 13,
+    "value14": 12,
+    "value15": 11,
+    "value16": 10,
+    "value17": 9,
+    "value18": 8,
+    "value19": 7,
+    "value20": 6,
+    "value21": 5,
+    "value22": 1048580,
+    "value23": 1048579,
+    "value24": 1048578,
+    "value25": 1,
+    "value26": 0,
+    "value27": 26,
+    "value28": 0,
+    "value29": {
         "Pos_X": 0,
         "Pos_Y": 0,
         "Pos_Z": 0,
@@ -19,9 +39,521 @@
         "Scale_Y": 1,
         "Scale_Z": 1
     },
-    "value8": 1,
-    "value9": 0,
-    "value10": {
-        "Mesh_FilePath": "Content/Models/Cube.obj"
+    "value30": 1,
+    "value31": {
+        "Pos_X": 0,
+        "Pos_Y": 2,
+        "Pos_Z": 0,
+        "Rot_X": 0,
+        "Rot_Y": -0,
+        "Rot_Z": 0,
+        "Scale_X": 1,
+        "Scale_Y": 1,
+        "Scale_Z": 1
+    },
+    "value32": 1048578,
+    "value33": {
+        "Pos_X": 3,
+        "Pos_Y": 0,
+        "Pos_Z": 0,
+        "Rot_X": 0,
+        "Rot_Y": -0,
+        "Rot_Z": 0,
+        "Scale_X": 1,
+        "Scale_Y": 1,
+        "Scale_Z": 1
+    },
+    "value34": 1048580,
+    "value35": {
+        "Pos_X": 6,
+        "Pos_Y": 0,
+        "Pos_Z": 0,
+        "Rot_X": 0,
+        "Rot_Y": -0,
+        "Rot_Z": 0,
+        "Scale_X": 1,
+        "Scale_Y": 1,
+        "Scale_Z": 1
+    },
+    "value36": 1048579,
+    "value37": {
+        "Pos_X": 9,
+        "Pos_Y": 0,
+        "Pos_Z": 0,
+        "Rot_X": 0,
+        "Rot_Y": -0,
+        "Rot_Z": 0,
+        "Scale_X": 1,
+        "Scale_Y": 1,
+        "Scale_Z": 1
+    },
+    "value38": 5,
+    "value39": {
+        "Pos_X": 12,
+        "Pos_Y": 0,
+        "Pos_Z": 0,
+        "Rot_X": 0,
+        "Rot_Y": -0,
+        "Rot_Z": 0,
+        "Scale_X": 1,
+        "Scale_Y": 1,
+        "Scale_Z": 1
+    },
+    "value40": 6,
+    "value41": {
+        "Pos_X": 0,
+        "Pos_Y": 0,
+        "Pos_Z": -3,
+        "Rot_X": 0,
+        "Rot_Y": -0,
+        "Rot_Z": 0,
+        "Scale_X": 1,
+        "Scale_Y": 1,
+        "Scale_Z": 1
+    },
+    "value42": 7,
+    "value43": {
+        "Pos_X": 3,
+        "Pos_Y": 0,
+        "Pos_Z": -3,
+        "Rot_X": 0,
+        "Rot_Y": -0,
+        "Rot_Z": 0,
+        "Scale_X": 1,
+        "Scale_Y": 1,
+        "Scale_Z": 1
+    },
+    "value44": 8,
+    "value45": {
+        "Pos_X": 6,
+        "Pos_Y": 0,
+        "Pos_Z": -3,
+        "Rot_X": 0,
+        "Rot_Y": -0,
+        "Rot_Z": 0,
+        "Scale_X": 1,
+        "Scale_Y": 1,
+        "Scale_Z": 1
+    },
+    "value46": 9,
+    "value47": {
+        "Pos_X": 9,
+        "Pos_Y": 0,
+        "Pos_Z": -3,
+        "Rot_X": 0,
+        "Rot_Y": -0,
+        "Rot_Z": 0,
+        "Scale_X": 1,
+        "Scale_Y": 1,
+        "Scale_Z": 1
+    },
+    "value48": 10,
+    "value49": {
+        "Pos_X": 12,
+        "Pos_Y": 0,
+        "Pos_Z": -3,
+        "Rot_X": 0,
+        "Rot_Y": -0,
+        "Rot_Z": 0,
+        "Scale_X": 1,
+        "Scale_Y": 1,
+        "Scale_Z": 1
+    },
+    "value50": 11,
+    "value51": {
+        "Pos_X": 0,
+        "Pos_Y": 0,
+        "Pos_Z": -6,
+        "Rot_X": 0,
+        "Rot_Y": -0,
+        "Rot_Z": 0,
+        "Scale_X": 1,
+        "Scale_Y": 1,
+        "Scale_Z": 1
+    },
+    "value52": 12,
+    "value53": {
+        "Pos_X": 3,
+        "Pos_Y": 0,
+        "Pos_Z": -6,
+        "Rot_X": 0,
+        "Rot_Y": -0,
+        "Rot_Z": 0,
+        "Scale_X": 1,
+        "Scale_Y": 1,
+        "Scale_Z": 1
+    },
+    "value54": 13,
+    "value55": {
+        "Pos_X": 6,
+        "Pos_Y": 0,
+        "Pos_Z": -6,
+        "Rot_X": 0,
+        "Rot_Y": -0,
+        "Rot_Z": 0,
+        "Scale_X": 1,
+        "Scale_Y": 1,
+        "Scale_Z": 1
+    },
+    "value56": 14,
+    "value57": {
+        "Pos_X": 9,
+        "Pos_Y": 0,
+        "Pos_Z": -6,
+        "Rot_X": 0,
+        "Rot_Y": -0,
+        "Rot_Z": 0,
+        "Scale_X": 1,
+        "Scale_Y": 1,
+        "Scale_Z": 1
+    },
+    "value58": 15,
+    "value59": {
+        "Pos_X": 12,
+        "Pos_Y": 0,
+        "Pos_Z": -6,
+        "Rot_X": 0,
+        "Rot_Y": -0,
+        "Rot_Z": 0,
+        "Scale_X": 1,
+        "Scale_Y": 1,
+        "Scale_Z": 1
+    },
+    "value60": 16,
+    "value61": {
+        "Pos_X": 0,
+        "Pos_Y": 0,
+        "Pos_Z": -9,
+        "Rot_X": 0,
+        "Rot_Y": -0,
+        "Rot_Z": 0,
+        "Scale_X": 1,
+        "Scale_Y": 1,
+        "Scale_Z": 1
+    },
+    "value62": 17,
+    "value63": {
+        "Pos_X": 3,
+        "Pos_Y": 0,
+        "Pos_Z": -9,
+        "Rot_X": 0,
+        "Rot_Y": -0,
+        "Rot_Z": 0,
+        "Scale_X": 1,
+        "Scale_Y": 1,
+        "Scale_Z": 1
+    },
+    "value64": 18,
+    "value65": {
+        "Pos_X": 6,
+        "Pos_Y": 0,
+        "Pos_Z": -9,
+        "Rot_X": 0,
+        "Rot_Y": -0,
+        "Rot_Z": 0,
+        "Scale_X": 1,
+        "Scale_Y": 1,
+        "Scale_Z": 1
+    },
+    "value66": 19,
+    "value67": {
+        "Pos_X": 9,
+        "Pos_Y": 0,
+        "Pos_Z": -9,
+        "Rot_X": 0,
+        "Rot_Y": -0,
+        "Rot_Z": 0,
+        "Scale_X": 1,
+        "Scale_Y": 1,
+        "Scale_Z": 1
+    },
+    "value68": 20,
+    "value69": {
+        "Pos_X": 12,
+        "Pos_Y": 0,
+        "Pos_Z": -9,
+        "Rot_X": 0,
+        "Rot_Y": -0,
+        "Rot_Z": 0,
+        "Scale_X": 1,
+        "Scale_Y": 1,
+        "Scale_Z": 1
+    },
+    "value70": 21,
+    "value71": {
+        "Pos_X": 0,
+        "Pos_Y": 0,
+        "Pos_Z": -12,
+        "Rot_X": 0,
+        "Rot_Y": -0,
+        "Rot_Z": 0,
+        "Scale_X": 1,
+        "Scale_Y": 1,
+        "Scale_Z": 1
+    },
+    "value72": 22,
+    "value73": {
+        "Pos_X": 3,
+        "Pos_Y": 0,
+        "Pos_Z": -12,
+        "Rot_X": 0,
+        "Rot_Y": -0,
+        "Rot_Z": 0,
+        "Scale_X": 1,
+        "Scale_Y": 1,
+        "Scale_Z": 1
+    },
+    "value74": 23,
+    "value75": {
+        "Pos_X": 6,
+        "Pos_Y": 0,
+        "Pos_Z": -12,
+        "Rot_X": 0,
+        "Rot_Y": -0,
+        "Rot_Z": 0,
+        "Scale_X": 1,
+        "Scale_Y": 1,
+        "Scale_Z": 1
+    },
+    "value76": 24,
+    "value77": {
+        "Pos_X": 9,
+        "Pos_Y": 0,
+        "Pos_Z": -12,
+        "Rot_X": 0,
+        "Rot_Y": -0,
+        "Rot_Z": 0,
+        "Scale_X": 1,
+        "Scale_Y": 1,
+        "Scale_Z": 1
+    },
+    "value78": 25,
+    "value79": {
+        "Pos_X": 12,
+        "Pos_Y": 0,
+        "Pos_Z": -12,
+        "Rot_X": 0,
+        "Rot_Y": -0,
+        "Rot_Z": 0,
+        "Scale_X": 1,
+        "Scale_Y": 1,
+        "Scale_Z": 1
+    },
+    "value80": 26,
+    "value81": 0,
+    "value82": {
+        "Name": "Cube_00"
+    },
+    "value83": 1,
+    "value84": {
+        "Name": "Ambient Light"
+    },
+    "value85": 1048578,
+    "value86": {
+        "Name": "Cube_01"
+    },
+    "value87": 1048580,
+    "value88": {
+        "Name": "Cube_02"
+    },
+    "value89": 1048579,
+    "value90": {
+        "Name": "Cube_03"
+    },
+    "value91": 5,
+    "value92": {
+        "Name": "Cube_04"
+    },
+    "value93": 6,
+    "value94": {
+        "Name": "Cube_10"
+    },
+    "value95": 7,
+    "value96": {
+        "Name": "Cube_11"
+    },
+    "value97": 8,
+    "value98": {
+        "Name": "Cube_12"
+    },
+    "value99": 9,
+    "value100": {
+        "Name": "Cube_13"
+    },
+    "value101": 10,
+    "value102": {
+        "Name": "Cube_14"
+    },
+    "value103": 11,
+    "value104": {
+        "Name": "Cube_20"
+    },
+    "value105": 12,
+    "value106": {
+        "Name": "Cube_21"
+    },
+    "value107": 13,
+    "value108": {
+        "Name": "Cube_22"
+    },
+    "value109": 14,
+    "value110": {
+        "Name": "Cube_23"
+    },
+    "value111": 15,
+    "value112": {
+        "Name": "Cube_24"
+    },
+    "value113": 16,
+    "value114": {
+        "Name": "Cube_30"
+    },
+    "value115": 17,
+    "value116": {
+        "Name": "Cube_31"
+    },
+    "value117": 18,
+    "value118": {
+        "Name": "Cube_32"
+    },
+    "value119": 19,
+    "value120": {
+        "Name": "Cube_33"
+    },
+    "value121": 20,
+    "value122": {
+        "Name": "Cube_34"
+    },
+    "value123": 21,
+    "value124": {
+        "Name": "Cube_40"
+    },
+    "value125": 22,
+    "value126": {
+        "Name": "Cube_41"
+    },
+    "value127": 23,
+    "value128": {
+        "Name": "Cube_42"
+    },
+    "value129": 24,
+    "value130": {
+        "Name": "Cube_43"
+    },
+    "value131": 25,
+    "value132": {
+        "Name": "Cube_44"
+    },
+    "value133": 25,
+    "value134": 0,
+    "value135": {
+        "MeshFilePath": "Content/Models/Cube.obj"
+    },
+    "value136": 1048578,
+    "value137": {
+        "MeshFilePath": "Content/Models/Cube.obj"
+    },
+    "value138": 1048580,
+    "value139": {
+        "MeshFilePath": "Content/Models/Cube.obj"
+    },
+    "value140": 1048579,
+    "value141": {
+        "MeshFilePath": "Content/Models/Cube.obj"
+    },
+    "value142": 5,
+    "value143": {
+        "MeshFilePath": "Content/Models/Cube.obj"
+    },
+    "value144": 6,
+    "value145": {
+        "MeshFilePath": "Content/Models/Cube.obj"
+    },
+    "value146": 7,
+    "value147": {
+        "MeshFilePath": "Content/Models/Cube.obj"
+    },
+    "value148": 8,
+    "value149": {
+        "MeshFilePath": "Content/Models/Cube.obj"
+    },
+    "value150": 9,
+    "value151": {
+        "MeshFilePath": "Content/Models/Cube.obj"
+    },
+    "value152": 10,
+    "value153": {
+        "MeshFilePath": "Content/Models/Cube.obj"
+    },
+    "value154": 11,
+    "value155": {
+        "MeshFilePath": "Content/Models/Cube.obj"
+    },
+    "value156": 12,
+    "value157": {
+        "MeshFilePath": "Content/Models/Cube.obj"
+    },
+    "value158": 13,
+    "value159": {
+        "MeshFilePath": "Content/Models/Cube.obj"
+    },
+    "value160": 14,
+    "value161": {
+        "MeshFilePath": "Content/Models/Cube.obj"
+    },
+    "value162": 15,
+    "value163": {
+        "MeshFilePath": "Content/Models/Cube.obj"
+    },
+    "value164": 16,
+    "value165": {
+        "MeshFilePath": "Content/Models/Cube.obj"
+    },
+    "value166": 17,
+    "value167": {
+        "MeshFilePath": "Content/Models/Cube.obj"
+    },
+    "value168": 18,
+    "value169": {
+        "MeshFilePath": "Content/Models/Cube.obj"
+    },
+    "value170": 19,
+    "value171": {
+        "MeshFilePath": "Content/Models/Cube.obj"
+    },
+    "value172": 20,
+    "value173": {
+        "MeshFilePath": "Content/Models/Cube.obj"
+    },
+    "value174": 21,
+    "value175": {
+        "MeshFilePath": "Content/Models/Cube.obj"
+    },
+    "value176": 22,
+    "value177": {
+        "MeshFilePath": "Content/Models/Cube.obj"
+    },
+    "value178": 23,
+    "value179": {
+        "MeshFilePath": "Content/Models/Cube.obj"
+    },
+    "value180": 24,
+    "value181": {
+        "MeshFilePath": "Content/Models/Cube.obj"
+    },
+    "value182": 25,
+    "value183": {
+        "MeshFilePath": "Content/Models/Cube.obj"
+    },
+    "value184": 1,
+    "value185": 1,
+    "value186": {
+        "Color_R": 1,
+        "Color_G": 1,
+        "Color_B": 0.99998998641967773,
+        "Attenuation": 9.6999998092651367,
+        "Angle": 0,
+        "Intesity": 1,
+        "LightType": 0
     }
 }
