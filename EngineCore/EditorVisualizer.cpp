@@ -189,6 +189,7 @@ void EditorVisualizer::RenderDirectionalLight(Component::Transform& transform, f
 	glEnable(GL_CULL_FACE);
 
 	glBindVertexArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 
@@ -269,13 +270,13 @@ void EditorVisualizer::RenderLights(Registry& registry, Camera& camera)
 			case Component::Light::AmbientLight:
 				break;
 			case Component::Light::DirectionalLight:
-				RenderDirectionalLight(transform, 0.5f, camera);
+				//RenderDirectionalLight(transform, 0.5f, camera);
 				break;
 			case Component::Light::PointLight:
-				RenderPointLight(transform.position, light.attenuation, camera);
+				//RenderPointLight(transform.position, light.attenuation, camera);
 				break;
 			case Component::Light::SpotLight:
-				RenderSpotLight(transform, light.attenuation, light.angle, camera);
+				//RenderSpotLight(transform, light.attenuation, light.angle, camera);
 				break;
 		}
 	});

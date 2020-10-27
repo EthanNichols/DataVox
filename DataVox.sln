@@ -3,11 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30225.117
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Engine", "Engine\Engine.vcxproj", "{0946C8E7-BFBF-493C-9C7E-D3B8D02E13DF}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Games", "Games", "{116FBDBD-CC40-4C7A-9E14-C27F413C038A}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ExampleGame", "Games\ExampleGame\ExampleGame.vcxproj", "{3E50D4A6-F52A-4859-A590-79021E9B0885}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EngineCore", "EngineCore\EngineCore.vcxitems", "{4C5B7145-2760-491A-A107-43DE900090D3}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "External", "External\External.vcxitems", "{646C0B6B-9B24-4EDB-91C8-DF3D80D13558}"
+EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		EngineCore\EngineCore.vcxitems*{3e50d4a6-f52a-4859-a590-79021e9b0885}*SharedItemsImports = 4
+		External\External.vcxitems*{3e50d4a6-f52a-4859-a590-79021e9b0885}*SharedItemsImports = 4
+		EngineCore\EngineCore.vcxitems*{4c5b7145-2760-491a-a107-43de900090d3}*SharedItemsImports = 9
+		External\External.vcxitems*{646c0b6b-9b24-4edb-91c8-df3d80d13558}*SharedItemsImports = 9
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
@@ -15,17 +25,20 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{0946C8E7-BFBF-493C-9C7E-D3B8D02E13DF}.Debug|x64.ActiveCfg = Debug|x64
-		{0946C8E7-BFBF-493C-9C7E-D3B8D02E13DF}.Debug|x64.Build.0 = Debug|x64
-		{0946C8E7-BFBF-493C-9C7E-D3B8D02E13DF}.Debug|x86.ActiveCfg = Debug|Win32
-		{0946C8E7-BFBF-493C-9C7E-D3B8D02E13DF}.Debug|x86.Build.0 = Debug|Win32
-		{0946C8E7-BFBF-493C-9C7E-D3B8D02E13DF}.Release|x64.ActiveCfg = Release|x64
-		{0946C8E7-BFBF-493C-9C7E-D3B8D02E13DF}.Release|x64.Build.0 = Release|x64
-		{0946C8E7-BFBF-493C-9C7E-D3B8D02E13DF}.Release|x86.ActiveCfg = Release|Win32
-		{0946C8E7-BFBF-493C-9C7E-D3B8D02E13DF}.Release|x86.Build.0 = Release|Win32
+		{3E50D4A6-F52A-4859-A590-79021E9B0885}.Debug|x64.ActiveCfg = Debug|x64
+		{3E50D4A6-F52A-4859-A590-79021E9B0885}.Debug|x64.Build.0 = Debug|x64
+		{3E50D4A6-F52A-4859-A590-79021E9B0885}.Debug|x86.ActiveCfg = Debug|Win32
+		{3E50D4A6-F52A-4859-A590-79021E9B0885}.Debug|x86.Build.0 = Debug|Win32
+		{3E50D4A6-F52A-4859-A590-79021E9B0885}.Release|x64.ActiveCfg = Release|x64
+		{3E50D4A6-F52A-4859-A590-79021E9B0885}.Release|x64.Build.0 = Release|x64
+		{3E50D4A6-F52A-4859-A590-79021E9B0885}.Release|x86.ActiveCfg = Release|Win32
+		{3E50D4A6-F52A-4859-A590-79021E9B0885}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3E50D4A6-F52A-4859-A590-79021E9B0885} = {116FBDBD-CC40-4C7A-9E14-C27F413C038A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3583BBBE-AF2C-4635-A820-9ACE3E5CD9E8}

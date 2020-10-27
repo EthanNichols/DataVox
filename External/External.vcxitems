@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <ItemsProjectGuid>{646c0b6b-9b24-4edb-91c8-df3d80d13558}</ItemsProjectGuid>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectCapability Include="SourceItemsFromImports" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)entt.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Imgui\imconfig.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Imgui\imgui.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Imgui\imgui_impl_glfw.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Imgui\imgui_internal.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Imgui\imgui_stdlib.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Imgui\imstb_rectpack.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Imgui\imstb_textedit.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Imgui\imstb_truetype.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)stb_image.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)TinyObjectLoader.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)glad.c" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Imgui\imgui.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Imgui\imgui_demo.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Imgui\imgui_draw.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Imgui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Imgui\imgui_stdlib.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Imgui\imgui_widgets.cpp" />
+  </ItemGroup>
+</Project>
