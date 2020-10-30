@@ -9,6 +9,8 @@
 EditorVisualizer::EditorVisualizer()
 {
 	m_wireFrameShader = Shader("Shaders/MeshWireframe.vert", "Shaders/MeshWireframe.frag");
+
+	CreateLightMeshVisualizations();
 }
 
 
@@ -63,195 +65,23 @@ void EditorVisualizer::RenderSelectedObjects(Registry& registry, Entity& entity,
 	glEnable(GL_CULL_FACE);
 }
 
-void EditorVisualizer::RenderPointLight(glm::vec3 position, float radius, Camera& camera, uint8_t detail)
+void EditorVisualizer::RenderLightVisualization(Component::Transform& transform, Mesh& mesh, Camera& camera)
 {
-	float rad = glm::radians(360.0f / detail);
-
-	std::vector<Vertex> vertices;
-	vertices.resize(detail * 2 * 3);
-
-	for (int i = 0; i < detail; ++i)
-	{
-		float x = (glm::cos(rad * i) * radius);
-		float y = (glm::sin(rad * i) * radius);
-
-		Vertex vertex_XAxis;
-		Vertex vertex_YAxis;
-		Vertex vertex_ZAxis;
-
-		vertex_XAxis.Position = glm::vec3(x, 0.0f, y);
-		vertex_YAxis.Position = glm::vec3(x, y, 0.0f);
-		vertex_ZAxis.Position = glm::vec3(0.0f, x, y);
-
-		int index = i * 2;
-
-		vertices[index] = vertex_XAxis;
-		vertices[index + detail * 2] = vertex_YAxis;
-		vertices[index + detail * 4] = vertex_ZAxis;
-
-		index = i == 0 ? (detail * 2) - 1 : (index - 1);
-		vertices[index] = vertex_XAxis;
-		vertices[index + detail * 2] = vertex_YAxis;
-		vertices[index + detail * 4] = vertex_ZAxis;
-	}
-
-	uint32_t vao;
-	uint32_t vbo;
-
-	glGenVertexArrays(1, &vao);
-	glGenBuffers(1, &vbo);
-
-	glBindVertexArray(vao);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
-	Vertex::SetVertexAttributes();
-
 	m_wireFrameShader.Use();
 	glm::mat4x4 matrix = camera.GetProjectionMatrix() * camera.GetViewMatrix();
 	m_wireFrameShader.SetMat4("uViewProjection", matrix);
 	m_wireFrameShader.SetVec3("uColor", glm::vec3(0.0f, 0.0f, 0.0f));
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	glDisable(GL_CULL_FACE);
-	glLineWidth(1);
-
-	std::string modelMatrixName = "uModelMatrix";
-	glm::mat4x4 modelMatrix = glm::mat4x4(1.0f);
-	modelMatrix = glm::translate(modelMatrix, position);
-	m_wireFrameShader.SetMat4(modelMatrixName, modelMatrix);
-
-	glDrawArrays(GL_LINES, 0, vertices.size());
-
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	glEnable(GL_CULL_FACE);
-
-	glBindVertexArray(0);
-}
-
-
-void EditorVisualizer::RenderDirectionalLight(Component::Transform& transform, float radius, Camera& camera, uint8_t detail)
-{
-	float rad = glm::radians(360.0f / detail);
-	std::vector<Vertex> vertices;
-	vertices.resize(detail * 2 * 3);
-
-	for (int i = 0; i < detail; ++i)
-	{
-		float x = (glm::cos(rad * i) * radius);
-		float y = (glm::sin(rad * i) * radius);
-
-		Vertex vertex;
-		vertex.Position = glm::vec3(x, y, 0.0f);
-
-		int index = i * 2;
-
-		vertices[index] = vertex;
-
-		index = i == 0 ? (detail * 2) - 1 : (index - 1);
-		vertices[index] = vertex;
-	}
-
-	Vertex centerVertex;
-	Vertex forwardVertex;
-	centerVertex.Position = glm::vec3(0.0f);
-	forwardVertex.Position = glm::vec3(0.0f, 0.0f, -1.0f);
-
-	vertices.push_back(centerVertex);
-	vertices.push_back(forwardVertex);
-
-	uint32_t vao;
-	uint32_t vbo;
-
-	glGenVertexArrays(1, &vao);
-	glGenBuffers(1, &vbo);
-
-	glBindVertexArray(vao);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
-	Vertex::SetVertexAttributes();
-
-	m_wireFrameShader.Use();
-	glm::mat4x4 matrix = camera.GetProjectionMatrix() * camera.GetViewMatrix();
-	m_wireFrameShader.SetMat4("uViewProjection", matrix);
-	m_wireFrameShader.SetVec3("uColor", glm::vec3(0.0f, 0.0f, 0.0f));
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	glDisable(GL_CULL_FACE);
-	glLineWidth(1);
 
 	std::string modelMatrixName = "uModelMatrix";
 	glm::mat4x4 worldMatrix = transform.GetWorldMatrix();
 	m_wireFrameShader.SetMat4(modelMatrixName, worldMatrix);
 
-	glDrawArrays(GL_LINES, 0, vertices.size());
-
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	glEnable(GL_CULL_FACE);
-
-	glBindVertexArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-}
-
-
-void EditorVisualizer::RenderSpotLight(Component::Transform& transform, float distance, float angle, Camera& camera, uint8_t detail)
-{
-	float rad = glm::radians(360.0f / detail);
-	std::vector<Vertex> vertices;
-	vertices.resize(detail * 2 * 3);
-
-	float radius = distance * glm::tan(glm::radians(angle));
-
-	for (int i = 0; i < detail; ++i)
-	{
-		float x = (glm::cos(rad * i) * radius);
-		float y = (glm::sin(rad * i) * radius);
-
-		Vertex vertex;
-		vertex.Position = glm::vec3(x, y, distance);
-
-		int index = i * 2;
-
-		vertices[index] = vertex;
-
-		index = i == 0 ? (detail * 2) - 1 : (index - 1);
-		vertices[index] = vertex;
-	}
-
-	Vertex centerVertex;
-	centerVertex.Position = glm::vec3(0.0f);
-	int detailOffset = (detail / 4);
-
-	for (int i = 0; i < 4; ++i)
-	{
-		vertices.push_back(centerVertex);
-		vertices.push_back(vertices[i * detailOffset * 2]);
-	}
-
-	uint32_t vao;
-	uint32_t vbo;
-
-	glGenVertexArrays(1, &vao);
-	glGenBuffers(1, &vbo);
-
-	glBindVertexArray(vao);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
-	Vertex::SetVertexAttributes();
-
-	m_wireFrameShader.Use();
-	glm::mat4x4 matrix = camera.GetProjectionMatrix() * camera.GetViewMatrix();
-	m_wireFrameShader.SetMat4("uViewProjection", matrix);
-	m_wireFrameShader.SetVec3("uColor", glm::vec3(0.0f, 0.0f, 0.0f));
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	glDisable(GL_CULL_FACE);
 	glLineWidth(1);
 
-	std::string modelMatrixName = "uModelMatrix";
-	glm::mat4x4 worldMatrix = transform.GetWorldMatrix();
-	m_wireFrameShader.SetMat4(modelMatrixName, worldMatrix);
-
-	glDrawArrays(GL_LINES, 0, vertices.size());
+	glBindVertexArray(mesh.m_VAO);
+	glDrawArrays(GL_LINES, 0, mesh.Vertices.size());
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glEnable(GL_CULL_FACE);
@@ -265,19 +95,193 @@ void EditorVisualizer::RenderLights(Registry& registry, Camera& camera)
 	registry.view<Component::Light, Component::Transform>().each(
 		[&](Component::Light& light, Component::Transform& transform)
 	{
+		Component::Transform lightTransform = transform;
+
 		switch (light.lightType)
 		{
 			case Component::Light::AmbientLight:
 				break;
 			case Component::Light::DirectionalLight:
-				//RenderDirectionalLight(transform, 0.5f, camera);
+				RenderLightVisualization(lightTransform, directionalLightMesh, camera);
 				break;
 			case Component::Light::PointLight:
-				//RenderPointLight(transform.position, light.attenuation, camera);
+				lightTransform.scale = glm::vec3(1.0f) * light.attenuation;
+				RenderLightVisualization(lightTransform, pointLightMesh, camera);
 				break;
 			case Component::Light::SpotLight:
-				//RenderSpotLight(transform, light.attenuation, light.angle, camera);
+				CreateSpotLightMesh(light.angle, light.attenuation);
+				RenderLightVisualization(transform, spotLightMesh, camera);
 				break;
 		}
 	});
 }
+
+#pragma region TEMP DELETE
+void EditorVisualizer::CreateLightMeshVisualizations()
+{
+	CreatePointLightMesh();
+	CreateDirectionalLightMesh();
+}
+
+void EditorVisualizer::CreateSpotLightMesh(float angle, float distance)
+{
+	int detail = 30;
+	float rad = glm::radians(360.0f / detail);
+
+	float radius = distance * glm::tan(glm::radians(angle));
+
+	if (!spotLightBounded)
+	{
+
+		spotLightMesh.Vertices.resize(detail * 2 * 3);
+
+		for (int i = 0; i < detail; ++i)
+		{
+			float x = (glm::cos(rad * i) * radius);
+			float y = (glm::sin(rad * i) * radius);
+
+			Vertex vertex;
+			vertex.Position = glm::vec3(x, y, distance);
+
+			int index = i * 2;
+
+			spotLightMesh.Vertices[index] = vertex;
+
+			index = i == 0 ? (detail * 2) - 1 : (index - 1);
+			spotLightMesh.Vertices[index] = vertex;
+		}
+
+		Vertex centerVertex;
+		centerVertex.Position = glm::vec3(0.0f);
+		int detailOffset = (detail / 4);
+
+		for (int i = 0; i < 4; ++i)
+		{
+			spotLightMesh.Vertices.push_back(centerVertex);
+			spotLightMesh.Vertices.push_back(spotLightMesh.Vertices[i * detailOffset * 2]);
+		}
+
+		glGenVertexArrays(1, &spotLightMesh.m_VAO);
+		glGenBuffers(1, &spotLightMesh.m_VBO);
+
+		glBindVertexArray(spotLightMesh.m_VAO);
+		glBindBuffer(GL_ARRAY_BUFFER, spotLightMesh.m_VBO);
+	}
+	else
+	{
+		for (int i = 0; i < detail; ++i)
+		{
+			float x = (glm::cos(rad * i) * radius);
+			float y = (glm::sin(rad * i) * radius);
+
+			Vertex vertex;
+			vertex.Position = glm::vec3(x, y, distance);
+
+			int index = i * 2;
+
+			spotLightMesh.Vertices[index] = vertex;
+
+			index = i == 0 ? (detail * 2) - 1 : (index - 1);
+			spotLightMesh.Vertices[index] = vertex;
+		}
+
+		int vertexCount = spotLightMesh.Vertices.size() - 1;
+
+		Vertex centerVertex;
+		centerVertex.Position = glm::vec3(0.0f);
+		int detailOffset = (detail / 4);
+
+		for (int i = 0; i < 4; ++i)
+		{
+			spotLightMesh.Vertices[vertexCount - (i * 2)] = spotLightMesh.Vertices[i * detailOffset * 2];
+		}
+	}
+
+	glBufferData(GL_ARRAY_BUFFER, spotLightMesh.Vertices.size() * sizeof(Vertex), &spotLightMesh.Vertices[0], GL_STATIC_DRAW);
+	Vertex::SetVertexAttributes();
+
+	spotLightBounded = true;
+}
+
+void EditorVisualizer::CreatePointLightMesh()
+{
+	int detail = 30;
+	float rad = glm::radians(360.0f / detail);
+
+	pointLightMesh.Vertices.resize(detail * 2 * 3);
+
+	for (int i = 0; i < detail; ++i)
+	{
+		float x = (glm::cos(rad * i));
+		float y = (glm::sin(rad * i));
+
+		Vertex vertex_XAxis;
+		Vertex vertex_YAxis;
+		Vertex vertex_ZAxis;
+
+		vertex_XAxis.Position = glm::vec3(x, 0.0f, y);
+		vertex_YAxis.Position = glm::vec3(x, y, 0.0f);
+		vertex_ZAxis.Position = glm::vec3(0.0f, x, y);
+
+		int index = i * 2;
+
+		pointLightMesh.Vertices[index] = vertex_XAxis;
+		pointLightMesh.Vertices[index + detail * 2] = vertex_YAxis;
+		pointLightMesh.Vertices[index + detail * 4] = vertex_ZAxis;
+
+		index = i == 0 ? (detail * 2) - 1 : (index - 1);
+		pointLightMesh.Vertices[index] = vertex_XAxis;
+		pointLightMesh.Vertices[index + detail * 2] = vertex_YAxis;
+		pointLightMesh.Vertices[index + detail * 4] = vertex_ZAxis;
+	}
+
+	glGenVertexArrays(1, &pointLightMesh.m_VAO);
+	glGenBuffers(1, &pointLightMesh.m_VBO);
+
+	glBindVertexArray(pointLightMesh.m_VAO);
+	glBindBuffer(GL_ARRAY_BUFFER, pointLightMesh.m_VBO);
+
+	glBufferData(GL_ARRAY_BUFFER, pointLightMesh.Vertices.size() * sizeof(Vertex), &pointLightMesh.Vertices[0], GL_STATIC_DRAW);
+	Vertex::SetVertexAttributes();
+}
+
+void EditorVisualizer::CreateDirectionalLightMesh()
+{
+	int detail = 30;
+	float rad = glm::radians(360.0f / detail);
+	directionalLightMesh.Vertices.resize(detail * 2 * 3);
+
+	for (int i = 0; i < detail; ++i)
+	{
+		float x = (glm::cos(rad * i) * 0.5f);
+		float y = (glm::sin(rad * i) * 0.5f);
+
+		Vertex vertex;
+		vertex.Position = glm::vec3(x, y, 0.0f);
+
+		int index = i * 2;
+
+		directionalLightMesh.Vertices[index] = vertex;
+
+		index = i == 0 ? (detail * 2) - 1 : (index - 1);
+		directionalLightMesh.Vertices[index] = vertex;
+	}
+
+	Vertex centerVertex;
+	Vertex forwardVertex;
+	centerVertex.Position = glm::vec3(0.0f);
+	forwardVertex.Position = glm::vec3(0.0f, 0.0f, -1.0f);
+
+	directionalLightMesh.Vertices.push_back(centerVertex);
+	directionalLightMesh.Vertices.push_back(forwardVertex);
+
+	glGenVertexArrays(1, &directionalLightMesh.m_VAO);
+	glGenBuffers(1, &directionalLightMesh.m_VBO);
+
+	glBindVertexArray(directionalLightMesh.m_VAO);
+	glBindBuffer(GL_ARRAY_BUFFER, directionalLightMesh.m_VBO);
+
+	glBufferData(GL_ARRAY_BUFFER, directionalLightMesh.Vertices.size() * sizeof(Vertex), &directionalLightMesh.Vertices[0], GL_STATIC_DRAW);
+	Vertex::SetVertexAttributes();
+}
+#pragma endregion
