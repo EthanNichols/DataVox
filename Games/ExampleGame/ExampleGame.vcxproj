@@ -164,7 +164,15 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="GameEditorGui.cpp" />
+    <ClCompile Include="GameInspectorGUI.cpp" />
     <ClCompile Include="Main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GameEditorGui.h" />
+    <ClInclude Include="GameInspectorGUI.h" />
+    <ClInclude Include="GameWidgets.h" />
+    <ClInclude Include="Mover.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

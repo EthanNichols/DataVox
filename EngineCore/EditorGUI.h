@@ -13,6 +13,7 @@ class EditorGUI
 {
 public:
 
+	EditorGUI() { }
 	EditorGUI(class Window& window, Registry& registry, ResourceManager& resourceManager);
 	~EditorGUI();
 
@@ -22,7 +23,7 @@ public:
 
 	void CreateDockingWindow();
 
-private:
+protected:
 
 	class Window* m_window;
 

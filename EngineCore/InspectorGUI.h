@@ -7,7 +7,7 @@
 
 class InspectorGUI
 {
-private:
+protected:
 
 	using ComponentType = entt::component;
 	using ComponentTypeID = ENTT_ID_TYPE;
@@ -48,14 +48,16 @@ public:
 	// register a callback to delete a component, if none, you wont be able to delete it in the editor
 	void RegisterComponentDestroyCallback(ComponentType componentType, Callback callback);
 
+private:
+
 	// registers the ComponentType, name, create and destroy for rather trivial types
 	template<typename T>
-	void RegisterComponent(Registry& registry, const std::string& name, std::function<void(T&)>);
+	void RegisterComponent(Registry& registry, const std::string& name, std::function<void(T&)> widgetFunction);
 
-private:
+protected:
 
 	bool EntityHasComponent(Registry& registry, typename Entity& entityType, ComponentType componentType);
 
-	void RegisterWidgets(Registry& registry);
+	virtual void RegisterWidgets(Registry& registry);
 };
 

@@ -96,6 +96,7 @@ void EditorVisualizer::RenderLights(Registry& registry, Camera& camera)
 		[&](Component::Light& light, Component::Transform& transform)
 	{
 		Component::Transform lightTransform = transform;
+		lightTransform.scale = glm::vec3(1.0f);
 
 		switch (light.lightType)
 		{
@@ -130,71 +131,42 @@ void EditorVisualizer::CreateSpotLightMesh(float angle, float distance)
 
 	float radius = distance * glm::tan(glm::radians(angle));
 
+	spotLightMesh.Vertices.resize(detail * 2 * 3 + 8);
+
+	for (int i = 0; i < detail; ++i)
+	{
+		float x = (glm::cos(rad * i) * radius);
+		float y = (glm::sin(rad * i) * radius);
+
+		Vertex vertex;
+		vertex.Position = glm::vec3(x, y, distance);
+
+		int index = i * 2;
+
+		spotLightMesh.Vertices[index] = vertex;
+
+		index = i == 0 ? (detail * 2) - 1 : (index - 1);
+		spotLightMesh.Vertices[index] = vertex;
+	}
+
+	Vertex centerVertex;
+	centerVertex.Position = glm::vec3(0.0f);
+	int vertexCount = spotLightMesh.Vertices.size() - 1;
+	int detailOffset = (detail / 4);
+
+	for (int i = 0; i < 4; ++i)
+	{
+		spotLightMesh.Vertices[vertexCount - (i * 2) - 1] = centerVertex;
+		spotLightMesh.Vertices[vertexCount - (i * 2)] = spotLightMesh.Vertices[i * detailOffset * 2];
+	}
+
 	if (!spotLightBounded)
 	{
-
-		spotLightMesh.Vertices.resize(detail * 2 * 3);
-
-		for (int i = 0; i < detail; ++i)
-		{
-			float x = (glm::cos(rad * i) * radius);
-			float y = (glm::sin(rad * i) * radius);
-
-			Vertex vertex;
-			vertex.Position = glm::vec3(x, y, distance);
-
-			int index = i * 2;
-
-			spotLightMesh.Vertices[index] = vertex;
-
-			index = i == 0 ? (detail * 2) - 1 : (index - 1);
-			spotLightMesh.Vertices[index] = vertex;
-		}
-
-		Vertex centerVertex;
-		centerVertex.Position = glm::vec3(0.0f);
-		int detailOffset = (detail / 4);
-
-		for (int i = 0; i < 4; ++i)
-		{
-			spotLightMesh.Vertices.push_back(centerVertex);
-			spotLightMesh.Vertices.push_back(spotLightMesh.Vertices[i * detailOffset * 2]);
-		}
-
 		glGenVertexArrays(1, &spotLightMesh.m_VAO);
 		glGenBuffers(1, &spotLightMesh.m_VBO);
 
 		glBindVertexArray(spotLightMesh.m_VAO);
 		glBindBuffer(GL_ARRAY_BUFFER, spotLightMesh.m_VBO);
-	}
-	else
-	{
-		for (int i = 0; i < detail; ++i)
-		{
-			float x = (glm::cos(rad * i) * radius);
-			float y = (glm::sin(rad * i) * radius);
-
-			Vertex vertex;
-			vertex.Position = glm::vec3(x, y, distance);
-
-			int index = i * 2;
-
-			spotLightMesh.Vertices[index] = vertex;
-
-			index = i == 0 ? (detail * 2) - 1 : (index - 1);
-			spotLightMesh.Vertices[index] = vertex;
-		}
-
-		int vertexCount = spotLightMesh.Vertices.size() - 1;
-
-		Vertex centerVertex;
-		centerVertex.Position = glm::vec3(0.0f);
-		int detailOffset = (detail / 4);
-
-		for (int i = 0; i < 4; ++i)
-		{
-			spotLightMesh.Vertices[vertexCount - (i * 2)] = spotLightMesh.Vertices[i * detailOffset * 2];
-		}
 	}
 
 	glBufferData(GL_ARRAY_BUFFER, spotLightMesh.Vertices.size() * sizeof(Vertex), &spotLightMesh.Vertices[0], GL_STATIC_DRAW);

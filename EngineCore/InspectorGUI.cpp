@@ -40,7 +40,7 @@ void InspectorGUI::Construct(Registry& registry, Entity& entity)
 						label = "Unknown Component";
 					}
 
-					ImGui::PushID("Inspector Widget");
+					ImGui::PushID(label.c_str());
 
 					if (componentType != registry.type<Component::EntityName>())
 					{
@@ -180,6 +180,7 @@ void InspectorGUI::RegisterComponent(Registry& registry, const std::string& name
 	{
 		registry.template remove<T>(entityType);
 	});
+
 	RegisterComponentWidgetCallback(registry.template type<T>(),
 									[=](Registry& registry, typename Registry::entity_type entityType)
 	{

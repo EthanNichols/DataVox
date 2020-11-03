@@ -9,7 +9,7 @@
 
 #include "Camera.h"
 #include "Components.h"
-#include "EditorGUI.h"
+#include "GameEditorGui.h"
 #include "Entt.h"
 #include "Input.h"
 #include "Mesh.h"
@@ -17,6 +17,7 @@
 #include "ResourceManager.h"
 #include "Shader.h"
 #include "Window.h"
+#include "Mover.h"
 
 using namespace Component;
 
@@ -37,7 +38,7 @@ int main()
 	RenderManager renderManager = RenderManager();
 	ResourceManager resourceManager = ResourceManager();
 
-	EditorGUI editorGUI = EditorGUI(window, registry, resourceManager);
+	GameEditorGui editorGUI = GameEditorGui(window, registry, resourceManager);
 
 	Input input = Input(&window);
 	Camera camera = Camera(&window);
