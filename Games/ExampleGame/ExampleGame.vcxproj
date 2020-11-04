@@ -164,15 +164,19 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ExampleGame.cpp" />
     <ClCompile Include="GameEditorGui.cpp" />
     <ClCompile Include="GameInspectorGUI.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MoverSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ExampleGame.h" />
     <ClInclude Include="GameEditorGui.h" />
     <ClInclude Include="GameInspectorGUI.h" />
     <ClInclude Include="GameWidgets.h" />
     <ClInclude Include="Mover.h" />
+    <ClInclude Include="MoverSystem.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

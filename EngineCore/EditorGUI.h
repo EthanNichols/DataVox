@@ -6,6 +6,8 @@
 #include "InspectorGUI.h"
 #include "ResourceManager.h"
 #include "EditorVisualizer.h"
+#include "MainMenuBar.h"
+#include "Game.h"
 
 class Camera;
 
@@ -14,7 +16,7 @@ class EditorGUI
 public:
 
 	EditorGUI() { }
-	EditorGUI(class Window& window, Registry& registry, ResourceManager& resourceManager);
+	EditorGUI(class Window& window, Registry& registry, ResourceManager& resourceManager, Game& game);
 	~EditorGUI();
 
 public:
@@ -31,6 +33,7 @@ protected:
 	HierarchyGUI m_hierarchyGUI;
 	InspectorGUI m_inspectorGUI;
 	EditorVisualizer m_editorVisualizer;
+	MainMenuBar m_mainMenuGui;
 
 	Entity selectedEntity = entt::null;
 };

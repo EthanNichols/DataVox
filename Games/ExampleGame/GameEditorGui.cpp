@@ -7,7 +7,7 @@
 #include "GameInspectorGUI.h"
 #include "Window.h"
 
-GameEditorGui::GameEditorGui(Window& window, Registry& registry, ResourceManager& resourceManager)
+GameEditorGui::GameEditorGui(Window& window, Registry& registry, ResourceManager& resourceManager, Game& game)
 {
 	m_window = &window;
 
@@ -15,6 +15,7 @@ GameEditorGui::GameEditorGui(Window& window, Registry& registry, ResourceManager
 	m_hierarchyGUI = HierarchyGUI();
 	m_inspectorGUI = GameInspectorGUI(registry);
 	m_editorVisualizer = EditorVisualizer();
+	m_mainMenuGui = MainMenuBar(resourceManager, game);
 
 
 	IMGUI_CHECKVERSION();

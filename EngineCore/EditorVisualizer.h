@@ -19,8 +19,6 @@ public:
 
 	void RenderSelectedObjects(Registry& registry, Entity& entity, Camera& camera);
 
-public:
-
 private:
 
 	void RenderLights(Registry& registry, Camera& camera);

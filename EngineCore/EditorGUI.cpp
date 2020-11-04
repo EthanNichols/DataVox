@@ -9,7 +9,7 @@
 #include "Window.h"
 
 
-EditorGUI::EditorGUI(Window& window, Registry& registry, ResourceManager& resourceManager)
+EditorGUI::EditorGUI(Window& window, Registry& registry, ResourceManager& resourceManager, Game& game)
 {
 	m_window = &window;
 
@@ -17,6 +17,7 @@ EditorGUI::EditorGUI(Window& window, Registry& registry, ResourceManager& resour
 	m_hierarchyGUI = HierarchyGUI();
 	m_inspectorGUI = InspectorGUI(registry);
 	m_editorVisualizer = EditorVisualizer();
+	m_mainMenuGui = MainMenuBar(resourceManager, game);
 
 
 	IMGUI_CHECKVERSION();
@@ -54,6 +55,8 @@ void EditorGUI::Render(Registry& registry, Camera& camera)
 	CreateDockingWindow();
 
 	//ImGui::ShowDemoWindow();
+
+	m_mainMenuGui.Construct(registry);
 
 	m_contentBrowserGUI.Construct(registry);
 

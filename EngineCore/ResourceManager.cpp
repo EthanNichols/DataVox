@@ -219,16 +219,8 @@ bool ResourceManager::LoadLevel(Registry& registry, const std::string filePath)
 			meshRenderer.mesh = LoadModel(filePath);
 		});
 
-		// Deprecated
-		// TODO: Remove once level files are updated
-		registry.view<Mesh>().each([&](const Entity& entity, Mesh& mesh)
-		{
-			LoadModel(&mesh);
-			registry.assign<Component::MeshRenderer>(entity, GetModel(mesh.FilePath));
-			registry.remove<Mesh>(entity);
-		});
-
 		printf("Level %s loaded\n", filePath.c_str());
+		m_loadedLevelName = filePath;
 	}
 	else
 	{
@@ -268,6 +260,12 @@ void ResourceManager::LoadLevel_Internal(Registry& registry, const std::string f
 }
 
 
+bool ResourceManager::ReloadLevel(Registry& registry)
+{
+	return LoadLevel(registry, m_loadedLevelName);
+}
+
+
 bool ResourceManager::SaveLevel(Registry& registry, const std::string filePath)
 {
 	std::ofstream outputStream(filePath);
@@ -289,4 +287,9 @@ bool ResourceManager::SaveLevel(Registry& registry, const std::string filePath)
 	}
 
 	return success;
+}
+
+bool ResourceManager::SaveCurrentLevel(Registry& registry)
+{
+	return SaveLevel(registry, m_loadedLevelName);
 }

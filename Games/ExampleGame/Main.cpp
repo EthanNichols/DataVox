@@ -7,6 +7,11 @@
 #include <iostream>
 #include <fstream>
 
+#include "Mover.h"
+
+#define ADDITIONAL_ARG_SERIALIZE_COMPONENTS ,\
+Component::Mover
+
 #include "Camera.h"
 #include "Components.h"
 #include "GameEditorGui.h"
@@ -17,7 +22,7 @@
 #include "ResourceManager.h"
 #include "Shader.h"
 #include "Window.h"
-#include "Mover.h"
+#include "ExampleGame.h"
 
 using namespace Component;
 
@@ -38,7 +43,9 @@ int main()
 	RenderManager renderManager = RenderManager();
 	ResourceManager resourceManager = ResourceManager();
 
-	GameEditorGui editorGUI = GameEditorGui(window, registry, resourceManager);
+	ExampleGame game = ExampleGame(resourceManager);
+
+	GameEditorGui editorGUI = GameEditorGui(window, registry, resourceManager, game);
 
 	Input input = Input(&window);
 	Camera camera = Camera(&window);
@@ -68,6 +75,8 @@ int main()
 
 		window.ClearColor(glm::vec4(0.2f, 0.3f, 0.3f, 1.0f));
 
+		game.Update(registry);
+
 		// Eventually this will be moved elseware
 		basicShader.Use();
 		glActiveTexture(GL_TEXTURE0);
@@ -82,7 +91,7 @@ int main()
 		window.Update(0);
 	}
 
-	resourceManager.SaveLevel(registry, "Content/Levels/level.lev");
+	resourceManager.SaveCurrentLevel(registry);
 
 	glfwTerminate();
 	return 0;

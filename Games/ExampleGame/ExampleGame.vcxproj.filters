@@ -27,6 +27,12 @@
     <ClCompile Include="GameEditorGui.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MoverSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ExampleGame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Mover.h">
@@ -39,6 +45,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GameWidgets.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MoverSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ExampleGame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

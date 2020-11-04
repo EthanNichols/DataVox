@@ -18,10 +18,12 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)ContentBrowserGUI.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)EditorGUI.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)EditorVisualizer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Game.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)HierarchyGUI.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Input.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)InspectorGUI.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Light.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MainMenuBar.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Material.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)RenderManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ResourceManager.cpp" />
@@ -39,10 +41,12 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)EditorVisualizer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)EntityName.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Entt.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Game.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)HierarchyGUI.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Input.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)InspectorGUI.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Light.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MainMenuBar.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Material.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Mesh.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MeshRenderer.h" />

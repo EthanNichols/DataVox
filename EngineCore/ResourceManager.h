@@ -4,9 +4,8 @@
 #include <string>
 
 #include "Entt.h"
-
-struct Mesh;
-struct Texture;
+#include "Mesh.h"
+#include "Texture.h"
 
 
 class ResourceManager
@@ -27,10 +26,17 @@ public:
 	Mesh* GetModel(const std::string& modelName);
 
 	bool LoadLevel(Registry& registry, const std::string filePath);
+	bool ReloadLevel(Registry& registry);
 	template<typename... Component>
 	void LoadLevel_Internal(Registry& registry, const std::string filePath, bool& success);
 
 	bool SaveLevel(Registry& registry, const std::string filePath);
+	bool SaveCurrentLevel(Registry& registry);
+
+	std::string GetCurrentLevelName()
+	{
+		return m_loadedLevelName;
+	}
 
 private:
 
@@ -40,4 +46,6 @@ private:
 
 	std::map<std::string, struct Texture> m_textures;
 	std::map<std::string, Mesh> m_meshes;
+
+	std::string m_loadedLevelName;
 };
