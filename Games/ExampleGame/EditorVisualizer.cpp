@@ -19,13 +19,13 @@ EditorVisualizer::~EditorVisualizer()
 }
 
 
-void EditorVisualizer::Render(Registry& registry, Camera& camera)
+void EditorVisualizer::Render(entt::registry& registry, Camera& camera)
 {
 	RenderLights(registry, camera);
 }
 
 
-void EditorVisualizer::RenderSelectedObjects(Registry& registry, Entity& entity, Camera& camera)
+void EditorVisualizer::RenderSelectedObjects(entt::registry& registry, entt::entity& entity, Camera& camera)
 {
 	if (!registry.valid(entity))
 	{
@@ -90,7 +90,7 @@ void EditorVisualizer::RenderLightVisualization(Component::Transform& transform,
 }
 
 
-void EditorVisualizer::RenderLights(Registry& registry, Camera& camera)
+void EditorVisualizer::RenderLights(entt::registry& registry, Camera& camera)
 {
 	registry.view<Component::Light, Component::Transform>().each(
 		[&](Component::Light& light, Component::Transform& transform)

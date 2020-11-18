@@ -3,6 +3,9 @@
 #include <Imgui/imgui.h>
 #include <Imgui/imgui_stdlib.h>
 
+#include "Mover.h"
+#include "Generation.h"
+
 MainMenuBar::MainMenuBar()
 {
 }
@@ -17,7 +20,7 @@ MainMenuBar::~MainMenuBar()
 {
 }
 
-void MainMenuBar::Construct(Registry& registry)
+void MainMenuBar::Construct(entt::registry& registry)
 {
 	ImGui::BeginMainMenuBar();
 
@@ -25,14 +28,14 @@ void MainMenuBar::Construct(Registry& registry)
 	{
 		if (ImGui::Selectable("Save Level"))
 		{
-			m_resourceManager->SaveCurrentLevel(registry);
+			m_resourceManager->SaveCurrentLevel<Component::Mover, Generation>(registry);
 		}
 
 		ImGui::InputText("FileName", &m_fileName);
 
 		if (ImGui::Selectable("Save Level As"))
 		{
-			m_resourceManager->SaveLevel(registry, "Content/Levels/" + m_fileName + ".lev");
+			m_resourceManager->SaveLevel<Component::Mover, Generation>(registry, "Content/Levels/" + m_fileName + ".lev");
 		}
 
 
@@ -43,7 +46,7 @@ void MainMenuBar::Construct(Registry& registry)
 	{
 		if (ImGui::Selectable("Play"))
 		{
-			m_game->Play();
+			m_game->Play(registry);
 		}
 
 		if (ImGui::Selectable("Pause"))

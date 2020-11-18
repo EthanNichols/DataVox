@@ -7,13 +7,16 @@
 #include "ResourceManager.h"
 #include "Texture.h"
 
+#include "Mover.h"
+#include "Generation.h"
+
 
 ContentBrowserGUI::ContentBrowserGUI()
 {
 }
 
 
-ContentBrowserGUI::ContentBrowserGUI(Registry& registry, ResourceManager& resourceManager)
+ContentBrowserGUI::ContentBrowserGUI(entt::registry& registry, ResourceManager& resourceManager)
 {
 	m_resourceManager = &resourceManager;
 }
@@ -24,7 +27,7 @@ ContentBrowserGUI::~ContentBrowserGUI()
 }
 
 
-void ContentBrowserGUI::Construct(Registry& registry)
+void ContentBrowserGUI::Construct(entt::registry& registry)
 {
 	ImGui::Begin("Content Browser");
 	{
@@ -36,7 +39,7 @@ void ContentBrowserGUI::Construct(Registry& registry)
 }
 
 
-void ContentBrowserGUI::RecursiveFileBrowse(Registry& registry, const std::string& directoryPath)
+void ContentBrowserGUI::RecursiveFileBrowse(entt::registry& registry, const std::string& directoryPath)
 {
 	std::vector<std::filesystem::directory_entry> files;
 
@@ -88,7 +91,7 @@ void ContentBrowserGUI::RecursiveFileBrowse(Registry& registry, const std::strin
 		{
 			if (extension == ".lev")
 			{
-				m_resourceManager->LoadLevel(registry, filePath);
+				m_resourceManager->LoadLevel<Component::Mover, Generation>(registry, filePath);
 			}
 		}
 	}

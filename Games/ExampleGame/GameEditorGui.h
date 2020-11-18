@@ -7,6 +7,6 @@
 class GameEditorGui : public EditorGUI
 {
 public:
-	GameEditorGui(Window& window, Registry& registry, ResourceManager& resourceManager, Game& game);
+	GameEditorGui(Window& window, entt::registry& registry, ResourceManager& resourceManager, Game& game);
 };
 

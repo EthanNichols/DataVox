@@ -15,13 +15,13 @@ public:
 
 public:
 
-	void Render(Registry& registry, Camera& camera);
+	void Render(entt::registry& registry, Camera& camera);
 
-	void RenderSelectedObjects(Registry& registry, Entity& entity, Camera& camera);
+	void RenderSelectedObjects(entt::registry& registry, entt::entity& entity, Camera& camera);
 
 private:
 
-	void RenderLights(Registry& registry, Camera& camera);
+	void RenderLights(entt::registry& registry, Camera& camera);
 	void RenderLightVisualization(Component::Transform& transform, Mesh& mesh, Camera& camera);
 
 	Shader m_wireFrameShader;

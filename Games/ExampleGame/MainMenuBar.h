@@ -13,7 +13,7 @@ public:
 
 public:
 
-	void Construct(Registry& registry);
+	void Construct(entt::registry& registry);
 
 private:
 

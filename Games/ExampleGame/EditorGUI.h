@@ -16,12 +16,12 @@ class EditorGUI
 public:
 
 	EditorGUI() { }
-	EditorGUI(class Window& window, Registry& registry, ResourceManager& resourceManager, Game& game);
+	EditorGUI(class Window& window, entt::registry& registry, ResourceManager& resourceManager, Game& game);
 	~EditorGUI();
 
 public:
 
-	void Render(Registry& registry, Camera& camera);
+	void Render(entt::registry& registry, Camera& camera);
 
 	void CreateDockingWindow();
 

@@ -8,9 +8,7 @@
 #include <fstream>
 
 #include "Mover.h"
-
-#define ADDITIONAL_ARG_SERIALIZE_COMPONENTS ,\
-Component::Mover
+#include "Generation.h"
 
 #include "Camera.h"
 #include "Components.h"
@@ -28,7 +26,7 @@ using namespace Component;
 
 int main()
 {
-	Registry registry;
+	entt::registry registry;
 
 	glfwInit();
 
@@ -54,7 +52,7 @@ int main()
 	Shader basicShader("Shaders/BasicShader.vert", "Shaders/BasicShader.frag");
 	Shader wireframeShader("Shaders/MeshWireframe.vert", "Shaders/MeshWireframe.frag");
 
-	resourceManager.LoadLevel(registry, "Content/levels/level.lev");
+	resourceManager.LoadLevel<Component::Mover, Generation>(registry, "Content/levels/level.lev");
 
 	glm::dvec2 previousMousePosition = input.GetMousePosition();
 
@@ -91,7 +89,7 @@ int main()
 		window.Update(0);
 	}
 
-	resourceManager.SaveCurrentLevel(registry);
+	resourceManager.SaveCurrentLevel<Component::Mover, Generation>(registry);
 
 	glfwTerminate();
 	return 0;

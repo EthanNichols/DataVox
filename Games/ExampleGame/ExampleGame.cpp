@@ -1,8 +1,11 @@
 #include "ExampleGame.h"
 
+#include "Generation.h"
+
 ExampleGame::ExampleGame(ResourceManager& resourceManager)
 {
 	m_moverSystem = MoverSystem();
+	m_generationSystem = GenerationSystem();
 
 	m_resourceManager = &resourceManager;
 }
@@ -21,9 +24,11 @@ void ExampleGame::Update(entt::registry& registry)
 	m_moverSystem.Update(registry);
 }
 
-void ExampleGame::Play()
+void ExampleGame::Play(entt::registry& registry)
 {
 	m_isRunning = true;
+
+	m_generationSystem.Generate(registry);
 }
 
 void ExampleGame::Pause()
@@ -34,5 +39,5 @@ void ExampleGame::Pause()
 void ExampleGame::Stop(entt::registry& registry)
 {
 	m_isRunning = false;
-	m_resourceManager->ReloadLevel(registry);
+	m_resourceManager->ReloadLevel<Component::Mover, Generation>(registry);
 }

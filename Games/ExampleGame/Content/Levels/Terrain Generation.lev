@@ -1,0 +1,50 @@
+{
+    "value0": 2,
+    "value1": 1,
+    "value2": 1048576,
+    "value3": 1,
+    "value4": 1,
+    "value5": {
+        "Pos_X": 0,
+        "Pos_Y": 2,
+        "Pos_Z": 0,
+        "Rot_X": 0,
+        "Rot_Y": -0,
+        "Rot_Z": 0,
+        "Scale_X": 1,
+        "Scale_Y": 1,
+        "Scale_Z": 1
+    },
+    "value6": 2,
+    "value7": 1,
+    "value8": {
+        "Name": "Ambient Light"
+    },
+    "value9": 1048576,
+    "value10": {
+        "Name": "Terrain Generation"
+    },
+    "value11": 0,
+    "value12": 1,
+    "value13": 1,
+    "value14": {
+        "Color_R": 1,
+        "Color_G": 1,
+        "Color_B": 0.99998998641967773,
+        "Attenuation": 9.6999998092651367,
+        "Angle": 0,
+        "Intesity": 0.60000002384185791,
+        "LightType": 0
+    },
+    "value15": 0,
+    "value16": 1,
+    "value17": 1048576,
+    "value18": {
+        "renderDistance": 3,
+        "maxHeight": 16,
+        "chunkSize": 16,
+        "seed": 0,
+        "randomizeSeed": false,
+        "perlinStepSize": 0.02500000037252903
+    }
+}

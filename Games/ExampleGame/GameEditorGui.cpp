@@ -7,7 +7,7 @@
 #include "GameInspectorGUI.h"
 #include "Window.h"
 
-GameEditorGui::GameEditorGui(Window& window, Registry& registry, ResourceManager& resourceManager, Game& game)
+GameEditorGui::GameEditorGui(Window& window, entt::registry& registry, ResourceManager& resourceManager, Game& game)
 {
 	m_window = &window;
 

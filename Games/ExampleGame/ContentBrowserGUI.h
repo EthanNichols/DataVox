@@ -13,16 +13,16 @@ class ContentBrowserGUI
 public:
 
 	ContentBrowserGUI();
-	ContentBrowserGUI(Registry& registry, ResourceManager& resourceManager);
+	ContentBrowserGUI(entt::registry& registry, ResourceManager& resourceManager);
 	~ContentBrowserGUI();
 
 public:
 
-	void Construct(Registry& registry);
+	void Construct(entt::registry& registry);
 
 private:
 
-	void RecursiveFileBrowse(Registry& registry, const std::string& directoryPath);
+	void RecursiveFileBrowse(entt::registry& registry, const std::string& directoryPath);
 
 private:
 

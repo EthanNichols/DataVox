@@ -3,17 +3,17 @@
 #include "GameWidgets.h"
 
 template<typename T>
-void GameInspectorGUI::RegisterComponent(Registry& registry, const std::string& name, std::function<void(T&)> widgetFunction)
+void GameInspectorGUI::RegisterComponent(entt::registry& registry, const std::string& name, std::function<void(T&)> widgetFunction)
 {
 	RegisterComponentType(registry.template type<T>());
 	RegisterComponentName(registry.template type<T>(), name);
 	RegisterComponentCreateCallback(registry.template type<T>(),
-									[](Registry& registry, typename Registry::entity_type entityType)
+									[](entt::registry& registry, typename entt::registry::entity_type entityType)
 	{
 		registry.template assign<T>(entityType);
 	});
 	RegisterComponentDestroyCallback(registry.template type<T>(),
-									 [](Registry& registry, typename Registry::entity_type entityType)
+									 [](entt::registry& registry, typename entt::registry::entity_type entityType)
 	{
 		registry.template remove<T>(entityType);
 	});
@@ -21,7 +21,7 @@ void GameInspectorGUI::RegisterComponent(Registry& registry, const std::string& 
 	if (widgetFunction != NULL)
 	{
 		RegisterComponentWidgetCallback(registry.template type<T>(),
-										[=](Registry& registry, typename Registry::entity_type entityType)
+										[=](entt::registry& registry, typename entt::registry::entity_type entityType)
 		{
 			T& transform = registry.template get<T>(entityType);
 			widgetFunction(transform);
@@ -30,7 +30,8 @@ void GameInspectorGUI::RegisterComponent(Registry& registry, const std::string& 
 }
 
 
-void GameInspectorGUI::RegisterWidgets(Registry& registry)
+void GameInspectorGUI::RegisterWidgets(entt::registry& registry)
 {
 	RegisterComponent<Component::Mover>(registry, "Mover", &Widgets::MoverWidget);
+	RegisterComponent<Generation>(registry, "Generation Data", &Widgets::GenerationWidget);
 }

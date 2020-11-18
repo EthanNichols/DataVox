@@ -9,7 +9,7 @@
 #include "Window.h"
 
 
-EditorGUI::EditorGUI(Window& window, Registry& registry, ResourceManager& resourceManager, Game& game)
+EditorGUI::EditorGUI(Window& window, entt::registry& registry, ResourceManager& resourceManager, Game& game)
 {
 	m_window = &window;
 
@@ -38,7 +38,7 @@ EditorGUI::~EditorGUI()
 }
 
 
-void EditorGUI::Render(Registry& registry, Camera& camera)
+void EditorGUI::Render(entt::registry& registry, Camera& camera)
 {
 	if (selectedEntity != entt::null)
 	{

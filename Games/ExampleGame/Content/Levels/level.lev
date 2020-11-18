@@ -30,13 +30,13 @@
         "Scale_Y": 1,
         "Scale_Z": 1
     },
-    "value11": 2,
+    "value11": 4,
     "value12": {
-        "Pos_X": 0,
-        "Pos_Y": 2,
+        "Pos_X": -5,
+        "Pos_Y": 0.5,
         "Pos_Z": 0,
         "Rot_X": 0,
-        "Rot_Y": -0,
+        "Rot_Y": 89.980216979980469,
         "Rot_Z": 0,
         "Scale_X": 1,
         "Scale_Y": 1,
@@ -54,13 +54,13 @@
         "Scale_Y": 1,
         "Scale_Z": 1
     },
-    "value15": 4,
+    "value15": 2,
     "value16": {
-        "Pos_X": -5,
-        "Pos_Y": 0.5,
+        "Pos_X": 0,
+        "Pos_Y": 2,
         "Pos_Z": 0,
         "Rot_X": 0,
-        "Rot_Y": 89.980216979980469,
+        "Rot_Y": -0,
         "Rot_Z": 0,
         "Scale_X": 1,
         "Scale_Y": 1,
@@ -132,5 +132,6 @@
         "Angle": 6,
         "Intesity": 7.5999999046325684,
         "LightType": 3
-    }
+    },
+    "value40": 0
 }

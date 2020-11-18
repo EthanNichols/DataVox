@@ -15,6 +15,8 @@
 #include "Mesh.h"
 #include "Texture.h"
 #include "VertexData.h"
+#include "Mover.h"
+#include "Entt.h"
 
 
 ResourceManager::ResourceManager()
@@ -193,103 +195,4 @@ void ResourceManager::SetupModel(Mesh& mesh)
 Mesh* ResourceManager::GetModel(const std::string& modelName)
 {
 	return &m_meshes[modelName];
-}
-
-
-bool ResourceManager::LoadLevel(Registry& registry, const std::string filePath)
-{
-	bool success = false;
-	Registry loadRegistry;
-
-	LoadLevel_Internal<ARG_SERIALIZE_COMPONENTS>(loadRegistry, filePath, success);
-
-	if (success)
-	{
-		registry.reset();
-		registry = loadRegistry.clone();
-		loadRegistry.reset();
-
-		registry.view<Component::MeshRenderer>().each([&](const Entity& entity, Component::MeshRenderer& meshRenderer)
-		{
-			// Get the path to the mesh.
-			// Delete the mesh, since the mesh will be loaded.
-			std::string filePath = meshRenderer.mesh->FilePath;
-			delete meshRenderer.mesh;
-
-			meshRenderer.mesh = LoadModel(filePath);
-		});
-
-		printf("Level %s loaded\n", filePath.c_str());
-		m_loadedLevelName = filePath;
-	}
-	else
-	{
-		printf("Failed to load %s, format out of date\n", filePath.c_str());
-	}
-
-
-	return success;
-}
-
-
-template<typename ... Component>
-void ResourceManager::LoadLevel_Internal(Registry& registry, const std::string filePath, bool& success)
-{
-	// The level has already been loaded successfully. Return.
-	if (success)
-	{
-		return;
-	}
-
-	try
-	{
-		std::ifstream inputStream(filePath);
-		cereal::JSONInputArchive inArchive(inputStream);
-		registry.reset();
-
-		registry.loader()
-			.entities(inArchive)
-			.component<Component ...>(inArchive);
-
-		success = true;
-	}
-	catch (const std::exception&)
-	{
-		success = false;
-	}
-}
-
-
-bool ResourceManager::ReloadLevel(Registry& registry)
-{
-	return LoadLevel(registry, m_loadedLevelName);
-}
-
-
-bool ResourceManager::SaveLevel(Registry& registry, const std::string filePath)
-{
-	std::ofstream outputStream(filePath);
-	bool success = outputStream.is_open();
-
-	if (success)
-	{
-		cereal::JSONOutputArchive archive(outputStream);
-
-		registry.snapshot()
-			.entities(archive)
-			.component<ARG_SERIALIZE_COMPONENTS>(archive);
-
-		printf("Level %s saved\n", filePath.c_str());
-	}
-	else
-	{
-		printf("Failed to open %s\n", filePath.c_str());
-	}
-
-	return success;
-}
-
-bool ResourceManager::SaveCurrentLevel(Registry& registry)
-{
-	return SaveLevel(registry, m_loadedLevelName);
 }
