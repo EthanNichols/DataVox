@@ -73,7 +73,7 @@ int main()
 
 		window.ClearColor(glm::vec4(0.2f, 0.3f, 0.3f, 1.0f));
 
-		game.Update(registry);
+		game.Update(registry, camera);
 
 		// Eventually this will be moved elseware
 		basicShader.Use();
@@ -89,7 +89,7 @@ int main()
 		window.Update(0);
 	}
 
-	resourceManager.SaveCurrentLevel<Component::Mover, Generation>(registry);
+	//resourceManager.SaveCurrentLevel<Component::Mover, Generation>(registry);
 
 	glfwTerminate();
 	return 0;

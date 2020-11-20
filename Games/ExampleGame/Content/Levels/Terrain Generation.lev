@@ -40,11 +40,11 @@
     "value16": 1,
     "value17": 1048576,
     "value18": {
-        "renderDistance": 5,
-        "maxHeight": 16,
-        "chunkSize": 10,
-        "seed": 0,
+        "renderDistance": 11,
+        "maxHeight": 21,
+        "chunkSize": 16,
+        "seed": 13073,
         "randomizeSeed": true,
-        "perlinStepSize": 0.02500000037252903
+        "perlinStepSize": 0.05000000074505806
     }
 }

@@ -30,7 +30,7 @@ private:
 	const Window* m_window;
 
 	const float ROTATION_SPEED = 120.0f;
-	const float MOVEMENT_SPEED = 5.0f;
+	const float MOVEMENT_SPEED = 10.0f;
 
 	float m_fieldOfView = 60.0f;
 	float m_nearClippingPlane = 0.1f;
