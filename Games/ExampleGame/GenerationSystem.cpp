@@ -69,15 +69,41 @@ void GenerationSystem::GenerateChunk(entt::registry& registry, entt::entity& ent
 			glm::vec3 quadPosition = glm::vec3(x, 0.0f, y);
 			glm::vec2 perlinPosition = glm::vec2(quadPosition.x + chunkComp.gridPosition.x * chunkSize, quadPosition.z + chunkComp.gridPosition.y * chunkSize) * generationData.perlinStepSize;
 
-			float height = m_perlinNoise.Noise(perlinPosition.x, perlinPosition.y, 0.0f);
-			height *= generationData.maxHeight;
-			height = glm::round(height);
+			float height = glm::round((m_perlinNoise.Noise(perlinPosition.x, perlinPosition.y, 0.0f) + 0.5f) * (float)generationData.maxHeight);
 			quadPosition.y = height;
 
-			CreateQuad(quadPosition, glm::vec3(0.0f, 1.0f, 0.0f), meshRendererComp);
+			CreateQuad(quadPosition + glm::vec3(0.0f, 0.5f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), meshRendererComp);
+
+			float posXHeight = glm::round((m_perlinNoise.Noise(perlinPosition.x + generationData.perlinStepSize, perlinPosition.y, 0.0f) + 0.5) * (float)generationData.maxHeight);
+			float negXHeight = glm::round((m_perlinNoise.Noise(perlinPosition.x - generationData.perlinStepSize, perlinPosition.y, 0.0f) + 0.5) * (float)generationData.maxHeight);
+			float posYHeight = glm::round((m_perlinNoise.Noise(perlinPosition.x, perlinPosition.y + generationData.perlinStepSize, 0.0f) + 0.5) * (float)generationData.maxHeight);
+			float negYHeight = glm::round((m_perlinNoise.Noise(perlinPosition.x, perlinPosition.y - generationData.perlinStepSize, 0.0f) + 0.5) * (float)generationData.maxHeight);
+
+			float minHeight = glm::min(glm::min(posXHeight, negXHeight), glm::min(posYHeight, negYHeight));
+
+			for (float z = height; z > minHeight; --z)
+			{
+				if (posXHeight < z)
+				{
+					CreateQuad(quadPosition + glm::vec3(0.5f, (z - height), 0.0f), glm::vec3(1.0f, 0.0f, 0.0f), meshRendererComp);
+				}
+				if (negXHeight < z)
+				{
+					CreateQuad(quadPosition + glm::vec3(-0.5f, (z - height), 0.0f), glm::vec3(-1.0f, 0.0f, 0.0f), meshRendererComp);
+				}
+
+				if (posYHeight < z)
+				{
+					CreateQuad(quadPosition + glm::vec3(0.0f, (z - height), 0.5f), glm::vec3(0.0f, 0.0f, 1.0f), meshRendererComp);
+				}
+				if (negYHeight < z)
+				{
+					CreateQuad(quadPosition + glm::vec3(0.0f, (z - height), -0.5f), glm::vec3(0.0f, 0.0f, -1.0f), meshRendererComp);
+				}
+			}
 
 			Mesh* mesh = meshRendererComp.mesh;
-
+			
 			glGenVertexArrays(1, &mesh->m_VAO);
 			glGenBuffers(1, &mesh->m_VBO);
 			glGenBuffers(1, &mesh->m_EBO);
@@ -113,10 +139,10 @@ void GenerationSystem::CreateQuad(glm::vec3 position, glm::vec3 forward, Compone
 	v3.Position = (rotation * glm::vec3(0.5f, 0.0f, 0.5f)) + position;
 	v4.Position = (rotation * glm::vec3(-0.5f, 0.0f, 0.5f)) + position;
 
-	v1.Normal = glm::vec3(0.0f, 1.0f, 0.0f);
-	v2.Normal = glm::vec3(0.0f, 1.0f, 0.0f);
-	v3.Normal = glm::vec3(0.0f, 1.0f, 0.0f);
-	v4.Normal = glm::vec3(0.0f, 1.0f, 0.0f);
+	v1.Normal = rotation * glm::vec3(0.0f, 1.0f, 0.0f);
+	v2.Normal = rotation * glm::vec3(0.0f, 1.0f, 0.0f);
+	v3.Normal = rotation * glm::vec3(0.0f, 1.0f, 0.0f);
+	v4.Normal = rotation * glm::vec3(0.0f, 1.0f, 0.0f);
 
 	v1.UV = glm::vec2(0.0f, 0.0f);
 	v2.UV = glm::vec2(1.0f, 0.0f);
